@@ -3,7 +3,7 @@ import { createEffect, Actions, ofType } from '@ngrx/effects';
 import { catchError, map, of, switchMap, tap } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { BackendErrorsInterface } from '@app/shared/types/backendErrors.interface';
-import { PersistanceService } from '@app/core/persistance.service';
+import { PersistanceService } from '@app/core/services/persistance.service';
 import { Router } from '@angular/router';
 import { LoaderService } from '@app/shared/components/loader/loader.service';
 

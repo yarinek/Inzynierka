@@ -1,0 +1,21 @@
+<mat-form-field>
+  <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
+  <mat-label>{{ placeholder }}</mat-label>
+  <mat-select
+    class="arrow-select"
+    [formControl]="selectControl"
+    (selectionChange)="selectValue($event)"
+    [multiple]="multi"
+    [id]="id"
+    [aria-label]="ariaLabel"
+  >
+    <mat-option [value]="null" *ngIf="!multi && uncheck">- odznacz -</mat-option>
+    <mat-option *ngFor="let arg of options" [value]="arg.key">{{ arg.value }}</mat-option>
+  </mat-select>
+  <mat-error
+    *ngFor="let error of errorService.mapErrors(selectControl); let last = last"
+    [ngClass]="{ 'mat-error-last': last }"
+  >
+    <span>{{ error }}</span>
+  </mat-error>
+</mat-form-field>

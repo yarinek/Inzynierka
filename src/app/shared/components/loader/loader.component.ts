@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { fromEvent, takeUntil, Observable, map } from 'rxjs';
-import { UtilsService } from '@app/core/utils.service';
+import { UtilsService } from '@app/core/services/utils.service';
 
 @Component({
   selector: 'app-loader',

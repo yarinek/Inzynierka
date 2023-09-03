@@ -15,7 +15,7 @@ import * as feedEffects from '@app/content/globalFeed/store/effects';
 import * as popularTagsEffects from '@app/shared/components/popular-tags/store/effects';
 import { popularTagsFeatureKey, popularTagsReducer } from '@app/shared/components/popular-tags/store/reducers';
 import { authActions } from '@app/content/auth/store/actions';
-import { PersistanceService } from '@app/core/persistance.service';
+import { PersistanceService } from '@app/core/services/persistance.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app/app.component';

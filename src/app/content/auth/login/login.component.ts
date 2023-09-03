@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { combineLatest } from 'rxjs';
 import { RouterLink } from '@angular/router';
 import { BackendErrorMessagesComponent } from '@app/shared/components/backend-error-messages/backend-error-messages.component';
-import { MatInputModule } from '@angular/material/input';
+import { InputComponent } from '@app/shared/components/input/input.component';
 
 import { authActions } from '../store/actions';
 import { LoginRequest } from '../auth.types';
@@ -14,7 +14,7 @@ import { selectIsSubmitting, selectValidationErrors } from '../store/reducers';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink, BackendErrorMessagesComponent, MatInputModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, BackendErrorMessagesComponent, InputComponent],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })

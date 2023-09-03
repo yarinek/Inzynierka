@@ -12,24 +12,8 @@
             [backendErrors]="data.backendErrors$"
           ></app-backend-error-messages>
           <form class="example-form" [formGroup]="form" (ngSubmit)="onSubmit()">
-            <mat-form-field>
-              <input
-                matInput
-                type="email"
-                class="form-control form-control-lg"
-                placeholder="Email"
-                formControlName="email"
-              />
-            </mat-form-field>
-            <mat-form-field>
-              <input
-                matInput
-                type="password"
-                class="form-control form-control-lg"
-                placeholder="Password"
-                formControlName="password"
-              />
-            </mat-form-field>
+            <app-input formControlName="email" type="email" placeholder="Email"></app-input>
+            <app-input type="password" placeholder="Password" formControlName="password"></app-input>
             <button [disabled]="data.isSubmitting$" type="submit" class="btn btn-lg btn-primary pull-xs-right">
               Sign In
             </button>

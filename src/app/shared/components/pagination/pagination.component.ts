@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UtilsService } from '@app/core/utils.service';
 import { RouterLink } from '@angular/router';
+import { UtilsService } from '@app/core/services/utils.service';
 
 @Component({
   selector: 'app-pagination',

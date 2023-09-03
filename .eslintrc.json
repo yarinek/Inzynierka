@@ -30,9 +30,6 @@
               "@angular-eslint/no-output-on-prefix": "warn",
               "@typescript-eslint/no-unused-vars": "error",
               "unused-imports/no-unused-imports": "error",
-
-
-
               "@angular-eslint/component-class-suffix": [
                   "error",
                   {

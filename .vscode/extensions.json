@@ -3,7 +3,6 @@
   "recommendations": [
     "angular.ng-template",
     "trabpukcip.vscode-npm-scripts",
-    "streetsidesoftware.code-spell-checker",
     "esbenp.prettier-vscode",
     "dbaeumer.vscode-eslint"
   ]

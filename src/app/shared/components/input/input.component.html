@@ -1,0 +1,21 @@
+<mat-form-field>
+  <mat-label>
+    {{ placeholder }}
+    <ng-content></ng-content>
+  </mat-label>
+  <input
+    [formControl]="inputControl"
+    matInput
+    [type]="type"
+    [id]="id"
+    #input
+    (input)="updateValue(input.value)"
+    [attr.aria-label]="ariaLabel"
+  />
+  <mat-error
+    *ngFor="let error of errorService.mapErrors(inputControl); let last = last"
+    [ngClass]="{ 'mat-error-last': last }"
+  >
+    <span>{{ error }}</span>
+  </mat-error>
+</mat-form-field>

@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { PersistanceService } from '../persistance.service';
+import { PersistanceService } from '../services/persistance.service';
 
 export const canActivateLoggedRoutesFn = (): boolean => {
   const persistanceService = inject(PersistanceService);
