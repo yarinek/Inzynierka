@@ -10,7 +10,7 @@
     "css.validate": false,
     "scss.validate": false,
     "javascript.validate.enable": false,
-    "typescript.validate.enable": false,
+    "typescript.validate.enable": true,
     "eslint.format.enable": true,
     "[javascript]": {
         "editor.defaultFormatter": "dbaeumer.vscode-eslint"

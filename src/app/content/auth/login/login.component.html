@@ -11,18 +11,25 @@
             *ngIf="data.backendErrors$"
             [backendErrors]="data.backendErrors$"
           ></app-backend-error-messages>
-          <form [formGroup]="form" (ngSubmit)="onSubmit()">
-            <fieldset class="form-group">
-              <input type="email" class="form-control form-control-lg" placeholder="Email" formControlName="email" />
-            </fieldset>
-            <fieldset class="form-group">
+          <form class="example-form" [formGroup]="form" (ngSubmit)="onSubmit()">
+            <mat-form-field>
               <input
+                matInput
+                type="email"
+                class="form-control form-control-lg"
+                placeholder="Email"
+                formControlName="email"
+              />
+            </mat-form-field>
+            <mat-form-field>
+              <input
+                matInput
                 type="password"
                 class="form-control form-control-lg"
                 placeholder="Password"
                 formControlName="password"
               />
-            </fieldset>
+            </mat-form-field>
             <button [disabled]="data.isSubmitting$" type="submit" class="btn btn-lg btn-primary pull-xs-right">
               Sign In
             </button>

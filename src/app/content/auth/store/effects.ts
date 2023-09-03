@@ -5,6 +5,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { BackendErrorsInterface } from '@app/shared/types/backendErrors.interface';
 import { PersistanceService } from '@app/core/persistance.service';
 import { Router } from '@angular/router';
+import { LoaderService } from '@app/shared/components/loader/loader.service';
 
 import { CurrentUserInterface } from './../../../shared/types/currentUser.interface';
 import { AuthService } from '../auth.service';
@@ -72,16 +73,19 @@ export const loginEffect = createEffect(
   (actions$ = inject(Actions), authService = inject(AuthService), persistanceService = inject(PersistanceService)) => {
     return actions$.pipe(
       ofType(authActions.login),
+      tap(() => LoaderService.showLoader()),
       switchMap(({ request }) => {
         return authService.login(request).pipe(
           map((currentUser: CurrentUserInterface) => {
             persistanceService.set('accessToken', currentUser.token);
+            LoaderService.hideLoader();
             return authActions.loginSuccess({ currentUser });
           }),
-          catchError((errorResponse: HttpErrorResponse) =>
+          catchError((errorResponse: HttpErrorResponse) => {
+            LoaderService.hideLoader();
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            of(authActions.loginFailure({ errors: errorResponse.error?.errors as BackendErrorsInterface })),
-          ),
+            return of(authActions.loginFailure({ errors: errorResponse.error?.errors as BackendErrorsInterface }));
+          }),
         );
       }),
     );
