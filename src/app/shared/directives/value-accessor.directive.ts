@@ -2,6 +2,37 @@ import { Subject } from 'rxjs';
 import { Directive, forwardRef, OnDestroy } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
+/**
+ * @description
+ * This directive is used to create a custom form control.
+ * @usage
+ * ```ts
+ * import { ValueAccessorDirective } from '@angular/directives/value-accessor.directive';
+ *
+ * Component({
+ *  selector: 'app-input',
+ *  standalone: true,
+ *  hostDirectives: [ValueAccessorDirective],
+ * })
+ * export class InputComponent implements OnInit {
+ *    public valueAccessor = inject(ValueAccessorDirective<string | number>);
+ *    value!: string | number;
+ *
+ *    ngOnInit(): void {
+ *     this.valueAccessor.value.subscribe((v) => (this.value = v));
+ *    }
+ *
+ *  //method is used to update the value of the custom form control.
+ *   public updateValue(value: string): void {
+ *    this.valueAccessor.valueChange(value);
+ *    this.valueAccessor.touchedChange(true);
+ *   }
+ *```
+ * @example
+ * ```html
+ *  <input (input)="updateValue($event.target.value)" ... />
+ * ```
+ */
 @Directive({
   standalone: true,
   providers: [

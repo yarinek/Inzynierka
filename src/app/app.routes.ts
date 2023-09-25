@@ -16,16 +16,6 @@ export const appRoutes: Route[] = [
   {
     path: '',
     canActivate: [canActivateLoggedRoutesFn],
-    loadChildren: () => import('./content/globalFeed/globalFeed.routes').then((m) => m.globalFeedRoutes),
-  },
-  {
-    path: 'feed',
-    canActivate: [canActivateLoggedRoutesFn],
-    loadChildren: () => import('./content/yourFeed/your-feed.routes').then((m) => m.yourFeedRoutes),
-  },
-  {
-    path: 'tag/:slug',
-    canActivate: [canActivateLoggedRoutesFn],
-    loadChildren: () => import('./content/tagFeed/tagFeed.routes').then((m) => m.tagFeedRoutes),
+    loadChildren: () => import('./content/example-view/example.routes').then((m) => m.exampleRoutes),
   },
 ];

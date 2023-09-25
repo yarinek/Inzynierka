@@ -16,7 +16,7 @@ export class LoaderComponent implements OnInit {
   protected showLoader = false;
 
   ngOnInit(): void {
-    const loaderEvent$: Observable<boolean> = fromEvent<CustomEvent>(window, 'loader').pipe(
+    const loaderEvent$: Observable<boolean> = fromEvent<CustomEvent<boolean>>(window, 'loader').pipe(
       takeUntil(this.destroy$),
       map(({ detail }) => !!detail),
     );

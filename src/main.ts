@@ -10,19 +10,16 @@ import { authFeatureKey, authReducer } from '@app/content/auth/store/reducers';
 import * as authEffects from '@app/content/auth/store/effects';
 import { provideEffects } from '@ngrx/effects';
 import { provideRouterStore, routerReducer } from '@ngrx/router-store';
-import { feedFeatureKey, feedReducer } from '@app/content/globalFeed/store/reducers';
-import * as feedEffects from '@app/content/globalFeed/store/effects';
-import * as popularTagsEffects from '@app/shared/components/popular-tags/store/effects';
-import { popularTagsFeatureKey, popularTagsReducer } from '@app/shared/components/popular-tags/store/reducers';
+import * as exampleEffects from '@app/content/example-view/store/effects';
 import { authActions } from '@app/content/auth/store/actions';
-import { PersistanceService } from '@app/core/services/persistance.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatDialogModule } from '@angular/material/dialog';
+import { exampleFeatureKey, exampleReducer } from '@app/content/example-view/store/reducers';
 
 import { AppComponent } from './app/app.component';
 
 function initializeAppFactory(): () => void {
-  const persistanceService = inject(PersistanceService);
-  const token = persistanceService.get('accessToken');
+  const token = localStorage.getItem('accessToken');
   if (token) {
     const store = inject(Store);
     return () => store.dispatch(authActions.getCurrentUser());
@@ -36,11 +33,11 @@ bootstrapApplication(AppComponent, {
     provideHttpClient(withInterceptors([authorizationInterceptor])),
     provideRouter(appRoutes),
     provideStore({ router: routerReducer }),
-    provideEffects(authEffects, feedEffects, popularTagsEffects),
+    provideEffects(authEffects, exampleEffects),
     provideState(authFeatureKey, authReducer),
-    provideState(feedFeatureKey, feedReducer),
-    provideState(popularTagsFeatureKey, popularTagsReducer),
+    provideState(exampleFeatureKey, exampleReducer),
     provideRouterStore(),
+    // Devtools configuration
     provideStoreDevtools({
       maxAge: 25,
       logOnly: !isDevMode(),
@@ -49,6 +46,6 @@ bootstrapApplication(AppComponent, {
       traceLimit: 75,
     }),
     { provide: APP_INITIALIZER, useFactory: initializeAppFactory, deps: [], multi: true },
-    importProvidersFrom(BrowserAnimationsModule),
+    importProvidersFrom(BrowserAnimationsModule, MatDialogModule),
   ],
 });

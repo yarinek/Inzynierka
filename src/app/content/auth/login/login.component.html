@@ -7,10 +7,6 @@
           <p class="text-xs-center">
             <a routerLink="/register">Need an account?</a>
           </p>
-          <app-backend-error-messages
-            *ngIf="data.backendErrors$"
-            [backendErrors]="data.backendErrors$"
-          ></app-backend-error-messages>
           <form class="example-form" [formGroup]="form" (ngSubmit)="onSubmit()">
             <app-input formControlName="email" type="email" placeholder="Email"></app-input>
             <app-input type="password" placeholder="Password" formControlName="password"></app-input>

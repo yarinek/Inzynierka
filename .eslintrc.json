@@ -18,7 +18,7 @@
               "plugin:@typescript-eslint/recommended-requiring-type-checking",
               "plugin:import/typescript"
           ],
-          "plugins": ["import","unused-imports", "@typescript-eslint"],
+          "plugins": ["import","unused-imports", "@typescript-eslint", "deprecation"],
           "rules": {
               "@typescript-eslint/unbound-method": ["error", { "ignoreStatic": true }],
               "@typescript-eslint/no-floating-promises": ["error", { "ignoreIIFE": true, "ignoreVoid": true }],
@@ -76,7 +76,8 @@
                 {
                     "allow": ["warn", "error"]
                 }
-            ]
+            ],
+            "deprecation/deprecation": "error"
           }
       },
       {

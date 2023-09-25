@@ -1,16 +1,17 @@
-import { Injectable } from '@angular/core';
-
-@Injectable({
-  providedIn: 'root',
-})
 export class LoaderService {
+  /**
+   * Show global loader defined in src/app/shared/components/loader/loader.component.ts
+   */
   static showLoader(): void {
-    const event = new CustomEvent('loader', { detail: true });
+    const event = new CustomEvent<boolean>('loader', { detail: true });
     window.dispatchEvent(event);
   }
 
+  /**
+   * Hide global loader defined in src/app/shared/components/loader/loader.component.ts
+   */
   static hideLoader(): void {
-    const event = new CustomEvent('loader', { detail: false });
+    const event = new CustomEvent<boolean>('loader', { detail: false });
     window.dispatchEvent(event);
   }
 }

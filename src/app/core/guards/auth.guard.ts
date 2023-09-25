@@ -1,12 +1,11 @@
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { PersistanceService } from '../services/persistance.service';
+// Since Angular 14 we can use functional guards and it is recommended.
 
 export const canActivateLoggedRoutesFn = (): boolean => {
-  const persistanceService = inject(PersistanceService);
   const router = inject(Router);
-  const token = persistanceService.get('accessToken');
+  const token = localStorage.getItem('accessToken');
   if (token) {
     return true;
   }
@@ -15,9 +14,8 @@ export const canActivateLoggedRoutesFn = (): boolean => {
 };
 
 export const canActivateNotLoggedRoutesFn = (): boolean => {
-  const persistanceService = inject(PersistanceService);
   const router = inject(Router);
-  const token = persistanceService.get('accessToken');
+  const token = localStorage.getItem('accessToken');
   if (!token) {
     return true;
   }
