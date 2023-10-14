@@ -5,9 +5,9 @@ import { Store } from '@ngrx/store';
 import { combineLatest } from 'rxjs';
 import { RouterLink } from '@angular/router';
 import { InputComponent } from '@app/shared/components/input/input.component';
+import { AccountLogin } from 'src/http-client';
 
 import { authActions } from '../store/actions';
-import { LoginRequest } from '../auth.types';
 import { selectIsSubmitting } from '../store/reducers';
 
 @Component({
@@ -30,9 +30,7 @@ export class LoginComponent {
   });
 
   onSubmit(): void {
-    const request: LoginRequest = {
-      user: this.form.getRawValue(),
-    };
+    const request: AccountLogin = this.form.getRawValue();
     // Every HTTP request should be dispatched as an action
     this.store.dispatch(authActions.login({ request }));
   }

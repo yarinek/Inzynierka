@@ -7,7 +7,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "generate:api": "openapi-generator-cli generate -i ../../backend/src/main/api/api.yaml -g typescript-angular -o src/http-client"
   },
   "private": true,
   "dependencies": {
@@ -26,7 +27,8 @@
     "@ngrx/store": "^15.4.0",
     "@ngrx/store-devtools": "^15.4.0",
     "bootstrap": "^5.3.1",
-    "query-string": "^8.1.0",
+    "css-loader": "^6.8.1",
+    "node-sass": "^8.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.12.0"
@@ -40,6 +42,7 @@
     "@angular-eslint/template-parser": "15.2.1",
     "@angular/cli": "~15.2.1",
     "@angular/compiler-cli": "^15.2.0",
+    "@openapitools/openapi-generator-cli": "^2.7.0",
     "@types/jasmine": "~4.3.0",
     "@typescript-eslint/eslint-plugin": "5.48.2",
     "@typescript-eslint/parser": "5.48.2",

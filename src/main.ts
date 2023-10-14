@@ -15,6 +15,8 @@ import { authActions } from '@app/content/auth/store/actions';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogModule } from '@angular/material/dialog';
 import { exampleFeatureKey, exampleReducer } from '@app/content/example-view/store/reducers';
+import { settingsFeatureKey, settingsReducer } from '@app/content/settings/store/reducers';
+import * as settingsEffects from '@app/content/settings/store/effects';
 
 import { AppComponent } from './app/app.component';
 
@@ -33,9 +35,10 @@ bootstrapApplication(AppComponent, {
     provideHttpClient(withInterceptors([authorizationInterceptor])),
     provideRouter(appRoutes),
     provideStore({ router: routerReducer }),
-    provideEffects(authEffects, exampleEffects),
+    provideEffects(authEffects, exampleEffects, settingsEffects),
     provideState(authFeatureKey, authReducer),
     provideState(exampleFeatureKey, exampleReducer),
+    provideState(settingsFeatureKey, settingsReducer),
     provideRouterStore(),
     // Devtools configuration
     provideStoreDevtools({

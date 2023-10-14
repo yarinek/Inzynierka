@@ -1,0 +1,4 @@
+@import "src/assets/styles/variables.scss";
+.active {
+  background-color: darken($color: $neutral_dark_grey, $amount: 10);
+}

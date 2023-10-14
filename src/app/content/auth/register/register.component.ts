@@ -6,9 +6,9 @@ import { RouterLink } from '@angular/router';
 import { combineLatest } from 'rxjs';
 import { InputComponent } from '@app/shared/components/input/input.component';
 import { SelectComponent } from '@app/shared/components/select/select.component';
+import { AccountRegistration } from 'src/http-client';
 
 import { authActions } from './../store/actions';
-import { RegisterRequest } from '../auth.types';
 import { selectIsSubmitting } from '../store/reducers';
 
 @Component({
@@ -25,23 +25,14 @@ export class RegisterComponent {
     username: ['', Validators.required],
     email: ['', Validators.required],
     password: ['', Validators.required],
-    role: ['', Validators.required],
   });
-
-  // example roles - in production this should be fetched from the backend
-  roles = [
-    { key: 'user', value: 'User' },
-    { key: 'admin', value: 'Admin' },
-  ];
 
   data$ = combineLatest({
     isSubmitting$: this.store.select(selectIsSubmitting),
   });
 
   onSubmit(): void {
-    const request: RegisterRequest = {
-      user: this.form.getRawValue(),
-    };
+    const request: AccountRegistration = this.form.getRawValue();
     // Every HTTP request should be dispatched as an action
     this.store.dispatch(authActions.register({ request }));
   }

@@ -3,13 +3,12 @@ import { createEffect, Actions, ofType } from '@ngrx/effects';
 import { catchError, map, of, switchMap, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { LoaderService } from '@app/shared/components/loader/loader.service';
-import { ConfirmationDialogService } from '@app/shared/components/confirmation-dialog/confirmation-dialog.service';
+import { AccountsService, AuthenticationService } from 'src/http-client';
 
 import { CurrentUserInterface } from './../../../shared/types/currentUser.interface';
-import { AuthService } from '../auth.service';
 import { authActions } from './actions';
 
-export const getCurrentUserEffect = createEffect(
+/* export const getCurrentUserEffect = createEffect(
   (actions$ = inject(Actions), authService = inject(AuthService)) => {
     return actions$.pipe(
       ofType(authActions.getCurrentUser),
@@ -29,18 +28,15 @@ export const getCurrentUserEffect = createEffect(
     );
   },
   { functional: true },
-);
+); */
 
 export const registerEffect = createEffect(
-  (actions$ = inject(Actions), authService = inject(AuthService)) => {
+  (actions$ = inject(Actions), accountService = inject(AccountsService)) => {
     return actions$.pipe(
       ofType(authActions.register),
       switchMap(({ request }) => {
-        return authService.register(request).pipe(
-          map((currentUser: CurrentUserInterface) => {
-            localStorage.setItem('accessToken', currentUser.token);
-            return authActions.registerSuccess({ currentUser });
-          }),
+        return accountService.registerNewAccount(request).pipe(
+          tap(() => authActions.registerSuccess()),
           catchError(() => of(authActions.registerFailure())),
         );
       }),
@@ -65,29 +61,23 @@ export const redirectAfterRegisterEffect = createEffect(
 );
 
 export const loginEffect = createEffect(
-  (
-    actions$ = inject(Actions),
-    authService = inject(AuthService),
-    confirmationService = inject(ConfirmationDialogService),
-  ) => {
+  (actions$ = inject(Actions), authService = inject(AuthenticationService)) => {
     return actions$.pipe(
       ofType(authActions.login),
       tap(() => LoaderService.showLoader()),
-      switchMap(({ request }) => {
-        return confirmationService.withConfirmation(
-          authService.login(request).pipe(
-            map((currentUser: CurrentUserInterface) => {
-              localStorage.setItem('accessToken', currentUser.token);
-              LoaderService.hideLoader();
-              return authActions.loginSuccess({ currentUser });
-            }),
-            catchError(() => {
-              LoaderService.hideLoader();
-              return of(authActions.loginFailure());
-            }),
-          ),
-        );
-      }),
+      switchMap(({ request }) =>
+        authService.login({ ...request }).pipe(
+          map((currentUser: CurrentUserInterface) => {
+            localStorage.setItem('accessToken', currentUser.token);
+            LoaderService.hideLoader();
+            return authActions.loginSuccess({ currentUser });
+          }),
+          catchError(() => {
+            LoaderService.hideLoader();
+            return of(authActions.loginFailure());
+          }),
+        ),
+      ),
     );
   },
   { functional: true },

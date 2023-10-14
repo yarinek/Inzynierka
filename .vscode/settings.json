@@ -6,7 +6,6 @@
     "files.autoSaveDelay": 5000,
     "editor.bracketPairColorization.enabled": true,
     "editor.guides.bracketPairs": true,
-    "files.eol": "\n",
     "css.validate": false,
     "scss.validate": false,
     "javascript.validate.enable": false,
@@ -32,4 +31,5 @@
         "javascript",
         "typescript",
     ],
+    "files.eol": "\n",
   }

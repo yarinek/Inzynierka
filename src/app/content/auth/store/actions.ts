@@ -1,15 +1,15 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { LoginRequest, RegisterRequest } from '@content/auth/auth.types';
 import { CurrentUserInterface } from '@app/shared/types/currentUser.interface';
+import { AccountLogin, AccountRegistration } from 'src/http-client';
 
 export const authActions = createActionGroup({
   source: 'auth',
   events: {
-    Register: props<{ request: RegisterRequest }>(),
-    'Register Success': props<{ currentUser: CurrentUserInterface }>(),
+    Register: props<{ request: AccountRegistration }>(),
+    'Register Success': emptyProps(),
     'Register Failure': emptyProps(),
 
-    Login: props<{ request: LoginRequest }>(),
+    Login: props<{ request: AccountLogin }>(),
     'Login Success': props<{ currentUser: CurrentUserInterface }>(),
     'Login Failure': emptyProps(),
 

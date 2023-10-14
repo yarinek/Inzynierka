@@ -18,4 +18,9 @@ export const appRoutes: Route[] = [
     canActivate: [canActivateLoggedRoutesFn],
     loadChildren: () => import('./content/example-view/example.routes').then((m) => m.exampleRoutes),
   },
+  {
+    path: 'settings',
+    canActivate: [canActivateLoggedRoutesFn],
+    loadChildren: () => import('./content/settings/settings.routes').then((m) => m.settingsRoutes),
+  },
 ];

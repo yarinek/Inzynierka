@@ -1,0 +1,21 @@
+<div class="container">
+  <h1 mat-dialog-title>Update Account</h1>
+
+  <div mat-dialog-content>
+    <form class="container d-flex-center" [formGroup]="form">
+      <div class="row">
+        <app-input formControlName="email" type="email" placeholder="New email"></app-input>
+      </div>
+      <!-- TODO: roles -->
+    </form>
+  </div>
+
+  <div mat-dialog-actions>
+    <div class="d-flex-center">
+      <button class="btn btn-primary m-1" mat-button (click)="onDismiss()">Close</button>
+      <button class="btn btn-primary m-1" mat-raised-button color="primary" (click)="onConfirm()">
+        Update account
+      </button>
+    </div>
+  </div>
+</div>

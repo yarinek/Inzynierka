@@ -1,3 +1,16 @@
+@import "assets/styles/variables.scss";
+@import "assets/styles/mixins.scss";
+@import "assets/styles/utils.scss";
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+  width: 100%;
+  background-color: rgba($neutral_black, 0.7);
+  margin: 0;
+  padding: 0;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}

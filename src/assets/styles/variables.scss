@@ -6,41 +6,29 @@ $breakpoints: (
   "desktop": 1150px,
 );
 
-$all-colors: (
-  // Background
-  grey_bg: #ebebeb,
-  grey_bg-1: #f6f6f6,
-  white_bg: #ffffff,
-  //Lines
-  lines: #dddddd,
-  //Primary colors
-  primary_ceglany-1: #b43c23,
-  primary_ceglany-2: #d29082,
-  primary_ceglany-3: #e5beb5,
-  primary_ceglany-4: #efd7d2,
-  primary_ceglany-5: #f5e5e3,
-  primary_ceglany-6: #f9f0ec,
-  primary_ceglany-7: #fbf6f5,
-  //Secondary colors
-  secondary_dark-ceglany: #921b02,
-  //Neutral colors
-  neutral_white: #fff,
-  neutral_black: #000,
-  neutral_dark_grey: #757575,
-  neutral_mid_grey: #a7a8a9,
-  //Notifications
-  notification_error: #d70006,
-  notification_warning: #aa6600,
-  notification_succes: #86a45b,
-  notification_info: #09599b
-);
-
-:root {
-  @each $name, $color in $all-colors {
-    --color-#{$name}: #{$color};
-  }
-}
-
-@function color($color-name) {
-  @return var(--color-#{$color-name});
-}
+/* Background */
+$grey_bg: #ebebeb;
+$grey_bg-1: #f6f6f6;
+$white_bg: #ffffff;
+/* Lines */
+$lines: #dddddd;
+/* Primary colors */
+$primary_ceglany-1: #b43c23;
+$primary_ceglany-2: #d29082;
+$primary_ceglany-3: #e5beb5;
+$primary_ceglany-4: #efd7d2;
+$primary_ceglany-5: #f5e5e3;
+$primary_ceglany-6: #f9f0ec;
+$primary_ceglany-7: #fbf6f5;
+/* Secondary colors */
+$secondary_dark-ceglany: #921b02;
+/* Neutral colors */
+$neutral_white: #fff;
+$neutral_black: #000;
+$neutral_dark_grey: #757575;
+$neutral_mid_grey: #a7a8a9;
+/* Notifications */
+$notification_error: #d70006;
+$notification_warning: #aa6600;
+$notification_succes: #86a45b;
+$notification_info: #09599b;

@@ -1,0 +1,14 @@
+@import "src/assets/styles/variables.scss";
+
+.content {
+  background-color: $neutral_dark_grey;
+  box-sizing: border-box;
+  width: 90%;
+  height: 90%;
+  padding: 15px;
+  border-radius: 3%;
+}
+
+.container {
+  height: 90%;
+}

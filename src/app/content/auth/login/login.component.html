@@ -1,20 +1,22 @@
 <ng-container *ngIf="data$ | async as data">
-  <div class="auth-page">
-    <div class="container page">
-      <div class="row">
-        <div class="col-md-6 offset-md-3 col-xs-12">
-          <h1 class="text-xs-center">Sign In</h1>
-          <p class="text-xs-center">
-            <a routerLink="/register">Need an account?</a>
-          </p>
-          <form class="example-form" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="container h-100 d-flex justify-content-center">
+    <div class="row align-items-center">
+      <div class="col">
+        <h1 class="text-center">Sign In</h1>
+        <p class="text-center">
+          <a routerLink="/register">Need an account?</a>
+        </p>
+        <form class="container" [formGroup]="form" (ngSubmit)="onSubmit()">
+          <div class="row">
             <app-input formControlName="email" type="email" placeholder="Email"></app-input>
+          </div>
+          <div class="row">
             <app-input type="password" placeholder="Password" formControlName="password"></app-input>
-            <button [disabled]="data.isSubmitting$" type="submit" class="btn btn-lg btn-primary pull-xs-right">
-              Sign In
-            </button>
-          </form>
-        </div>
+          </div>
+          <div class="row">
+            <button [disabled]="data.isSubmitting$" type="submit" class="btn btn-lg btn-primary">Sign In</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>

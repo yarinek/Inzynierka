@@ -1,0 +1,15 @@
+.app-icon {
+  color: $primary_ceglany-1;
+}
+
+.d-flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.clickable {
+  &:hover {
+    cursor: pointer;
+  }
+}
