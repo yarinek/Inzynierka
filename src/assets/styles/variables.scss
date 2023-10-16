@@ -13,22 +13,27 @@ $white_bg: #ffffff;
 /* Lines */
 $lines: #dddddd;
 /* Primary colors */
-$primary_ceglany-1: #b43c23;
-$primary_ceglany-2: #d29082;
-$primary_ceglany-3: #e5beb5;
-$primary_ceglany-4: #efd7d2;
-$primary_ceglany-5: #f5e5e3;
-$primary_ceglany-6: #f9f0ec;
-$primary_ceglany-7: #fbf6f5;
+$primary_green-6: #e8f5e9;
+$primary_green-5: #c8e6c9;
+$primary_green-4: #a5d6a7;
+$primary_green-3: #81c784;
+$primary_green-2: #66bb6a;
+$primary_green-1: #4caf50;
+
 /* Secondary colors */
-$secondary_dark-ceglany: #921b02;
+$secondary_dark: #263238;
+
 /* Neutral colors */
+$neutral_black: #263238;
+$neutral_dark_grey: #4d4d4d;
+$neutral_mid_grey: #717171;
+$neutral_light_grey: #89939e;
+$neutral_grey_blue: #abbed1;
+$neutral_silver: #f5f7fa;
 $neutral_white: #fff;
-$neutral_black: #000;
-$neutral_dark_grey: #757575;
-$neutral_mid_grey: #a7a8a9;
+
 /* Notifications */
-$notification_error: #d70006;
-$notification_warning: #aa6600;
-$notification_succes: #86a45b;
-$notification_info: #09599b;
+$notification_error: #e53835;
+$notification_warning: #fbc02d;
+$notification_succes: #2e7d31;
+$notification_info: #2194f3;

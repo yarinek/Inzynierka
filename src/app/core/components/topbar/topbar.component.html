@@ -1,13 +1,15 @@
-<div class="container mw-100 d-flex topbar">
-  <div class="row w-100 d-flex justify-content-center align-items-center">
-    <div class="col-3">Logo</div>
-    <div class="col-5"></div>
-    <div class="col-4">
-      <div class="row h-100 d-flex-center">
-        <div [routerLink]="'/settings'" class="col d-flex-center clickable">
-          <mat-icon class="app-icon" aria-label="Settings icon" fontIcon="settings"></mat-icon>
-        </div>
+<mat-toolbar color="primary" class="toolbar">
+  <mat-toolbar-row>
+    <div class="row w-100">
+      <div class="col-9">
+        <span>My App</span>
+        <span class="example-spacer"></span>
+      </div>
+      <div class="col-3 d-flex justify-content-end">
+        <button [routerLink]="'/settings'" mat-icon-button>
+          <mat-icon color="secondary">settings</mat-icon>
+        </button>
       </div>
     </div>
-  </div>
-</div>
+  </mat-toolbar-row>
+</mat-toolbar>

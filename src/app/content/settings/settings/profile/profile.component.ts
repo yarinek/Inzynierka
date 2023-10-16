@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
 import { filter } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AccountUpdate } from 'src/http-client';
@@ -11,7 +12,7 @@ import { settingsActions } from '../../store/actions';
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MatButtonModule],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
 })

@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { InputComponent } from '@app/shared/components/input/input.component';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-update-account',
   standalone: true,
-  imports: [CommonModule, InputComponent, ReactiveFormsModule],
+  imports: [CommonModule, InputComponent, ReactiveFormsModule, MatButtonModule],
   templateUrl: './update-account.component.html',
   styleUrls: ['./update-account.component.scss'],
 })

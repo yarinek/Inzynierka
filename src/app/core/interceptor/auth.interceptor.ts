@@ -4,10 +4,19 @@ import { HttpHandlerFn, HttpInterceptorFn, HttpRequest } from '@angular/common/h
 
 export const authorizationInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, next: HttpHandlerFn) => {
   const token = localStorage.getItem('accessToken');
-  const clonedRequest = req.clone({
+  let clonedRequest = req.clone({
     setHeaders: {
-      Authorization: token ? `Token ${token}` : '',
+      'Access-Control-Allow-Origin': '*',
     },
   });
+  if (token) {
+    clonedRequest = req.clone({
+      setHeaders: {
+        Authorization: token ? `Token ${token}` : '',
+        'Access-Control-Allow-Origin': '*',
+      },
+    });
+  }
+
   return next(clonedRequest);
 };
