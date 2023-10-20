@@ -21,6 +21,15 @@ const settingsFeature = createFeature({
       ...state,
       isSubmitting: false,
     })),
+    on(settingsActions.resetpassword, (state) => ({ ...state, isSubmitting: true })),
+    on(settingsActions.resetpasswordSuccess, (state) => ({
+      ...state,
+      isSubmitting: false,
+    })),
+    on(settingsActions.resetpasswordFailure, (state) => ({
+      ...state,
+      isSubmitting: false,
+    })),
     on(routerNavigationAction, (state) => ({ ...state })),
   ),
 });

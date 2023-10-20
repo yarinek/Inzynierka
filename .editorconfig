@@ -7,13 +7,17 @@ indent_style = space
 indent_size = 2
 insert_final_newline = true
 trim_trailing_whitespace = true
-end_of_line = LF
+end_of_line = lf
 eol = lf
 max_line_length = 120
 
 [*.ts]
+end_of_line = lf
+eol = lf
 quote_type = single
 
 [*.md]
+end_of_line = lf
+eol = lf
 max_line_length = off
 trim_trailing_whitespace = false

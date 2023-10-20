@@ -1,13 +1,15 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { routerNavigationAction } from '@ngrx/router-store';
+import jwtDecode from 'jwt-decode';
 
-import { AuthStateInterface } from '../auth.types';
+import { AuthStateInterface, DecodedToken } from '../auth.types';
 import { authActions } from './actions';
 
 const initialState: AuthStateInterface = {
   isSubmitting: false,
   isLoading: false,
-  currentUser: undefined,
+  token: undefined,
+  decodedToken: undefined,
 };
 
 const authFeature = createFeature({
@@ -15,9 +17,11 @@ const authFeature = createFeature({
   reducer: createReducer(
     initialState,
     on(authActions.register, (state) => ({ ...state, isSubmitting: true })),
-    on(authActions.registerSuccess, (state) => ({
+    on(authActions.registerSuccess, (state, action) => ({
       ...state,
       isSubmitting: false,
+      token: action.token,
+      decodedToken: getDecodedToken(action.token),
     })),
     on(authActions.registerFailure, (state) => ({
       ...state,
@@ -27,31 +31,46 @@ const authFeature = createFeature({
     on(authActions.loginSuccess, (state, action) => ({
       ...state,
       isSubmitting: false,
-      currentUser: action.currentUser,
+      token: action.token,
+      decodedToken: getDecodedToken(action.token),
     })),
     on(authActions.loginFailure, (state) => ({
       ...state,
       isSubmitting: false,
     })),
-    on(authActions.getCurrentUser, (state) => ({ ...state, isLoading: true })),
-    on(authActions.getCurrentUserSuccess, (state, action) => ({
+    on(authActions.getToken, (state) => ({ ...state, isLoading: true })),
+    on(authActions.getTokenSuccess, (state, action) => ({
       ...state,
       isLoading: false,
-      currentUser: action.currentUser,
+      token: action.token,
+      decodedToken: getDecodedToken(action.token),
     })),
-    on(authActions.getCurrentUserFailure, (state) => ({
+    on(authActions.getTokenFailure, (state) => ({
       ...state,
       isLoading: false,
-      currentUser: null,
+      token: null,
+      decodedToken: null,
     })),
+    on(authActions.logout, (state) => ({ ...state })),
+    on(authActions.logoutSuccess, (state) => ({
+      ...state,
+      token: null,
+      decodedToken: null,
+    })),
+    on(authActions.logoutFailure, (state) => ({ ...state })),
     on(routerNavigationAction, (state) => ({ ...state })),
   ),
 });
+
+function getDecodedToken(token: string): DecodedToken {
+  return jwtDecode(token);
+}
 
 export const {
   name: authFeatureKey,
   reducer: authReducer,
   selectIsSubmitting,
   selectIsLoading,
-  selectCurrentUser,
+  selectToken,
+  selectDecodedToken,
 } = authFeature;

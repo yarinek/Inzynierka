@@ -1,7 +1,7 @@
-@import "assets/styles/variables.scss";
 @import "assets/styles/mixins.scss";
 @import "assets/styles/utils.scss";
 @import "@angular/material/theming";
+@import "assets/styles/_variables.scss";
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
@@ -62,4 +62,35 @@ body {
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+$notification_error: #e53835;
+$notification_warning: #fbc02d;
+$notification_succes: #2e7d31 !default;
+$notification_info: #2194f3;
+
+// Toastr colors
+.mat-mdc-snack-bar-container {
+  &.toast-success {
+    --mdc-snackbar-container-color: #2e7d31;
+    --mat-mdc-snack-bar-button-color: #fff;
+    --mdc-snackbar-supporting-text-color: #fff;
+  }
+
+  &.toast-error {
+    --mdc-snackbar-container-color: #e53835;
+    --mat-mdc-snack-bar-button-color: #fff;
+    --mdc-snackbar-supporting-text-color: #fff;
+  }
+
+  &.toast-warn {
+    --mdc-snackbar-container-color: #fbc02d;
+    --mat-mdc-snack-bar-button-color: #000;
+    --mdc-snackbar-supporting-text-color: #000;
+  }
+  &.toast-info {
+    --mdc-snackbar-container-color: #2194f3;
+    --mat-mdc-snack-bar-button-color: #fff;
+    --mdc-snackbar-supporting-text-color: #fff;
+  }
 }

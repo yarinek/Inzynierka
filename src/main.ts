@@ -17,6 +17,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { exampleFeatureKey, exampleReducer } from '@app/content/example-view/store/reducers';
 import { settingsFeatureKey, settingsReducer } from '@app/content/settings/store/reducers';
 import * as settingsEffects from '@app/content/settings/store/effects';
+import { MatSnackBarModule, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
+import { ToastrService } from '@app/core/services/toast.service';
 
 import { AppComponent } from './app/app.component';
 
@@ -24,7 +26,7 @@ function initializeAppFactory(): () => void {
   const token = localStorage.getItem('accessToken');
   if (token) {
     const store = inject(Store);
-    return () => store.dispatch(authActions.getCurrentUser());
+    return () => store.dispatch(authActions.getToken());
   }
   return () => void 0;
 }
@@ -49,6 +51,8 @@ bootstrapApplication(AppComponent, {
       traceLimit: 75,
     }),
     { provide: APP_INITIALIZER, useFactory: initializeAppFactory, deps: [], multi: true },
-    importProvidersFrom(BrowserAnimationsModule, MatDialogModule),
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2000 } },
+    ToastrService,
+    importProvidersFrom(BrowserAnimationsModule, MatDialogModule, MatSnackBarModule),
   ],
 });

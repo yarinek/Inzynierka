@@ -1,10 +1,10 @@
-<h1 mat-dialog-title>Potwierdzenie</h1>
+<h2 mat-dialog-title>Potwierdzenie</h2>
 
 <div mat-dialog-content>
   <p>Czy na pewno chcesz wykonać tę akcję?</p>
 </div>
 
-<div mat-dialog-actions>
-  <button mat-button (click)="onDismiss()">No</button>
+<div mat-dialog-actions align="center">
+  <button mat-raised-button color="primary" (click)="onDismiss()">No</button>
   <button mat-raised-button color="primary" (click)="onConfirm()">Yes</button>
 </div>

@@ -3,41 +3,48 @@ import { createEffect, Actions, ofType } from '@ngrx/effects';
 import { catchError, map, of, switchMap, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { LoaderService } from '@app/shared/components/loader/loader.service';
-import { AccountsService, AuthenticationService } from 'src/http-client';
+import {
+  AccountRegistrationResult,
+  AccountsService,
+  AuthenticationResult,
+  AuthenticationService,
+} from 'src/http-client';
+import { finalize } from 'rxjs/internal/operators/finalize';
 
-import { CurrentUserInterface } from './../../../shared/types/currentUser.interface';
 import { authActions } from './actions';
 
-/* export const getCurrentUserEffect = createEffect(
-  (actions$ = inject(Actions), authService = inject(AuthService)) => {
+export const getTokenEffect = createEffect(
+  (actions$ = inject(Actions)) => {
     return actions$.pipe(
-      ofType(authActions.getCurrentUser),
-      switchMap(() => {
+      ofType(authActions.getToken),
+      map(() => {
         const token = localStorage.getItem('accessToken');
-
-        if (!token) {
-          return of(authActions.getCurrentUserFailure());
+        if (token) {
+          return authActions.getTokenSuccess({ token });
         }
-        return authService.getCurrentUser().pipe(
-          map((currentUser: CurrentUserInterface) => {
-            return authActions.getCurrentUserSuccess({ currentUser });
-          }),
-          catchError(() => of(authActions.getCurrentUserFailure())),
-        );
+        return authActions.getTokenFailure();
       }),
     );
   },
   { functional: true },
-); */
+);
 
 export const registerEffect = createEffect(
   (actions$ = inject(Actions), accountService = inject(AccountsService)) => {
     return actions$.pipe(
       ofType(authActions.register),
+      tap(() => LoaderService.showLoader()),
       switchMap(({ request }) => {
         return accountService.registerNewAccount(request).pipe(
-          tap(() => authActions.registerSuccess()),
-          catchError(() => of(authActions.registerFailure())),
+          map(({ token }: AccountRegistrationResult) => {
+            const jwtToken = (token as string).replace('Bearer ', '');
+            setToken(jwtToken);
+            return authActions.registerSuccess({ token: jwtToken });
+          }),
+          catchError(() => {
+            return of(authActions.registerFailure());
+          }),
+          finalize(() => LoaderService.hideLoader()),
         );
       }),
     );
@@ -66,16 +73,16 @@ export const loginEffect = createEffect(
       ofType(authActions.login),
       tap(() => LoaderService.showLoader()),
       switchMap(({ request }) =>
-        authService.login({ ...request }).pipe(
-          map((currentUser: CurrentUserInterface) => {
-            localStorage.setItem('accessToken', currentUser.token);
-            LoaderService.hideLoader();
-            return authActions.loginSuccess({ currentUser });
+        authService.login(request).pipe(
+          map(({ token }: AuthenticationResult) => {
+            const jwtToken = (token as string).replace('Bearer ', '');
+            setToken(jwtToken);
+            return authActions.loginSuccess({ token: jwtToken });
           }),
           catchError(() => {
-            LoaderService.hideLoader();
             return of(authActions.loginFailure());
           }),
+          finalize(() => LoaderService.hideLoader()),
         ),
       ),
     );
@@ -97,3 +104,36 @@ export const redirectAfterLoginEffect = createEffect(
     dispatch: false,
   },
 );
+export const redirectAfterLogoutEffect = createEffect(
+  (actions$ = inject(Actions), router = inject(Router)) => {
+    return actions$.pipe(
+      ofType(authActions.logoutSuccess),
+      tap((): void => {
+        void router.navigateByUrl('/login');
+      }),
+    );
+  },
+  {
+    functional: true,
+    dispatch: false,
+  },
+);
+
+export const logoutEffect = createEffect(
+  (actions$ = inject(Actions)) => {
+    return actions$.pipe(
+      ofType(authActions.logout),
+      tap(() => LoaderService.showLoader()),
+      map(() => {
+        localStorage.removeItem('accessToken');
+        return authActions.logoutSuccess();
+      }),
+      tap(() => LoaderService.hideLoader()),
+    );
+  },
+  { functional: true },
+);
+
+function setToken(token: string): void {
+  localStorage.setItem('accessToken', token);
+}

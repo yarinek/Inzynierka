@@ -26,7 +26,9 @@ export class ConfirmationDialogService {
    * @returns
    */
   withConfirmation<T>(source: Observable<T>): Observable<T> {
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent);
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      autoFocus: false,
+    });
 
     return dialogRef.afterClosed().pipe(
       filter((r) => !!r),

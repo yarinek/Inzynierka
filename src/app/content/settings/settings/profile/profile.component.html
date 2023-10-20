@@ -1,16 +1,21 @@
-<div class="container">
-  <div class="row">
-    <h2>Profile</h2>
-  </div>
-  <div class="row">
-    <div class="col-2">Username:</div>
-    <div class="col-10">testUsername</div>
-  </div>
-  <div class="row d-flex-center">
-    <div class="col-2">Email:</div>
-    <div class="col-8">testEmail</div>
-    <div class="col-2">
-      <button mat-raised-button color="primary" (click)="openModal()">Change</button>
+<ng-container *ngIf="data$ | async as data">
+  <div class="container">
+    <div class="row">
+      <h2>Profile</h2>
+    </div>
+    <div class="row">
+      <div class="col-2">Username:</div>
+      <div class="col-10">{{ data.decodedToken$?.sub }}</div>
+    </div>
+    <div class="row d-flex-center">
+      <div class="col-2">Email:</div>
+      <div class="col-10">{{ data.decodedToken$?.email }}</div>
+    </div>
+    <div class="row mt-5">
+      <button class="w-25" mat-raised-button color="primary" (click)="changeEmailModal()">Change email</button>
+    </div>
+    <div class="row mt-1">
+      <button class="w-25" mat-raised-button color="primary" (click)="resetPassword()">Reset password</button>
     </div>
   </div>
-</div>
+</ng-container>
