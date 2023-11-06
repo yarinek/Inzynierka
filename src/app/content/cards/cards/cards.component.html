@@ -1,0 +1,13 @@
+<div class="container">
+  <div class="row w-25">
+    <!-- <button mat-raised-button color="primary" class="m-1" (click)="createCard()">Create deck</button> -->
+  </div>
+  <ng-container *ngIf="data$ | async as data">
+    <app-table
+      [dataSource]="data.dataSource"
+      [displayedColumns]="displayedColumns"
+      [tableConfig]="tableConfig"
+      (changePagination)="getCards($event)"
+    ></app-table>
+  </ng-container>
+</div>

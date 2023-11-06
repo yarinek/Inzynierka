@@ -1,0 +1,13 @@
+<div class="tp-wrapper">
+  <div class="tp-box" (click)="toggleFlip()" [@flipState]="flip">
+    <div class="tp-box__side tp-box__front d-flex justify-content-center align-items-center">Front</div>
+    <div class="tp-box__side tp-box__back d-flex justify-content-center align-items-center">Back</div>
+  </div>
+  <div class="tp-box__answer">
+    <button mat-raised-button color="primary" class="m-1" (click)="answer('WRONG')">Wrong</button>
+    <button mat-raised-button color="primary" class="m-1" (click)="answer('HARD')">Hard</button>
+    <button mat-raised-button color="primary" class="m-1" (click)="answer('GOOD')">Good</button>
+    <button mat-raised-button color="primary" class="m-1" (click)="answer('EASY')">Easy</button>
+    <button mat-raised-button color="primary" class="m-1" (click)="answer('SUSPEND')">Suspend</button>
+  </div>
+</div>

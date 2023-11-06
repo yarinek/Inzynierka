@@ -23,4 +23,14 @@ export const appRoutes: Route[] = [
     canActivate: [canActivateLoggedRoutesFn],
     loadChildren: () => import('./content/settings/settings.routes').then((m) => m.settingsRoutes),
   },
+  {
+    path: 'decks',
+    canActivate: [canActivateLoggedRoutesFn],
+    loadChildren: () => import('./content/decks/decks.routes').then((m) => m.decksRoutes),
+  },
+  {
+    path: 'cards',
+    canActivate: [canActivateLoggedRoutesFn],
+    loadChildren: () => import('./content/cards/cards.routes').then((m) => m.cardRoutes),
+  },
 ];

@@ -1,0 +1,23 @@
+<div class="container">
+  <h2 mat-dialog-title>Create Deck</h2>
+
+  <div mat-dialog-content>
+    <form class="container d-flex flex-column justify-content-center" [formGroup]="form">
+      <div class="row">
+        <app-input formControlName="name" placeholder="Deck name"></app-input>
+      </div>
+      <div class="row">
+        <app-input formControlName="language" placeholder="Language"></app-input>
+      </div>
+    </form>
+  </div>
+
+  <div mat-dialog-actions>
+    <div class="d-flex-center">
+      <button mat-raised-button color="primary" class="m-1" (click)="onDismiss()">Close</button>
+      <button [disabled]="form.invalid" mat-raised-button color="primary" class="m-1" (click)="onConfirm()">
+        Create deck
+      </button>
+    </div>
+  </div>
+</div>

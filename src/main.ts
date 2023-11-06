@@ -17,8 +17,12 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { exampleFeatureKey, exampleReducer } from '@app/content/example-view/store/reducers';
 import { settingsFeatureKey, settingsReducer } from '@app/content/settings/store/reducers';
 import * as settingsEffects from '@app/content/settings/store/effects';
+import * as decksEffects from '@app/content/decks/store/effects';
+import * as cardsEffects from '@app/content/cards/store/effects';
 import { MatSnackBarModule, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { ToastrService } from '@app/core/services/toast.service';
+import { decksFeatureKey, decksReducer } from '@app/content/decks/store/reducers';
+import { cardsFeatureKey, cardsReducer } from '@app/content/cards/store/reducers';
 
 import { AppComponent } from './app/app.component';
 
@@ -37,10 +41,12 @@ bootstrapApplication(AppComponent, {
     provideHttpClient(withInterceptors([authorizationInterceptor])),
     provideRouter(appRoutes),
     provideStore({ router: routerReducer }),
-    provideEffects(authEffects, exampleEffects, settingsEffects),
+    provideEffects(authEffects, exampleEffects, settingsEffects, decksEffects, cardsEffects),
     provideState(authFeatureKey, authReducer),
     provideState(exampleFeatureKey, exampleReducer),
     provideState(settingsFeatureKey, settingsReducer),
+    provideState(decksFeatureKey, decksReducer),
+    provideState(cardsFeatureKey, cardsReducer),
     provideRouterStore(),
     // Devtools configuration
     provideStoreDevtools({
