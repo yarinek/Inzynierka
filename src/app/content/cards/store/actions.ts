@@ -7,8 +7,11 @@ export const cardsActions = createActionGroup({
     getCards: props<{ deckId: string; pageIndex: number; pageSize: number }>(),
     'getCards Success': props<{ dataSource: Card[] }>(),
     'getCards Failure': emptyProps(),
-    createCard: props<{ decksCreateRequest: CardCreateRequest }>(),
+    createCard: props<{ deckId: string; decksCreateRequest: CardCreateRequest }>(),
     'createCard Success': emptyProps(),
     'createCard Failure': emptyProps(),
+    getCard: props<{ deckId: string; cardId: string }>(),
+    'getCard Success': props<{ card: Card }>(),
+    'getCard Failure': emptyProps(),
   },
 });

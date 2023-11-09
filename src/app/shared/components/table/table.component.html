@@ -3,7 +3,34 @@
     <ng-container *ngFor="let tableColumn of tableConfig">
       <ng-container [matColumnDef]="tableColumn.value">
         <th mat-header-cell *matHeaderCellDef>{{ tableColumn.name }}</th>
-        <td mat-cell *matCellDef="let element">{{ element[tableColumn.value] }}</td>
+        <td mat-cell *matCellDef="let row">
+          <ng-container [ngSwitch]="tableColumn.type">
+            <ng-container *ngSwitchCase="'ACTIONS'">
+              <ng-container *ngFor="let button of tableColumn.actions">
+                <button mat-raised-button color="primary" class="m-1" (click)="button.action(row)">
+                  {{ button.name }}
+                </button>
+              </ng-container>
+            </ng-container>
+            <ng-container *ngSwitchDefault>
+              {{ displayNestedObject(row, tableColumn.value) }}
+            </ng-container>
+          </ng-container>
+        </td>
+        <!-- <ng-container *ngSwitch="tableColumn.type">
+          <ng-container *ngSwitchCase="'ACTIONS'">
+            <td mat-cell *matCellDef="let row">
+              <ng-container *ngFor="let button of row.actions">
+                <button mat-raised-button color="primary" class="m-1" (click)="(button.action)">
+                  {{ button.name }}
+                </button>
+              </ng-container>
+            </td>
+          </ng-container>
+          <ng-container *ngSwitchDefault>
+            <td mat-cell *matCellDef="let row">{{ displayNestedObject(row, tableColumn.value) }}</td>
+          </ng-container>
+        </ng-container> -->
       </ng-container>
     </ng-container>
 
@@ -15,7 +42,7 @@
     [pageSizeOptions]="[5, 10, 20]"
     (page)="onChangePage($event)"
     showFirstLastButtons
-    aria-label="Select page of periodic elements"
+    aria-label="Select page of periodic rows"
   >
   </mat-paginator>
 </div>

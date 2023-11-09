@@ -1,4 +1,5 @@
 import { inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { LoaderService } from '@app/shared/components/loader/loader.service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, finalize, map, of, switchMap, tap } from 'rxjs';
@@ -25,16 +26,38 @@ export const getCardsEffect = createEffect(
   { functional: true },
 );
 
-/* export const createDeckEffect = createEffect(
-  (actions$ = inject(Actions), decksService = inject(DecksService)) => {
+export const getCardEffect = createEffect(
+  (actions$ = inject(Actions), cardsService = inject(CardsService), router = inject(Router)) => {
     return actions$.pipe(
-      ofType(decksActions.createdeck),
+      ofType(cardsActions.getcard),
       tap(() => LoaderService.showLoader()),
-      switchMap(({ decksCreateRequest }) =>
-        decksService.createDeck(decksCreateRequest).pipe(
-          map(() => decksActions.createdeckSuccess()),
+      switchMap(({ deckId, cardId }) =>
+        cardsService.getCard(deckId, cardId).pipe(
+          map((card) => cardsActions.getcardSuccess({ card })),
           catchError(() => {
-            return of(decksActions.createdeckFailure());
+            return of(cardsActions.getcardFailure());
+          }),
+          finalize(() => {
+            LoaderService.hideLoader();
+            void router.navigate(['/cards/preview']);
+          }),
+        ),
+      ),
+    );
+  },
+  { functional: true },
+);
+
+export const createCardEffect = createEffect(
+  (actions$ = inject(Actions), cardsService = inject(CardsService)) => {
+    return actions$.pipe(
+      ofType(cardsActions.createcard),
+      tap(() => LoaderService.showLoader()),
+      switchMap(({ deckId, decksCreateRequest }) =>
+        cardsService.createCard(deckId, decksCreateRequest).pipe(
+          map(() => cardsActions.createcardSuccess()),
+          catchError(() => {
+            return of(cardsActions.createcardFailure());
           }),
           finalize(() => LoaderService.hideLoader()),
         ),
@@ -42,4 +65,4 @@ export const getCardsEffect = createEffect(
     );
   },
   { functional: true },
-); */
+);

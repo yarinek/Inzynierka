@@ -1,13 +1,15 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { routerNavigationAction } from '@ngrx/router-store';
-import { DeckSearchResult } from 'src/http-client';
+import { Card } from 'src/http-client';
 
 import { cardsActions } from './actions';
 
 const initialState: {
-  dataSource: DeckSearchResult[];
+  dataSource: Card[];
+  previewCard: Card | null;
 } = {
   dataSource: [],
+  previewCard: null,
 };
 
 const decksFeature = createFeature({
@@ -22,8 +24,16 @@ const decksFeature = createFeature({
     on(cardsActions.getcardsFailure, (state) => ({
       ...state,
     })),
+    on(cardsActions.getcard, (state) => ({ ...state })),
+    on(cardsActions.getcardSuccess, (state, action) => ({
+      ...state,
+      previewCard: action.card,
+    })),
+    on(cardsActions.getcardFailure, (state) => ({
+      ...state,
+    })),
     on(routerNavigationAction, (state) => ({ ...state })),
   ),
 });
 
-export const { name: cardsFeatureKey, reducer: cardsReducer, selectDataSource } = decksFeature;
+export const { name: cardsFeatureKey, reducer: cardsReducer, selectDataSource, selectPreviewCard } = decksFeature;

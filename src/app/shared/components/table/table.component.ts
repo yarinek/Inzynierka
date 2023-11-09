@@ -37,4 +37,15 @@ export class TableComponent<T> implements OnInit, AfterViewInit {
   onChangePage(event: { pageIndex: number; pageSize: number }): void {
     this.changePagination.emit(event);
   }
+
+  protected displayNestedObject(element: T, path: string): T {
+    const pathArray = path.split('.');
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let value: any = element;
+    for (const pathItem of pathArray) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+      value = value[pathItem];
+    }
+    return value as T;
+  }
 }

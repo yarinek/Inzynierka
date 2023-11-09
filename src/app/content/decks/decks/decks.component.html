@@ -1,7 +1,9 @@
 <div class="container">
   <div class="row w-25">
     <button mat-raised-button color="primary" class="m-1" (click)="createDeck()">Create deck</button>
-    <button mat-raised-button color="primary" class="m-1" (click)="setActiveDeck('1')">SetActiveDeck</button>
+    <button mat-raised-button color="primary" class="m-1" (click)="setActiveDeck('654cdb99346be77fcc5c218a')">
+      SetActiveDeck
+    </button>
   </div>
   <ng-container *ngIf="data$ | async as data">
     <app-table

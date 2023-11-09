@@ -1,8 +1,13 @@
-import { Component } from '@angular/core';
+import { combineLatest, map } from 'rxjs';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { CardReviewAnswer } from 'src/http-client';
 import { MatButtonModule } from '@angular/material/button';
+import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+
+import { selectPreviewCard } from '../store/reducers';
 
 @Component({
   selector: 'app-card',
@@ -30,7 +35,19 @@ import { MatButtonModule } from '@angular/material/button';
   ],
 })
 export class CardComponent {
+  router = inject(Router);
+  store = inject(Store);
   flip = 'inactive';
+
+  data$ = combineLatest({
+    card: this.store
+      .select(selectPreviewCard)
+      .pipe(map((card) => ({ ...card, front: card?.front![0], back: card?.back![0] }))),
+  });
+
+  get isPreview(): boolean {
+    return this.router.url.includes('preview');
+  }
 
   toggleFlip(): void {
     this.flip = this.flip == 'inactive' ? 'active' : 'inactive';
@@ -38,5 +55,9 @@ export class CardComponent {
 
   answer(answer: CardReviewAnswer): void {
     console.log(answer);
+  }
+
+  backToDeck(): void {
+    void this.router.navigate(['/cards']);
   }
 }
