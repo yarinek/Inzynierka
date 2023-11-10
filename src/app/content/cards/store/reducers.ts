@@ -6,9 +6,11 @@ import { cardsActions } from './actions';
 
 const initialState: {
   dataSource: Card[];
+  totalElements: number;
   previewCard: Card | null;
 } = {
   dataSource: [],
+  totalElements: 0,
   previewCard: null,
 };
 
@@ -20,6 +22,7 @@ const decksFeature = createFeature({
     on(cardsActions.getcardsSuccess, (state, action) => ({
       ...state,
       dataSource: action.dataSource,
+      totalElements: action.totalElements,
     })),
     on(cardsActions.getcardsFailure, (state) => ({
       ...state,
@@ -32,8 +35,33 @@ const decksFeature = createFeature({
     on(cardsActions.getcardFailure, (state) => ({
       ...state,
     })),
+    on(cardsActions.createcardSuccess, (state, action) => ({ ...state, previewCard: action.card })),
+    on(cardsActions.submitanswer, (state) => ({ ...state })),
+    on(cardsActions.submitanswerSuccess, (state, action) => ({
+      ...state,
+      previewCard: action.card,
+    })),
+    on(cardsActions.submitanswerFailure, (state) => ({
+      ...state,
+      previewCard: null,
+    })),
+    on(cardsActions.startactivity, (state) => ({ ...state })),
+    on(cardsActions.startactivitySuccess, (state, action) => ({
+      ...state,
+      previewCard: action.card,
+    })),
+    on(cardsActions.startactivityFailure, (state) => ({
+      ...state,
+      previewCard: null,
+    })),
     on(routerNavigationAction, (state) => ({ ...state })),
   ),
 });
 
-export const { name: cardsFeatureKey, reducer: cardsReducer, selectDataSource, selectPreviewCard } = decksFeature;
+export const {
+  name: cardsFeatureKey,
+  reducer: cardsReducer,
+  selectDataSource,
+  selectPreviewCard,
+  selectTotalElements,
+} = decksFeature;

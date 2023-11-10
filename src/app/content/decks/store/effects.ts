@@ -13,8 +13,10 @@ export const getDecksEffect = createEffect(
       ofType(decksActions.getdecks),
       tap(() => LoaderService.showLoader()),
       switchMap(({ pageIndex, pageSize }) =>
-        decksService.listDecks(pageSize, pageIndex * pageSize).pipe(
-          map(({ decks }: DecksPage) => decksActions.getdecksSuccess({ dataSource: decks ?? [] })),
+        decksService.listDecks(pageSize, pageIndex).pipe(
+          map(({ decks, total }: DecksPage) =>
+            decksActions.getdecksSuccess({ dataSource: decks ?? [], totalElements: total ?? 0 }),
+          ),
           catchError(() => {
             return of(decksActions.getdecksFailure());
           }),
@@ -33,13 +35,52 @@ export const createDeckEffect = createEffect(
       tap(() => LoaderService.showLoader()),
       switchMap(({ decksCreateRequest }) =>
         decksService.createDeck(decksCreateRequest).pipe(
-          map(() => decksActions.createdeckSuccess()),
+          map((deck) => decksActions.createdeckSuccess({ deckId: deck.id as string })),
           catchError(() => {
             return of(decksActions.createdeckFailure());
           }),
           finalize(() => LoaderService.hideLoader()),
         ),
       ),
+    );
+  },
+  { functional: true },
+);
+
+export const deleteDeckEffect = createEffect(
+  (actions$ = inject(Actions), decksService = inject(DecksService)) => {
+    return actions$.pipe(
+      ofType(decksActions.deletedeck),
+      tap(() => LoaderService.showLoader()),
+      switchMap(({ deckId }) =>
+        decksService.deleteDeck(deckId).pipe(
+          map(() => decksActions.deletedeckSuccess()),
+          catchError(() => {
+            return of(decksActions.deletedeckFailure());
+          }),
+          finalize(() => LoaderService.hideLoader()),
+        ),
+      ),
+    );
+  },
+  { functional: true },
+);
+
+export const refreshViewAfterDeleteDeck = createEffect(
+  (actions$ = inject(Actions)) => {
+    return actions$.pipe(
+      ofType(decksActions.deletedeckSuccess),
+      map(() => decksActions.getdecks({ pageIndex: 0, pageSize: 5 })),
+    );
+  },
+  { functional: true, dispatch: true },
+);
+
+export const navigateToCreatedDeckEffect = createEffect(
+  (actions$ = inject(Actions)) => {
+    return actions$.pipe(
+      ofType(decksActions.createdeckSuccess),
+      map(({ deckId }) => decksActions.setactivedeck({ deckId })),
     );
   },
   { functional: true },

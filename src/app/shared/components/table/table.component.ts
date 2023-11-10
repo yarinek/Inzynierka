@@ -17,6 +17,8 @@ export class TableComponent<T> implements OnInit, AfterViewInit {
     this._dataSource = new MatTableDataSource<T>(val);
   }
 
+  @Input() totalElements = 0;
+
   @Input() displayedColumns: string[] = [];
   @Input() tableConfig: TableConfig[] = [];
 

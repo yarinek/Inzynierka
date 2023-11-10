@@ -6,9 +6,11 @@ import { decksActions } from './actions';
 
 const initialState: {
   dataSource: DeckSearchResult[];
+  totalElements: number;
   activeDeckId: string;
 } = {
   activeDeckId: '',
+  totalElements: 0,
   dataSource: [],
 };
 
@@ -20,13 +22,21 @@ const decksFeature = createFeature({
     on(decksActions.getdecksSuccess, (state, action) => ({
       ...state,
       dataSource: action.dataSource,
+      totalElements: action.totalElements,
     })),
     on(decksActions.getdecksFailure, (state) => ({
       ...state,
     })),
+    on(decksActions.createdeckSuccess, (state, action) => ({ ...state, activeDeckId: action.deckId })),
     on(decksActions.setactivedeck, (state, action) => ({ ...state, activeDeckId: action.deckId })),
     on(routerNavigationAction, (state) => ({ ...state })),
   ),
 });
 
-export const { name: decksFeatureKey, reducer: decksReducer, selectDataSource, selectActiveDeckId } = decksFeature;
+export const {
+  name: decksFeatureKey,
+  reducer: decksReducer,
+  selectDataSource,
+  selectActiveDeckId,
+  selectTotalElements,
+} = decksFeature;

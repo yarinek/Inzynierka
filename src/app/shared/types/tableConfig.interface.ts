@@ -13,4 +13,5 @@ export interface TableColumnActions {
   name: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   action: (row: any) => void;
+  color?: string;
 }

@@ -1,15 +1,15 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DeckCreateRequest, DecksService } from 'src/http-client';
+import { Deck, DeckCreateRequest, DecksService } from 'src/http-client';
 import { Store } from '@ngrx/store';
 import { combineLatest, filter } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
-import { TableConfig } from '@app/shared/types/tableConfig.interface';
+import { TableColumnType, TableConfig } from '@app/shared/types/tableConfig.interface';
 import { TableComponent } from '@app/shared/components/table/table.component';
 
 import { decksActions } from '../store/actions';
-import { selectDataSource } from '../store/reducers';
+import { selectDataSource, selectTotalElements } from '../store/reducers';
 import { CreateDeckComponent } from './create-deck/create-deck.component';
 
 @Component({
@@ -23,15 +23,32 @@ export class DecksComponent implements OnInit {
   service = inject(DecksService);
   store = inject(Store);
   dialog = inject(MatDialog);
-  displayedColumns: string[] = ['name', 'language', 'waitingReviews'];
+  displayedColumns: string[] = ['name', 'language', 'waitingReviews', 'actions'];
   tableConfig: TableConfig[] = [
     { name: 'Name', value: 'name' },
     { name: 'Language', value: 'language' },
     { name: 'Waiting reviews', value: 'waitingReviews' },
+    {
+      name: 'Actions',
+      value: 'actions',
+      type: TableColumnType.ACTIONS,
+      actions: [
+        {
+          name: 'Preview',
+          action: (row: Deck): void => this.setActiveDeck(row.id as string),
+        },
+        {
+          name: 'Delete',
+          action: (row: Deck): void => this.store.dispatch(decksActions.deletedeck({ deckId: row.id as string })),
+          color: 'warn',
+        },
+      ],
+    },
   ];
 
   data$ = combineLatest({
     dataSource: this.store.select(selectDataSource),
+    totalElements: this.store.select(selectTotalElements),
   });
 
   ngOnInit(): void {

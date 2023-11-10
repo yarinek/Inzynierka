@@ -11,7 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 
 import { cardsActions } from '../store/actions';
-import { selectDataSource } from '../store/reducers';
+import { selectDataSource, selectTotalElements } from '../store/reducers';
 import { CreateCardsComponent } from './create-cards/create-cards.component';
 
 @Component({
@@ -51,6 +51,11 @@ export class CardsComponent implements OnInit {
           action: (row: Card): void =>
             this.store.dispatch(cardsActions.getcard({ deckId: this.deckId, cardId: row.id as string })),
         },
+        {
+          name: 'Delete',
+          action: (row: Card): void => this.store.dispatch(cardsActions.deletecard({ cardId: row.id as string })),
+          color: 'warn',
+        },
       ],
     },
   ];
@@ -63,6 +68,7 @@ export class CardsComponent implements OnInit {
     dataSource: this.store
       .select(selectDataSource)
       .pipe(map((cards) => cards.map((card) => ({ ...card, front: card?.front![0], back: card?.back![0] })))),
+    totalElements: this.store.select(selectTotalElements),
   });
 
   ngOnInit(): void {
@@ -92,5 +98,9 @@ export class CardsComponent implements OnInit {
       .subscribe((decksCreateRequest: CardCreateRequest) => {
         this.store.dispatch(cardsActions.createcard({ deckId: this.deckId, decksCreateRequest }));
       });
+  }
+
+  startActivity(): void {
+    this.store.dispatch(cardsActions.startactivity({ deckId: this.deckId }));
   }
 }

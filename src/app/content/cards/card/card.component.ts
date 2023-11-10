@@ -1,13 +1,15 @@
-import { combineLatest, map } from 'rxjs';
-import { Component, inject } from '@angular/core';
+import { combineLatest, firstValueFrom, map } from 'rxjs';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { CardReviewAnswer } from 'src/http-client';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { selectActiveDeckId } from '@app/content/decks/store/reducers';
+import { CardReviewAnswer } from 'src/http-client';
 
 import { selectPreviewCard } from '../store/reducers';
+import { cardsActions } from '../store/actions';
 
 @Component({
   selector: 'app-card',
@@ -34,7 +36,7 @@ import { selectPreviewCard } from '../store/reducers';
     ]),
   ],
 })
-export class CardComponent {
+export class CardComponent implements OnInit {
   router = inject(Router);
   store = inject(Store);
   flip = 'inactive';
@@ -43,18 +45,32 @@ export class CardComponent {
     card: this.store
       .select(selectPreviewCard)
       .pipe(map((card) => ({ ...card, front: card?.front![0], back: card?.back![0] }))),
+    activeDeckId: this.store.select(selectActiveDeckId),
   });
 
   get isPreview(): boolean {
     return this.router.url.includes('preview');
   }
 
+  ngOnInit(): void {
+    this.store.dispatch(cardsActions.redirectifnull());
+  }
+
   toggleFlip(): void {
     this.flip = this.flip == 'inactive' ? 'active' : 'inactive';
   }
 
-  answer(answer: CardReviewAnswer): void {
-    console.log(answer);
+  async answer(answer: CardReviewAnswer): Promise<void> {
+    const data = await firstValueFrom(this.data$);
+    const { card, activeDeckId } = data;
+    this.store.dispatch(
+      cardsActions.submitanswer({
+        deckId: activeDeckId,
+        cardId: card.id as string,
+        answer,
+      }),
+    );
+    this.flip = 'inactive';
   }
 
   backToDeck(): void {
