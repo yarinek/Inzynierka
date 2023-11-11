@@ -1,15 +1,15 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { routerNavigationAction } from '@ngrx/router-store';
-import { DeckSearchResult } from 'src/http-client';
+import { Deck, DeckSearchResult } from 'src/http-client';
 
 import { decksActions } from './actions';
 
 const initialState: {
   dataSource: DeckSearchResult[];
   totalElements: number;
-  activeDeckId: string;
+  activeDeck: Deck | null;
 } = {
-  activeDeckId: '',
+  activeDeck: null,
   totalElements: 0,
   dataSource: [],
 };
@@ -27,8 +27,8 @@ const decksFeature = createFeature({
     on(decksActions.getdecksFailure, (state) => ({
       ...state,
     })),
-    on(decksActions.createdeckSuccess, (state, action) => ({ ...state, activeDeckId: action.deckId })),
-    on(decksActions.setactivedeck, (state, action) => ({ ...state, activeDeckId: action.deckId })),
+    on(decksActions.createdeckSuccess, (state, action) => ({ ...state, activeDeck: action.deck })),
+    on(decksActions.setactivedeck, (state, action) => ({ ...state, activeDeck: action.deck })),
     on(routerNavigationAction, (state) => ({ ...state })),
   ),
 });
@@ -37,6 +37,6 @@ export const {
   name: decksFeatureKey,
   reducer: decksReducer,
   selectDataSource,
-  selectActiveDeckId,
+  selectActiveDeck,
   selectTotalElements,
 } = decksFeature;

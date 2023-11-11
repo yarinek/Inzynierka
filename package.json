@@ -8,7 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint",
-    "generate:api": "openapi-generator-cli generate -i ../../backend/src/main/api/api.yaml -g typescript-angular -o src/http-client"
+    "generate:api": "openapi-generator-cli generate -i ../backend/src/main/api/api.yaml -g typescript-angular -o src/http-client"
   },
   "private": true,
   "dependencies": {

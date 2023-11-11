@@ -1,5 +1,5 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { AccountUpdate, PasswordResetRequest, PasswordResetTokenRequest } from 'src/http-client';
+import { AccountUpdate } from 'src/http-client';
 
 export const settingsActions = createActionGroup({
   source: 'settings',
@@ -8,11 +8,11 @@ export const settingsActions = createActionGroup({
     'ChangeEmail Success': emptyProps(),
     'ChangeEmail Failure': emptyProps(),
 
-    ResetPassword: props<{ data: PasswordResetTokenRequest }>(),
+    ResetPassword: emptyProps(),
     'ResetPassword Success': emptyProps(),
     'ResetPassword Failure': emptyProps(),
 
-    VerifyPassword: props<{ request: PasswordResetRequest }>(),
+    VerifyPassword: props<{ token: string; newPassword: string }>(),
     'VerifyPassword Success': emptyProps(),
     'VerifyPassword Failure': emptyProps(),
   },

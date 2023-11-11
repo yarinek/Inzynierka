@@ -10,7 +10,7 @@
     [aria-label]="ariaLabel"
   >
     <mat-option [value]="null" *ngIf="!multi && uncheck">- odznacz -</mat-option>
-    <mat-option *ngFor="let arg of options" [value]="arg.key">{{ arg.value }}</mat-option>
+    <mat-option *ngFor="let arg of options" [value]="arg.value">{{ arg.label }}</mat-option>
   </mat-select>
   <mat-error
     *ngFor="let error of errorService.mapErrors(selectControl); let last = last"

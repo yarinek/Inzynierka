@@ -35,13 +35,42 @@ export const createDeckEffect = createEffect(
       tap(() => LoaderService.showLoader()),
       switchMap(({ decksCreateRequest }) =>
         decksService.createDeck(decksCreateRequest).pipe(
-          map((deck) => decksActions.createdeckSuccess({ deckId: deck.id as string })),
+          map((deck) => decksActions.createdeckSuccess({ deck })),
           catchError(() => {
             return of(decksActions.createdeckFailure());
           }),
           finalize(() => LoaderService.hideLoader()),
         ),
       ),
+    );
+  },
+  { functional: true },
+);
+
+export const editDeckEffect = createEffect(
+  (actions$ = inject(Actions), decksService = inject(DecksService)) => {
+    return actions$.pipe(
+      ofType(decksActions.editdeck),
+      tap(() => LoaderService.showLoader()),
+      switchMap(({ deckId, decksCreateRequest }) =>
+        decksService.updateDeck(deckId, decksCreateRequest).pipe(
+          map(() => decksActions.editdeckSuccess()),
+          catchError(() => {
+            return of(decksActions.editdeckFailure());
+          }),
+          finalize(() => LoaderService.hideLoader()),
+        ),
+      ),
+    );
+  },
+  { functional: true },
+);
+
+export const refreshViewAfterEditDeck = createEffect(
+  (actions$ = inject(Actions)) => {
+    return actions$.pipe(
+      ofType(decksActions.editdeckSuccess),
+      map(() => decksActions.getdecks({ pageIndex: 0, pageSize: 5 })),
     );
   },
   { functional: true },
@@ -80,7 +109,7 @@ export const navigateToCreatedDeckEffect = createEffect(
   (actions$ = inject(Actions)) => {
     return actions$.pipe(
       ofType(decksActions.createdeckSuccess),
-      map(({ deckId }) => decksActions.setactivedeck({ deckId })),
+      map(({ deck }) => decksActions.setactivedeck({ deck })),
     );
   },
   { functional: true },

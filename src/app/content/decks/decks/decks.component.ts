@@ -35,7 +35,11 @@ export class DecksComponent implements OnInit {
       actions: [
         {
           name: 'Preview',
-          action: (row: Deck): void => this.setActiveDeck(row.id as string),
+          action: (row: Deck): void => this.setActiveDeck(row),
+        },
+        {
+          name: 'Edit',
+          action: (row: Deck): void => this.editDeck(row.id as string, row.name as string, row.language as string),
         },
         {
           name: 'Delete',
@@ -73,7 +77,25 @@ export class DecksComponent implements OnInit {
       });
   }
 
-  setActiveDeck(deckId: string): void {
-    this.store.dispatch(decksActions.setactivedeck({ deckId }));
+  editDeck(deckId: string, name: string, language: string): void {
+    const dialogRef = this.dialog.open(CreateDeckComponent, {
+      width: '500px',
+      height: '300px',
+      data: {
+        name,
+        language,
+      },
+    });
+
+    dialogRef
+      .afterClosed()
+      .pipe(filter((r) => !!r))
+      .subscribe((decksCreateRequest: DeckCreateRequest) => {
+        this.store.dispatch(decksActions.editdeck({ deckId, decksCreateRequest }));
+      });
+  }
+
+  setActiveDeck(deck: Deck): void {
+    this.store.dispatch(decksActions.setactivedeck({ deck }));
   }
 }

@@ -1,7 +1,4 @@
 <div class="container">
-  <div class="row w-25">
-    <button mat-raised-button color="primary" class="m-1" (click)="createDeck()">Create deck</button>
-  </div>
   <ng-container *ngIf="data$ | async as data">
     <app-table
       [dataSource]="data.dataSource"
@@ -9,6 +6,12 @@
       [displayedColumns]="displayedColumns"
       [tableConfig]="tableConfig"
       (changePagination)="getDecks($event)"
-    ></app-table>
+    >
+      <div table-nav class="row m-1">
+        <div class="d-flex justify-content-end">
+          <button mat-raised-button color="primary" class="m-1" (click)="createDeck()">Create deck</button>
+        </div>
+      </div>
+    </app-table>
   </ng-container>
 </div>

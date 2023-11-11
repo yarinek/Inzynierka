@@ -1,15 +1,21 @@
-<div class="container">
-  <div class="row w-25">
-    <button mat-raised-button color="primary" class="m-1" (click)="createCard()">Create card</button>
-    <button mat-raised-button color="primary" class="m-1" (click)="startActivity()">Start activity</button>
-  </div>
-  <ng-container *ngIf="data$ | async as data">
+<ng-container *ngIf="data$ | async as data">
+  <div class="container">
+    <h2 class="w-25">{{ data.activeDeck?.name }}</h2>
+
     <app-table
       [dataSource]="data.dataSource"
       [totalElements]="data.totalElements"
       [displayedColumns]="displayedColumns"
       [tableConfig]="tableConfig"
       (changePagination)="getCards($event)"
-    ></app-table>
-  </ng-container>
-</div>
+    >
+      <div table-nav class="row m-1">
+        <div class="d-flex justify-content-end">
+          <button mat-raised-button color="primary" class="m-1" (click)="createCard()">Create card</button>
+          <button mat-raised-button color="primary" class="m-1" (click)="startActivity()">Start activity</button>
+          <button mat-raised-button color="warn" class="m-1" routerLink="/decks">Back</button>
+        </div>
+      </div>
+    </app-table>
+  </div>
+</ng-container>

@@ -60,7 +60,7 @@ export class SelectComponent implements OnInit, AfterViewInit {
     this.selectedOption.emit(value.value as string);
   }
 
-  public updateValue(value: { key: string; value: string; attribute?: string }): void {
+  public updateValue(value: { label: string; value: string; attribute?: string }): void {
     this.valueAccessor.valueChange(value);
     this.valueAccessor.touchedChange(true);
   }

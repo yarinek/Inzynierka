@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { combineLatest, filter, take } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { AccountUpdate, PasswordResetRequest } from 'src/http-client';
+import { AccountUpdate } from 'src/http-client';
 import { selectDecodedToken } from '@app/content/auth/store/reducers';
 
 import { UpdateAccountComponent } from '../../dialogs/update-account/update-account.component';
@@ -50,8 +50,10 @@ export class ProfileComponent {
         filter((r) => !!r),
         take(1),
       )
-      .subscribe((request: PasswordResetRequest) => {
-        this.store.dispatch(settingsActions.verifypassword({ request }));
+      .subscribe(({ token, newPassword }) => {
+        this.store.dispatch(
+          settingsActions.verifypassword({ token: token as string, newPassword: newPassword as string }),
+        );
       });
   }
 }

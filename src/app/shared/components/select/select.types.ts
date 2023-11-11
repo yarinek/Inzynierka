@@ -1,4 +1,4 @@
 export interface SelectOptionInterface {
-  key: string;
+  label: string;
   value: string;
 }

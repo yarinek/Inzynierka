@@ -1,22 +1,23 @@
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { selectActiveDeckId } from '@app/content/decks/store/reducers';
+import { selectActiveDeck } from '@app/content/decks/store/reducers';
 import { LoaderService } from '@app/shared/components/loader/loader.service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { catchError, filter, finalize, map, of, switchMap, tap, withLatestFrom } from 'rxjs';
+import { catchError, combineLatest, filter, finalize, map, of, switchMap, tap, withLatestFrom } from 'rxjs';
 import { Card, CardsPage, CardsService, ScheduleService } from 'src/http-client';
 
 import { cardsActions } from './actions';
 import { selectPreviewCard } from './reducers';
 
 export const getCardsEffect = createEffect(
-  (actions$ = inject(Actions), cardsService = inject(CardsService)) => {
+  (actions$ = inject(Actions), cardsService = inject(CardsService), store = inject(Store)) => {
     return actions$.pipe(
       ofType(cardsActions.getcards),
+      withLatestFrom(store.select(selectActiveDeck)),
       tap(() => LoaderService.showLoader()),
-      switchMap(({ deckId, pageIndex, pageSize }) =>
-        cardsService.listCards(deckId, pageSize, pageIndex).pipe(
+      switchMap(([{ pageIndex, pageSize }, deck]) =>
+        cardsService.listCards(String(deck?.id), pageSize, pageIndex).pipe(
           map(({ cards, total }: CardsPage) =>
             cardsActions.getcardsSuccess({ dataSource: cards ?? [], totalElements: total ?? 0 }),
           ),
@@ -31,13 +32,29 @@ export const getCardsEffect = createEffect(
   { functional: true },
 );
 
+export const redirectIfNoActiveDeckEffect = createEffect(
+  (actions$ = inject(Actions), router = inject(Router)) => {
+    return actions$.pipe(
+      ofType(cardsActions.getcardsFailure),
+      tap((): void => {
+        void router.navigateByUrl('/decks');
+      }),
+    );
+  },
+  {
+    functional: true,
+    dispatch: false,
+  },
+);
+
 export const getCardEffect = createEffect(
-  (actions$ = inject(Actions), cardsService = inject(CardsService), router = inject(Router)) => {
+  (actions$ = inject(Actions), cardsService = inject(CardsService), router = inject(Router), store = inject(Store)) => {
     return actions$.pipe(
       ofType(cardsActions.getcard),
+      withLatestFrom(store.select(selectActiveDeck)),
       tap(() => LoaderService.showLoader()),
-      switchMap(({ deckId, cardId }) =>
-        cardsService.getCard(deckId, cardId).pipe(
+      switchMap(([{ cardId }, deck]) =>
+        cardsService.getCard(deck?.id as string, cardId).pipe(
           map((card) => cardsActions.getcardSuccess({ card })),
           catchError(() => {
             return of(cardsActions.getcardFailure());
@@ -54,12 +71,13 @@ export const getCardEffect = createEffect(
 );
 
 export const submitAnswerEffect = createEffect(
-  (actions$ = inject(Actions), cardsService = inject(CardsService)) => {
+  (actions$ = inject(Actions), cardsService = inject(CardsService), store = inject(Store)) => {
     return actions$.pipe(
       ofType(cardsActions.submitanswer),
+      withLatestFrom(combineLatest([store.select(selectActiveDeck), store.select(selectPreviewCard)])),
       tap(() => LoaderService.showLoader()),
-      switchMap(({ deckId, cardId, answer }) =>
-        cardsService.submitAnswerForCard(deckId, cardId, { answer }).pipe(
+      switchMap(([{ answer }, [deck, card]]) =>
+        cardsService.submitAnswerForCard(deck?.id as string, card?.id as string, { answer }).pipe(
           map(({ cardToReview, total }) => {
             if (!total) {
               return cardsActions.submitanswerFailure();
@@ -80,12 +98,13 @@ export const submitAnswerEffect = createEffect(
 );
 
 export const startActivityEffect = createEffect(
-  (actions$ = inject(Actions), scheduleService = inject(ScheduleService)) => {
+  (actions$ = inject(Actions), scheduleService = inject(ScheduleService), store = inject(Store)) => {
     return actions$.pipe(
       ofType(cardsActions.startactivity),
+      withLatestFrom(store.select(selectActiveDeck)),
       tap(() => LoaderService.showLoader()),
-      switchMap(({ deckId }) =>
-        scheduleService.getScheduledCards(deckId).pipe(
+      switchMap(([, deck]) =>
+        scheduleService.getScheduledCards(deck?.id as string).pipe(
           map(({ cardToReview, total }) => {
             if (!total) {
               return cardsActions.startactivityFailure();
@@ -153,12 +172,13 @@ export const redirectIfNoActiveCardEffect = createEffect(
 );
 
 export const createCardEffect = createEffect(
-  (actions$ = inject(Actions), cardsService = inject(CardsService)) => {
+  (actions$ = inject(Actions), cardsService = inject(CardsService), store = inject(Store)) => {
     return actions$.pipe(
       ofType(cardsActions.createcard),
+      withLatestFrom(store.select(selectActiveDeck)),
       tap(() => LoaderService.showLoader()),
-      switchMap(({ deckId, decksCreateRequest }) =>
-        cardsService.createCard(deckId, decksCreateRequest).pipe(
+      switchMap(([{ cardCreateRequest }, deck]) =>
+        cardsService.createCard(deck?.id as string, cardCreateRequest).pipe(
           map((card) => cardsActions.createcardSuccess({ card })),
           catchError(() => {
             return of(cardsActions.createcardFailure());
@@ -181,14 +201,44 @@ export const redirectAfterCreateCard = createEffect(
   { functional: true, dispatch: false },
 );
 
+export const editCardEffect = createEffect(
+  (actions$ = inject(Actions), cardsService = inject(CardsService), store = inject(Store)) => {
+    return actions$.pipe(
+      ofType(cardsActions.editcard),
+      withLatestFrom(store.select(selectActiveDeck)),
+      tap(() => LoaderService.showLoader()),
+      switchMap(([{ cardId, cardUpdateRequest }, deck]) =>
+        cardsService.patchCard(deck?.id as string, cardId, cardUpdateRequest).pipe(
+          map(() => cardsActions.editcardSuccess()),
+          catchError(() => {
+            return of(cardsActions.editcardFailure());
+          }),
+          finalize(() => LoaderService.hideLoader()),
+        ),
+      ),
+    );
+  },
+  { functional: true },
+);
+
+export const refreshViewAfterEditDeck = createEffect(
+  (actions$ = inject(Actions)) => {
+    return actions$.pipe(
+      ofType(cardsActions.editcardSuccess),
+      map(() => cardsActions.getcards({ pageIndex: 0, pageSize: 5 })),
+    );
+  },
+  { functional: true },
+);
+
 export const deleteCardEffect = createEffect(
   (actions$ = inject(Actions), cardsService = inject(CardsService), store = inject(Store)) => {
     return actions$.pipe(
       ofType(cardsActions.deletecard),
-      withLatestFrom(store.select(selectActiveDeckId)),
+      withLatestFrom(store.select(selectActiveDeck)),
       tap(() => LoaderService.showLoader()),
-      switchMap(([{ cardId }, deckId]) =>
-        cardsService.deleteCard(deckId, cardId).pipe(
+      switchMap(([{ cardId }, deck]) =>
+        cardsService.deleteCard(deck?.id as string, cardId).pipe(
           map(() => cardsActions.deletecardSuccess()),
           catchError(() => {
             return of(cardsActions.deletecardFailure());
@@ -202,11 +252,10 @@ export const deleteCardEffect = createEffect(
 );
 
 export const refreshViewAfterDeleteDeck = createEffect(
-  (actions$ = inject(Actions), store = inject(Store)) => {
+  (actions$ = inject(Actions)) => {
     return actions$.pipe(
       ofType(cardsActions.deletecardSuccess),
-      withLatestFrom(store.select(selectActiveDeckId)),
-      map(([, deckId]) => cardsActions.getcards({ deckId, pageIndex: 0, pageSize: 5 })),
+      map(() => cardsActions.getcards({ pageIndex: 0, pageSize: 5 })),
     );
   },
   { functional: true },
