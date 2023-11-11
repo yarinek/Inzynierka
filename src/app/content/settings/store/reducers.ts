@@ -1,42 +1,45 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { routerNavigationAction } from '@ngrx/router-store';
+import { UserSettings, UserSiteSettings } from 'src/http-client';
 
 import { settingsActions } from './actions';
 
-const initialState = {
-  isSubmitting: false,
-  isLoading: false,
+const initialState: {
+  userSettings: UserSettings | null;
+} = {
+  userSettings: null,
 };
 
 const settingsFeature = createFeature({
   name: 'settings',
   reducer: createReducer(
     initialState,
-    on(settingsActions.changeemail, (state) => ({ ...state, isSubmitting: true })),
-    on(settingsActions.changeemailSuccess, (state) => ({
+    on(settingsActions.getusersettingsSuccess, (state, action) => ({
       ...state,
-      isSubmitting: false,
+      userSettings: action.userSettings,
     })),
-    on(settingsActions.changeemailFailure, (state) => ({
+    on(settingsActions.changedisplaylanguage, (state, action) => ({
       ...state,
-      isSubmitting: false,
+      userSettings: {
+        ...(state.userSettings as UserSettings),
+        siteSettings: {
+          ...(state.userSettings?.siteSettings as UserSiteSettings),
+          displayLanguage: action.language,
+        },
+      },
     })),
-    on(settingsActions.resetpassword, (state) => ({ ...state, isSubmitting: true })),
-    on(settingsActions.resetpasswordSuccess, (state) => ({
+    on(settingsActions.changeinstructionlanguage, (state, action) => ({
       ...state,
-      isSubmitting: false,
-    })),
-    on(settingsActions.resetpasswordFailure, (state) => ({
-      ...state,
-      isSubmitting: false,
+      userSettings: {
+        ...(state.userSettings as UserSettings),
+        siteSettings: {
+          ...(state.userSettings?.siteSettings as UserSiteSettings),
+          instructionsLanguage: action.language,
+        },
+      },
     })),
     on(routerNavigationAction, (state) => ({ ...state })),
   ),
 });
 
-export const {
-  name: settingsFeatureKey,
-  reducer: settingsReducer,
-  selectIsSubmitting,
-  selectIsLoading,
-} = settingsFeature;
+export const { name: settingsFeatureKey, reducer: settingsReducer, selectUserSettings } = settingsFeature;

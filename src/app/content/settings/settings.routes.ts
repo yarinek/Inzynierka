@@ -11,6 +11,10 @@ export const settingsRoutes: Route[] = [
         path: 'profile',
         loadComponent: () => import('./settings/profile/profile.component').then((m) => m.ProfileComponent),
       },
+      {
+        path: 'site',
+        loadComponent: () => import('./settings/site/site.component').then((m) => m.SiteComponent),
+      },
     ],
   },
 ];

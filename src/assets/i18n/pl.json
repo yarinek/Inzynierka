@@ -1,10 +1,17 @@
 {
     "settings": {
       "profile": "Ustawienia profilu",
+      "site": "Ustawienia strony",
       "username": "Nazwa użytkownika",
       "email": "E-mail",
       "changeEmail": "Zmień e-mail",
       "resetPassword": "Zresetuj hasło",
+      "language": {
+        "site": "Wyświetlany język",
+        "instruction": "Język ćwiczeń",
+        "pl": "Polski",
+        "en": "Angielski"
+      },
       "updateAccount": {
         "title": "Aktualizacja konta",
         "verificationCode": "Kod weryfikacyjny",
@@ -56,7 +63,8 @@
             "delete": "Usuń",
             "close": "Zamknij",
             "back": "Wstecz",
-            "confirm": "Potwierdź"
+            "confirm": "Potwierdź",
+            "save": "Zapisz"
         }
       }
   }

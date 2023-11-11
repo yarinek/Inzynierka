@@ -2,10 +2,18 @@
 {
     "settings": {
       "profile": "Profile Settings",
+      "site": "Site Settings",
       "username": "Username",
       "email": "Email",
       "changeEmail": "Change email",
       "resetPassword": "Reset password",
+      "language": {
+        "site": "Display language",
+        "instruction": "Instructions language",
+        "title": "Language",
+        "pl": "Polish",
+        "en": "English"
+      },
       "updateAccount": {
         "title": "Update Account",
         "verificationCode": "Verification code",
@@ -57,7 +65,8 @@
             "delete": "Delete",
             "close": "Close",
             "back": "Back",
-            "confirm": "Confirm"
+            "confirm": "Confirm",
+            "save": "Save"
         }
       }
 }

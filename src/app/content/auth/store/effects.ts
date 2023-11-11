@@ -10,6 +10,7 @@ import {
   AuthenticationService,
 } from 'src/http-client';
 import { finalize } from 'rxjs/internal/operators/finalize';
+import { settingsActions } from '@app/content/settings/store/actions';
 
 import { authActions } from './actions';
 
@@ -24,6 +25,16 @@ export const getTokenEffect = createEffect(
         }
         return authActions.getTokenFailure();
       }),
+    );
+  },
+  { functional: true },
+);
+
+export const getUserSettingsEffect = createEffect(
+  (actions$ = inject(Actions)) => {
+    return actions$.pipe(
+      ofType(authActions.getTokenSuccess),
+      map(() => settingsActions.getusersettings()),
     );
   },
   { functional: true },

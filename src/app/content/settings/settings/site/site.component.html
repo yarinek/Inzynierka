@@ -1,0 +1,49 @@
+<ng-container *ngIf="data$ | async as data">
+  <div class="container">
+    <div class="row">
+      <h2>{{ "settings.profile" | translate }}</h2>
+    </div>
+    <div class="row">
+      <div class="col-2">{{ "settings.language.site" | translate }}:</div>
+      <div class="col-10">
+        <mat-button-toggle-group
+          [value]="data.userSettings?.siteSettings?.displayLanguage"
+          (change)="changeLanguage($event)"
+          name="displayLanguage"
+          aria-label="Display language"
+        >
+          <mat-button-toggle value="POLISH">{{ "settings.language.pl" | translate }}</mat-button-toggle>
+          <mat-button-toggle value="ENGLISH">{{ "settings.language.en" | translate }}</mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-2">{{ "settings.language.instruction" | translate }}:</div>
+      <div class="col-10">
+        <mat-button-toggle-group
+          [value]="data.userSettings?.siteSettings?.instructionsLanguage"
+          (change)="changeInstructionLanguage($event)"
+          name="instructionsLanguage"
+          aria-label="Instructions language"
+        >
+          <mat-button-toggle value="POLISH">{{ "settings.language.pl" | translate }}</mat-button-toggle>
+          <mat-button-toggle value="ENGLISH">{{ "settings.language.en" | translate }}</mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+    </div>
+    <div class="row mt-5">
+      <button class="w-25" mat-raised-button color="primary" (click)="save()">
+        {{ "common.buttons.save" | translate }}
+      </button>
+    </div>
+    <!--  <div class="row d-flex-center">
+      <div class="col-2">{{ "settings.email" | translate }}:</div>
+      <div class="col-10">{{ data.decodedToken$?.email }}</div>
+    </div>
+    <div class="row mt-1">
+      <button class="w-25" mat-raised-button color="primary" (click)="resetPassword()">
+        {{ "settings.resetPassword" | translate }}
+      </button>
+    </div> -->
+  </div>
+</ng-container>

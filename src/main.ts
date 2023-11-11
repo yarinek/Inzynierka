@@ -62,7 +62,7 @@ bootstrapApplication(AppComponent, {
     provideHttpClient(withInterceptors([authorizationInterceptor])),
     provideRouter(appRoutes),
     provideStore({ router: routerReducer }),
-    provideEffects(authEffects, exampleEffects, settingsEffects, decksEffects, cardsEffects),
+    provideEffects(settingsEffects, authEffects, exampleEffects, decksEffects, cardsEffects),
     provideState(authFeatureKey, authReducer),
     provideState(exampleFeatureKey, exampleReducer),
     provideState(settingsFeatureKey, settingsReducer),
