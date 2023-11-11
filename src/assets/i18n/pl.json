@@ -1,0 +1,62 @@
+{
+    "settings": {
+      "profile": "Ustawienia profilu",
+      "username": "Nazwa użytkownika",
+      "email": "E-mail",
+      "changeEmail": "Zmień e-mail",
+      "resetPassword": "Zresetuj hasło",
+      "updateAccount": {
+        "title": "Aktualizacja konta",
+        "verificationCode": "Kod weryfikacyjny",
+        "getToken": "Pobierz token",
+        "newPassword": "Nowe hasło",
+        "changePassword": "Zmień hasło",
+        "newEmail": "Nowy e-mail",
+        "updateAccount": "Aktualizuj konto"
+      }
+    },
+    "decks": {
+        "createDeck": "Utwórz zestaw",
+        "editDeck": "Edytuj talię",
+        "deckName": "Nazwa talii",
+        "language": "Język",
+        "table": {
+            "name": "Nazwa",
+            "language": "Język",
+            "waitingReviews": "Oczekujące recenzje"
+        }
+      },
+      "cards": {
+        "startActivity": "Rozpocznij powtórkę",
+        "createCard": "Utwórz fiszkę",
+        "editCard": "Edytuj kartę",
+        "table": {
+            "front": "Przód",
+            "back": "Tył",
+            "status": "Status",
+            "reviews": "Recenzje",
+            "fails": "Niepowodzenia"
+        },
+        "card": {
+          "wrong": "Źle",
+          "hard": "Trudne",
+          "good": "Dobre",
+          "easy": "Łatwe",
+          "suspend": "Wstrzymaj"
+        }
+      },
+      "common": {
+        "table": {
+            "itemsPerPage": "Elementy na stronie:",
+            "actions": "Akcje"
+        },
+        "buttons": {
+            "preview": "Podgląd",
+            "edit": "Edytuj",
+            "delete": "Usuń",
+            "close": "Zamknij",
+            "back": "Wstecz",
+            "confirm": "Potwierdź"
+        }
+      }
+  }

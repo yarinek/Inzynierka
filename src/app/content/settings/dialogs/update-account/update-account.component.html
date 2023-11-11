@@ -1,10 +1,14 @@
 <div class="container">
-  <h2 mat-dialog-title>Update Account</h2>
+  <h2 mat-dialog-title>{{ "settings.updateAccount.title" | translate }}</h2>
 
   <div mat-dialog-content>
     <form class="container d-flex-center" [formGroup]="form">
       <div class="row">
-        <app-input formControlName="email" type="email" placeholder="New email"></app-input>
+        <app-input
+          formControlName="email"
+          type="email"
+          placeholder="{{ 'settings.updateAccount.newEmail' | translate }}"
+        ></app-input>
       </div>
       <!-- TODO: roles -->
     </form>
@@ -12,8 +16,12 @@
 
   <div mat-dialog-actions>
     <div class="d-flex-center">
-      <button mat-raised-button color="primary" class="m-1" (click)="onDismiss()">Close</button>
-      <button mat-raised-button color="primary" class="m-1" (click)="onConfirm()">Update account</button>
+      <button mat-raised-button color="primary" class="m-1" (click)="onDismiss()">
+        {{ "common.buttons.close" | translate }}
+      </button>
+      <button mat-raised-button color="primary" class="m-1" (click)="onConfirm()">
+        {{ "settings.updateAccount.updateAccount" | translate }}
+      </button>
     </div>
   </div>
 </div>

@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { combineLatest, map } from 'rxjs';
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -13,7 +14,7 @@ import { cardsActions } from '../store/actions';
 @Component({
   selector: 'app-card',
   standalone: true,
-  imports: [CommonModule, MatButtonModule],
+  imports: [CommonModule, MatButtonModule, TranslateModule],
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.scss'],
   animations: [

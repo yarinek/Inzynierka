@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -11,7 +12,7 @@ import { selectDecodedToken } from '@app/content/auth/store/reducers';
 @Component({
   selector: 'app-update-account',
   standalone: true,
-  imports: [CommonModule, InputComponent, ReactiveFormsModule, MatButtonModule],
+  imports: [CommonModule, InputComponent, ReactiveFormsModule, MatButtonModule, TranslateModule],
   templateUrl: './update-account.component.html',
   styleUrls: ['./update-account.component.scss'],
 })

@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -11,7 +12,7 @@ import { SelectOptionInterface } from '@app/shared/components/select/select.type
 @Component({
   selector: 'app-create-deck',
   standalone: true,
-  imports: [CommonModule, InputComponent, ReactiveFormsModule, MatButtonModule, SelectComponent],
+  imports: [CommonModule, InputComponent, ReactiveFormsModule, MatButtonModule, SelectComponent, TranslateModule],
   templateUrl: './create-deck.component.html',
   styleUrls: ['./create-deck.component.scss'],
 })

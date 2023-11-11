@@ -6,6 +6,7 @@ import { combineLatest, filter, take } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AccountUpdate } from 'src/http-client';
 import { selectDecodedToken } from '@app/content/auth/store/reducers';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { UpdateAccountComponent } from '../../dialogs/update-account/update-account.component';
 import { settingsActions } from '../../store/actions';
@@ -14,7 +15,7 @@ import { ResetPasswordComponent } from '../../dialogs/reset-password/reset-passw
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, MatButtonModule],
+  imports: [CommonModule, MatButtonModule, TranslateModule],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
 })

@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { TableColumnType, TableConfig } from '@app/shared/types/tableConfig.interface';
 import { TableComponent } from '@app/shared/components/table/table.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { decksActions } from '../store/actions';
 import { selectDataSource, selectTotalElements } from '../store/reducers';
@@ -15,7 +16,7 @@ import { CreateDeckComponent } from './create-deck/create-deck.component';
 @Component({
   selector: 'app-decks',
   standalone: true,
-  imports: [CommonModule, TableComponent, MatButtonModule],
+  imports: [CommonModule, TableComponent, MatButtonModule, TranslateModule],
   templateUrl: './decks.component.html',
   styleUrls: ['./decks.component.scss'],
 })
@@ -25,24 +26,24 @@ export class DecksComponent implements OnInit {
   dialog = inject(MatDialog);
   displayedColumns: string[] = ['name', 'language', 'waitingReviews', 'actions'];
   tableConfig: TableConfig[] = [
-    { name: 'Name', value: 'name' },
-    { name: 'Language', value: 'language' },
-    { name: 'Waiting reviews', value: 'waitingReviews' },
+    { name: 'decks.table.name', value: 'name' },
+    { name: 'decks.table.language', value: 'language' },
+    { name: 'decks.table.waitingReviews', value: 'waitingReviews' },
     {
-      name: 'Actions',
+      name: 'common.table.actions',
       value: 'actions',
       type: TableColumnType.ACTIONS,
       actions: [
         {
-          name: 'Preview',
+          name: 'common.buttons.preview',
           action: (row: Deck): void => this.setActiveDeck(row),
         },
         {
-          name: 'Edit',
+          name: 'common.buttons.edit',
           action: (row: Deck): void => this.editDeck(row.id as string, row.name as string, row.language as string),
         },
         {
-          name: 'Delete',
+          name: 'common.buttons.delete',
           action: (row: Deck): void => this.store.dispatch(decksActions.deletedeck({ deckId: row.id as string })),
           color: 'warn',
         },

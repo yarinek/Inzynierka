@@ -1,5 +1,7 @@
 <div class="tp-wrapper" *ngIf="data$ | async as data">
-  <button *ngIf="isPreview" mat-raised-button color="primary" class="m-1" (click)="backToDeck()">Back</button>
+  <button *ngIf="isPreview" mat-raised-button color="primary" class="m-1" (click)="backToDeck()">
+    {{ "common.buttons.back" | translate }}
+  </button>
   <ng-container *ngIf="data.card">
     <div class="tp-box" (click)="toggleFlip()" [@flipState]="flip">
       <div class="tp-box__side tp-box__front d-flex justify-content-center align-items-center">
@@ -10,11 +12,21 @@
       </div>
     </div>
     <div *ngIf="!isPreview" class="tp-box__answer">
-      <button mat-raised-button color="primary" class="m-1" (click)="answer('WRONG')">Wrong</button>
-      <button mat-raised-button color="primary" class="m-1" (click)="answer('HARD')">Hard</button>
-      <button mat-raised-button color="primary" class="m-1" (click)="answer('GOOD')">Good</button>
-      <button mat-raised-button color="primary" class="m-1" (click)="answer('EASY')">Easy</button>
-      <button mat-raised-button color="primary" class="m-1" (click)="answer('SUSPEND')">Suspend</button>
+      <button mat-raised-button color="primary" class="m-1" (click)="answer('WRONG')">
+        {{ "cards.card.wrong" | translate }}
+      </button>
+      <button mat-raised-button color="primary" class="m-1" (click)="answer('HARD')">
+        {{ "cards.card.hard" | translate }}
+      </button>
+      <button mat-raised-button color="primary" class="m-1" (click)="answer('GOOD')">
+        {{ "cards.card.good" | translate }}
+      </button>
+      <button mat-raised-button color="primary" class="m-1" (click)="answer('EASY')">
+        {{ "cards.card.easy" | translate }}
+      </button>
+      <button mat-raised-button color="primary" class="m-1" (click)="answer('SUSPEND')">
+        {{ "cards.card.suspend" | translate }}
+      </button>
     </div>
   </ng-container>
 </div>

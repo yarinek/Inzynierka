@@ -1,22 +1,24 @@
 <div class="container">
-  <h2 mat-dialog-title>{{ isEdit ? "Edit card" : "Create card" }}</h2>
+  <h2 mat-dialog-title>{{ (isEdit ? "cards.editCard" : "cards.createCard") | translate }}</h2>
 
   <div mat-dialog-content>
     <form class="container d-flex flex-column justify-content-center" [formGroup]="form">
       <div class="row">
-        <app-input formControlName="front" placeholder="Front"></app-input>
+        <app-input formControlName="front" placeholder="{{ 'cards.table.front' | translate }}"></app-input>
       </div>
       <div class="row">
-        <app-input formControlName="back" placeholder="Back"></app-input>
+        <app-input formControlName="back" placeholder="{{ 'cards.table.back' | translate }}"></app-input>
       </div>
     </form>
   </div>
 
   <div mat-dialog-actions>
     <div class="d-flex-center">
-      <button mat-raised-button color="primary" class="m-1" (click)="onDismiss()">Close</button>
+      <button mat-raised-button color="primary" class="m-1" (click)="onDismiss()">
+        {{ "common.buttons.close" | translate }}
+      </button>
       <button [disabled]="form.invalid" mat-raised-button color="primary" class="m-1" (click)="onConfirm()">
-        {{ isEdit ? "Edit card" : "Create card" }}
+        {{ (isEdit ? "cards.editCard" : "cards.createCard") | translate }}
       </button>
     </div>
   </div>

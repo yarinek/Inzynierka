@@ -1,4 +1,4 @@
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { authorizationInterceptor } from '@app/core/interceptor/auth.interceptor';
 import { provideRouter } from '@angular/router';
@@ -23,16 +23,37 @@ import { MatSnackBarModule, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/mater
 import { ToastrService } from '@app/core/services/toast.service';
 import { decksFeatureKey, decksReducer } from '@app/content/decks/store/reducers';
 import { cardsFeatureKey, cardsReducer } from '@app/content/cards/store/reducers';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { TranslateService } from '@ngx-translate/core';
+import { MatPaginatorIntl } from '@angular/material/paginator';
 
 import { AppComponent } from './app/app.component';
 
+function customPaginator(): MatPaginatorIntl {
+  const customPaginatorIntl = new MatPaginatorIntl();
+  const translate = inject(TranslateService);
+
+  customPaginatorIntl.itemsPerPageLabel = translate.instant('common.table.itemsPerPage') as string;
+
+  return customPaginatorIntl;
+}
+
 function initializeAppFactory(): () => void {
   const token = localStorage.getItem('accessToken');
+  const translateService = inject(TranslateService);
+  translateService.addLangs(['en', 'pl']);
+  translateService.setDefaultLang('pl');
   if (token) {
     const store = inject(Store);
     return () => store.dispatch(authActions.getToken());
   }
   return () => void 0;
+}
+
+function createTranslateLoader(): TranslateHttpLoader {
+  const http = inject(HttpClient);
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
 // eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -58,7 +79,18 @@ bootstrapApplication(AppComponent, {
     }),
     { provide: APP_INITIALIZER, useFactory: initializeAppFactory, deps: [], multi: true },
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2000 } },
+    { provide: MatPaginatorIntl, useFactory: customPaginator },
     ToastrService,
-    importProvidersFrom(BrowserAnimationsModule, MatDialogModule, MatSnackBarModule),
+    importProvidersFrom(
+      BrowserAnimationsModule,
+      MatDialogModule,
+      MatSnackBarModule,
+      TranslateModule.forRoot({
+        loader: {
+          provide: TranslateLoader,
+          useFactory: createTranslateLoader,
+        },
+      }),
+    ),
   ],
 });

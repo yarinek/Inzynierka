@@ -9,6 +9,7 @@ import { selectActiveDeck } from '@app/content/decks/store/reducers';
 import { TableComponent } from '@app/shared/components/table/table.component';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterLink } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { cardsActions } from '../store/actions';
 import { selectDataSource, selectTotalElements } from '../store/reducers';
@@ -17,7 +18,7 @@ import { CreateCardsComponent } from './create-cards/create-cards.component';
 @Component({
   selector: 'app-cards',
   standalone: true,
-  imports: [CommonModule, TableComponent, MatButtonModule, RouterLink],
+  imports: [CommonModule, TableComponent, MatButtonModule, RouterLink, TranslateModule],
   templateUrl: './cards.component.html',
   styleUrls: ['./cards.component.scss'],
 })
@@ -36,22 +37,22 @@ export class CardsComponent implements OnInit {
   ];
 
   tableConfig: TableConfig[] = [
-    { name: 'Front', value: 'front.content' },
-    { name: 'Back', value: 'back.content' },
-    { name: 'Status', value: 'status' },
-    { name: 'Reviews', value: 'statistics.reviews' },
-    { name: 'Fails', value: 'statistics.fails' },
+    { name: 'cards.table.front', value: 'front.content' },
+    { name: 'cards.table.back', value: 'back.content' },
+    { name: 'cards.table.status', value: 'status' },
+    { name: 'cards.table.reviews', value: 'statistics.reviews' },
+    { name: 'cards.table.fails', value: 'statistics.fails' },
     {
-      name: 'Actions',
+      name: 'common.table.actions',
       value: 'actions',
       type: TableColumnType.ACTIONS,
       actions: [
         {
-          name: 'Preview',
+          name: 'common.buttons.preview',
           action: (row: Card): void => this.store.dispatch(cardsActions.getcard({ cardId: row.id as string })),
         },
         {
-          name: 'Edit',
+          name: 'common.buttons.edit',
           action: (row: Card): void =>
             this.editCard(
               row.id as string,
@@ -60,7 +61,7 @@ export class CardsComponent implements OnInit {
             ),
         },
         {
-          name: 'Delete',
+          name: 'common.buttons.delete',
           action: (row: Card): void => this.store.dispatch(cardsActions.deletecard({ cardId: row.id as string })),
           color: 'warn',
         },

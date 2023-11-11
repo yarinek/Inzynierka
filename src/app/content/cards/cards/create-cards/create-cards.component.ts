@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { InputComponent } from '@app/shared/components/input/input.component';
@@ -10,7 +11,7 @@ import { CardContentElementType } from 'src/http-client';
 @Component({
   selector: 'app-create-cards',
   standalone: true,
-  imports: [CommonModule, InputComponent, ReactiveFormsModule, MatButtonModule],
+  imports: [CommonModule, InputComponent, ReactiveFormsModule, MatButtonModule, TranslateModule],
   templateUrl: './create-cards.component.html',
   styleUrls: ['./create-cards.component.scss'],
 })

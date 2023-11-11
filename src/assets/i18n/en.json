@@ -1,0 +1,64 @@
+
+{
+    "settings": {
+      "profile": "Profile Settings",
+      "username": "Username",
+      "email": "Email",
+      "changeEmail": "Change email",
+      "resetPassword": "Reset password",
+      "updateAccount": {
+        "title": "Update Account",
+        "verificationCode": "Verification code",
+        "getToken": "Get token",
+        "newPassword": "New password",
+        "changePassword": "Change password",
+        "newEmail": "New email",
+        "updateAccount": "Update account"
+      }
+    },
+    "decks": {
+        "createDeck": "Create deck",
+        "editDeck": "Edit deck",
+        "deckName": "Deck name",
+        "language": "Language",
+        "table": {
+            "name": "Name",
+            "language": "Language",
+            "waitingReviews": "Waiting reviews"
+        }   
+      },
+      "cards": {
+        "startActivity": "Start activity",
+        "createCard": "Create card",
+        "editCard": "Edit card",
+        "table": {
+            "front": "Front",
+            "back": "Back",
+            "status": "Status",
+            "reviews": "Reviews",
+            "fails": "Fails"
+        },
+        "card": {
+          "wrong": "Wrong",
+          "hard": "Hard",
+          "good": "Good",
+          "easy": "Easy",
+          "suspend": "Suspend"
+        }
+      },
+      "common": {
+        "table": {
+            "itemsPerPage": "Items per page:",
+            "actions": "Actions"
+        },
+        "buttons": {
+            "preview": "Preview",
+            "edit": "Edit",
+            "delete": "Delete",
+            "close": "Close",
+            "back": "Back",
+            "confirm": "Confirm"
+        }
+      }
+}
+  
