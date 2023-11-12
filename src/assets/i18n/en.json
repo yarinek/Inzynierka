@@ -80,6 +80,7 @@
         "startActivity": "Start activity",
         "createCard": "Create card",
         "editCard": "Edit card",
+        "page": "Page",
         "table": {
             "front": "Front",
             "back": "Back",
@@ -93,6 +94,10 @@
           "good": "Good",
           "easy": "Easy",
           "suspend": "Suspend"
+        },
+        "actions": {
+          "addForm": "Add next page",
+          "removeForm": "Remove page"
         }
       },
       "common": {

@@ -78,6 +78,7 @@
         "startActivity": "Rozpocznij powtórkę",
         "createCard": "Utwórz fiszkę",
         "editCard": "Edytuj kartę",
+        "page": "Strona",
         "table": {
             "front": "Przód",
             "back": "Tył",
@@ -91,6 +92,10 @@
           "good": "Dobre",
           "easy": "Łatwe",
           "suspend": "Wstrzymaj"
+        },
+        "actions": {
+          "addForm": "Dodaj kolejną stronę",
+          "removeForm": "Usuń stronę"
         }
       },
       "common": {

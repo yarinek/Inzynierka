@@ -3,13 +3,8 @@
     {{ "common.buttons.back" | translate }}
   </button>
   <ng-container *ngIf="data.card">
-    <div class="tp-box" (click)="toggleFlip()" [@flipState]="flip">
-      <div class="tp-box__side tp-box__front d-flex justify-content-center align-items-center">
-        {{ data.card.front?.content }}
-      </div>
-      <div class="tp-box__side tp-box__back d-flex justify-content-center align-items-center">
-        {{ data.card.back?.content }}
-      </div>
+    <div class="container">
+      <app-carousel [card]="data.card"></app-carousel>
     </div>
     <div *ngIf="!isPreview" class="tp-box__answer">
       <button mat-raised-button color="primary" class="m-1" (click)="answer('WRONG')">

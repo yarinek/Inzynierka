@@ -1,10 +1,10 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Card, CardContentElement, CardCreateRequest, CardsService } from 'src/http-client';
+import { Card, CardContentElement, CardContentElementType, CardCreateRequest, CardsService } from 'src/http-client';
 import { Store } from '@ngrx/store';
 import { MatDialog } from '@angular/material/dialog';
 import { TableColumnType, TableConfig } from '@app/shared/types/tableConfig.interface';
-import { combineLatest, filter, map } from 'rxjs';
+import { combineLatest, filter } from 'rxjs';
 import { selectActiveDeck } from '@app/content/decks/store/reducers';
 import { TableComponent } from '@app/shared/components/table/table.component';
 import { MatButtonModule } from '@angular/material/button';
@@ -37,8 +37,24 @@ export class CardsComponent implements OnInit {
   ];
 
   tableConfig: TableConfig[] = [
-    { name: 'cards.table.front', value: 'front.content' },
-    { name: 'cards.table.back', value: 'back.content' },
+    {
+      name: 'cards.table.front',
+      value: 'front.content',
+      type: TableColumnType.CUSTOM_DISPLAY,
+      customDisplay: (row: Card): string => {
+        const item = row.front?.find((element: CardContentElement) => element.type === CardContentElementType.Text);
+        return item?.content as string;
+      },
+    },
+    {
+      name: 'cards.table.back',
+      value: 'back.content',
+      type: TableColumnType.CUSTOM_DISPLAY,
+      customDisplay: (row: Card): string => {
+        const item = row.back?.find((element: CardContentElement) => element.type === CardContentElementType.Text);
+        return item?.content as string;
+      },
+    },
     { name: 'cards.table.status', value: 'status' },
     { name: 'cards.table.reviews', value: 'statistics.reviews' },
     { name: 'cards.table.fails', value: 'statistics.fails' },
@@ -53,12 +69,7 @@ export class CardsComponent implements OnInit {
         },
         {
           name: 'common.buttons.edit',
-          action: (row: Card): void =>
-            this.editCard(
-              row.id as string,
-              row.front as unknown as CardContentElement,
-              row.back as unknown as CardContentElement,
-            ),
+          action: (row: Card): void => this.editCard(row.id as string, row.front, row.back),
         },
         {
           name: 'common.buttons.delete',
@@ -70,9 +81,7 @@ export class CardsComponent implements OnInit {
   ];
 
   data$ = combineLatest({
-    dataSource: this.store
-      .select(selectDataSource)
-      .pipe(map((cards) => cards.map((card) => ({ ...card, front: card?.front![0], back: card?.back![0] })))),
+    dataSource: this.store.select(selectDataSource),
     totalElements: this.store.select(selectTotalElements),
     activeDeck: this.store.select(selectActiveDeck),
   });
@@ -87,8 +96,8 @@ export class CardsComponent implements OnInit {
 
   createCard(): void {
     const dialogRef = this.dialog.open(CreateCardsComponent, {
-      width: '500px',
-      height: '300px',
+      width: '700px',
+      height: '500px',
     });
 
     dialogRef
@@ -99,13 +108,13 @@ export class CardsComponent implements OnInit {
       });
   }
 
-  editCard(cardId: string, front?: CardContentElement, back?: CardContentElement): void {
+  editCard(cardId: string, front?: CardContentElement[], back?: CardContentElement[]): void {
     const dialogRef = this.dialog.open(CreateCardsComponent, {
-      width: '500px',
+      width: '700px',
       height: '300px',
       data: {
-        front: front?.content,
-        back: back?.content,
+        front,
+        back,
       },
     });
 

@@ -3,10 +3,13 @@ export interface TableConfig {
   value: string;
   type?: TableColumnType;
   actions?: TableColumnActions[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  customDisplay?: (row: any) => string;
 }
 
 export enum TableColumnType {
   ACTIONS = 'ACTIONS',
+  CUSTOM_DISPLAY = 'CUSTOM_DISPLAY',
 }
 
 export interface TableColumnActions {

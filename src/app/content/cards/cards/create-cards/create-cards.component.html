@@ -2,23 +2,38 @@
   <h2 mat-dialog-title>{{ (isEdit ? "cards.editCard" : "cards.createCard") | translate }}</h2>
 
   <div mat-dialog-content>
-    <form class="container d-flex flex-column justify-content-center" [formGroup]="form">
-      <div class="row">
-        <app-input formControlName="front" placeholder="{{ 'cards.table.front' | translate }}"></app-input>
-      </div>
-      <div class="row">
-        <app-input formControlName="back" placeholder="{{ 'cards.table.back' | translate }}"></app-input>
-      </div>
-    </form>
+    <ng-container *ngFor="let form of formArray.controls; let i = index">
+      <h5>{{ "cards.page" | translate }}: {{ i + 1 }}</h5>
+      <form class="container d-flex flex-column justify-content-center" [formGroup]="form">
+        <div class="row">
+          <app-input formControlName="front" placeholder="{{ 'cards.table.front' | translate }}"></app-input>
+        </div>
+        <div class="row">
+          <app-input formControlName="back" placeholder="{{ 'cards.table.back' | translate }}"></app-input>
+        </div>
+      </form>
+    </ng-container>
   </div>
 
   <div mat-dialog-actions>
     <div class="d-flex-center">
-      <button mat-raised-button color="primary" class="m-1" (click)="onDismiss()">
-        {{ "common.buttons.close" | translate }}
+      <button mat-raised-button color="primary" class="m-1" (click)="addForm()">
+        {{ "cards.actions.addForm" | translate }}
       </button>
-      <button [disabled]="form.invalid" mat-raised-button color="primary" class="m-1" (click)="onConfirm()">
+      <button
+        *ngIf="formArray.controls.length > 1"
+        mat-raised-button
+        color="primary"
+        class="m-1"
+        (click)="removeForm()"
+      >
+        {{ "cards.actions.removeForm" | translate }}
+      </button>
+      <button [disabled]="!isValid" mat-raised-button color="primary" class="m-1" (click)="onConfirm()">
         {{ (isEdit ? "cards.editCard" : "cards.createCard") | translate }}
+      </button>
+      <button mat-raised-button color="warn" class="m-1" (click)="onDismiss()">
+        {{ "common.buttons.close" | translate }}
       </button>
     </div>
   </div>

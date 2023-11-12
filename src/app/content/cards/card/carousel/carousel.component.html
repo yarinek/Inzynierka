@@ -1,0 +1,23 @@
+<div class="carousel">
+  <div *ngFor="let slide of slides; let i = index">
+    <div *ngIf="i === currentSlide" @carouselAnimation class="slide">
+      <div class="tp-box" (click)="toggleFlip()" [@flipState]="flip">
+        <div
+          [@flipState]="flip"
+          class="tp-box__side tp-box__front d-flex justify-content-center align-items-center"
+          [class]="flip === 'inactive' ? 'tp-box__front' : 'tp-box__back'"
+          (click)="toggleFlip()"
+        >
+          {{ slide.content }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="control prev" (click)="onPreviousClick($event)">
+    <span class="arrow left"></span>
+  </button>
+  <button class="control next" (click)="onNextClick($event)">
+    <span class="arrow right"></span>
+  </button>
+</div>
