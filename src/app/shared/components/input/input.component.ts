@@ -19,6 +19,7 @@ export class InputComponent implements OnInit, AfterViewInit {
   @Input() id = '';
   @Input() type = 'text';
   @Input() ariaLabel = '';
+  @Input() integerOnly = false;
 
   public valueAccessor = inject(ValueAccessorDirective<string | number>);
   protected readonly errorService = inject(ErrorService);
@@ -29,7 +30,9 @@ export class InputComponent implements OnInit, AfterViewInit {
   inputControl = new UntypedFormControl();
 
   ngOnInit(): void {
-    this.valueAccessor.value.subscribe((v) => (this.value = v));
+    this.valueAccessor.value.subscribe((v) => {
+      this.value = v;
+    });
   }
 
   ngAfterViewInit(): void {
@@ -37,8 +40,18 @@ export class InputComponent implements OnInit, AfterViewInit {
     this.cdr.detectChanges();
   }
 
-  public updateValue(value: string): void {
+  public updateValue(value: string | number): void {
+    if (this.type === 'number') {
+      value = Number(value);
+    }
     this.valueAccessor.valueChange(value);
     this.valueAccessor.touchedChange(true);
+  }
+
+  public onKeydown(value: KeyboardEvent): boolean {
+    if (this.type === 'number' && this.integerOnly) {
+      return !value.code.includes('Period') && !value.code.includes('Comma');
+    }
+    return true;
   }
 }

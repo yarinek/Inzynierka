@@ -10,6 +10,7 @@
     [id]="id"
     #input
     (input)="updateValue(input.value)"
+    (keydown)="onKeydown($event)"
     [attr.aria-label]="ariaLabel"
   />
   <mat-error

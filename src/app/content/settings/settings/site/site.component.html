@@ -1,37 +1,148 @@
 <ng-container *ngIf="data$ | async as data">
-  <div class="container">
-    <div class="row">
-      <h2>{{ "settings.profile" | translate }}</h2>
-    </div>
-    <div class="row">
-      <div class="col-2">{{ "settings.language.site" | translate }}:</div>
-      <div class="col-10">
-        <mat-button-toggle-group
-          [value]="data.userSettings?.siteSettings?.displayLanguage"
-          (change)="changeLanguage($event)"
-          name="displayLanguage"
-          aria-label="Display language"
-        >
-          <mat-button-toggle value="POLISH">{{ "settings.language.pl" | translate }}</mat-button-toggle>
-          <mat-button-toggle value="ENGLISH">{{ "settings.language.en" | translate }}</mat-button-toggle>
-        </mat-button-toggle-group>
+  <div>
+    <h2>{{ "settings.site" | translate }}</h2>
+    <div>
+      <div class="d-flex align-items-center">
+        <div>{{ "settings.language.site" | translate }}:</div>
+        <div class="mx-2 p-1">
+          <mat-button-toggle-group
+            [value]="data.userSettings?.siteSettings?.displayLanguage"
+            (change)="changeLanguage($event)"
+            name="displayLanguage"
+            aria-label="Display language"
+          >
+            <mat-button-toggle value="POLISH">{{ "settings.language.pl" | translate }}</mat-button-toggle>
+            <mat-button-toggle value="ENGLISH">{{ "settings.language.en" | translate }}</mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+      </div>
+      <div class="d-flex align-items-center">
+        <div>{{ "settings.language.instruction" | translate }}:</div>
+        <div class="mx-2 p-1">
+          <mat-button-toggle-group
+            [value]="data.userSettings?.siteSettings?.instructionsLanguage"
+            (change)="changeInstructionLanguage($event)"
+            name="instructionsLanguage"
+            aria-label="Instructions language"
+          >
+            <mat-button-toggle value="POLISH">{{ "settings.language.pl" | translate }}</mat-button-toggle>
+            <mat-button-toggle value="ENGLISH">{{ "settings.language.en" | translate }}</mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+      </div>
+
+      <div [formGroup]="deckForm">
+        <h5>{{ "settings.deckSettings.title" | translate }}</h5>
+        <div class="d-flex align-items-center">
+          <div [matTooltip]="'settings.deckSettings.tooltip.newCardsPerDay' | translate">
+            {{ "settings.deckSettings.field.newCardsPerDay" | translate }}:
+          </div>
+          <div class="mx-2 p-1">
+            <app-input type="number" [integerOnly]="true" formControlName="newCardsPerDay"></app-input>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-center">
+          <div [matTooltip]="'settings.deckSettings.tooltip.easyRate' | translate">
+            {{ "settings.deckSettings.field.easyRate" | translate }}:
+          </div>
+          <div class="mx-2 p-1">
+            <app-input type="number" formControlName="easyRate"></app-input>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-center">
+          <div [matTooltip]="'settings.deckSettings.tooltip.hardRate' | translate">
+            {{ "settings.deckSettings.field.hardRate" | translate }}:
+          </div>
+          <div class="mx-2 p-1">
+            <app-input type="number" formControlName="hardRate"></app-input>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-center">
+          <div [matTooltip]="'settings.deckSettings.tooltip.maxInterval' | translate">
+            {{ "settings.deckSettings.field.maxInterval" | translate }}:
+          </div>
+          <div class="mx-2 p-1">
+            <app-input type="number" [integerOnly]="true" formControlName="maxInterval"></app-input>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-center">
+          <div [matTooltip]="'settings.deckSettings.tooltip.minIntervalIncrease' | translate">
+            {{ "settings.deckSettings.field.minIntervalIncrease" | translate }}:
+          </div>
+          <div class="mx-2 p-1">
+            <app-input type="number" [integerOnly]="true" formControlName="minIntervalIncrease"></app-input>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-center">
+          <div [matTooltip]="'settings.deckSettings.tooltip.globalEaseModifier' | translate">
+            {{ "settings.deckSettings.field.globalEaseModifier" | translate }}:
+          </div>
+          <div class="mx-2 p-1">
+            <app-input type="number" formControlName="globalEaseModifier"></app-input>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-center">
+          <div [matTooltip]="'settings.deckSettings.tooltip.intervalRateAfterFail' | translate">
+            {{ "settings.deckSettings.field.intervalRateAfterFail" | translate }}:
+          </div>
+          <div class="mx-2 p-1">
+            <app-input type="number" formControlName="intervalRateAfterFail"></app-input>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-center">
+          <div [matTooltip]="'settings.deckSettings.tooltip.leechThreshold' | translate">
+            {{ "settings.deckSettings.field.leechThreshold" | translate }}:
+          </div>
+          <div class="mx-2 p-1">
+            <app-input type="number" [integerOnly]="true" formControlName="leechThreshold"></app-input>
+          </div>
+        </div>
+      </div>
+      <div [formGroup]="grammarForm">
+        <h5>{{ "settings.grammarSettings.title" | translate }}</h5>
+        <div class="d-flex align-items-center">
+          <div [matTooltip]="'settings.grammarSettings.tooltip.maxInterval' | translate">
+            {{ "settings.grammarSettings.field.maxInterval" | translate }}:
+          </div>
+          <div class="mx-2 p-1">
+            <app-input type="number" [integerOnly]="true" formControlName="maxInterval"></app-input>
+          </div>
+        </div>
+        <div class="d-flex align-items-center">
+          <div [matTooltip]="'settings.grammarSettings.tooltip.intervalRateAfterFail' | translate">
+            {{ "settings.grammarSettings.field.intervalRateAfterFail" | translate }}:
+          </div>
+          <div class="mx-2 p-1">
+            <app-input type="number" formControlName="intervalRateAfterFail"></app-input>
+          </div>
+        </div>
+        <div class="d-flex align-items-center">
+          <div [matTooltip]="'settings.grammarSettings.tooltip.failThreshold' | translate">
+            {{ "settings.grammarSettings.field.failThreshold" | translate }}:
+          </div>
+          <div class="mx-2 p-1">
+            <app-input type="number" [integerOnly]="true" formControlName="failThreshold"></app-input>
+          </div>
+        </div>
+        <div class="d-flex align-items-center">
+          <div [matTooltip]="'settings.grammarSettings.tooltip.exercisesPerDay' | translate">
+            {{ "settings.grammarSettings.field.exercisesPerDay" | translate }}:
+          </div>
+          <div class="mx-2 p-1">
+            <app-input type="number" [integerOnly]="true" formControlName="exercisesPerDay"></app-input>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-2">{{ "settings.language.instruction" | translate }}:</div>
-      <div class="col-10">
-        <mat-button-toggle-group
-          [value]="data.userSettings?.siteSettings?.instructionsLanguage"
-          (change)="changeInstructionLanguage($event)"
-          name="instructionsLanguage"
-          aria-label="Instructions language"
-        >
-          <mat-button-toggle value="POLISH">{{ "settings.language.pl" | translate }}</mat-button-toggle>
-          <mat-button-toggle value="ENGLISH">{{ "settings.language.en" | translate }}</mat-button-toggle>
-        </mat-button-toggle-group>
-      </div>
-    </div>
-    <div class="row mt-5">
+
+    <div class="row mb-5">
       <button class="w-25" mat-raised-button color="primary" (click)="save()">
         {{ "common.buttons.save" | translate }}
       </button>

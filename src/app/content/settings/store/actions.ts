@@ -1,5 +1,11 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { AccountUpdate, Language, UserSettings } from 'src/http-client';
+import {
+  AccountUpdate,
+  DefaultUserDeckSettings,
+  DefaultUserGrammarSettings,
+  Language,
+  UserSettings,
+} from 'src/http-client';
 
 export const settingsActions = createActionGroup({
   source: 'settings',
@@ -26,5 +32,7 @@ export const settingsActions = createActionGroup({
 
     ChangeDisplayLanguage: props<{ language: Language }>(),
     ChangeInstructionLanguage: props<{ language: Language }>(),
+    ChangeDeckSettings: props<{ deckSettings: DefaultUserDeckSettings }>(),
+    ChangeGrammarSettings: props<{ grammarSettings: DefaultUserGrammarSettings }>(),
   },
 });

@@ -38,6 +38,20 @@ const settingsFeature = createFeature({
         },
       },
     })),
+    on(settingsActions.changedecksettings, (state, action) => ({
+      ...state,
+      userSettings: {
+        ...(state.userSettings as UserSettings),
+        defaultDecksSettings: action.deckSettings,
+      },
+    })),
+    on(settingsActions.changegrammarsettings, (state, action) => ({
+      ...state,
+      userSettings: {
+        ...(state.userSettings as UserSettings),
+        defaultGrammarSettings: action.grammarSettings,
+      },
+    })),
     on(routerNavigationAction, (state) => ({ ...state })),
   ),
 });

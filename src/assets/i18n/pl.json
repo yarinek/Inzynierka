@@ -1,5 +1,6 @@
 {
     "settings": {
+      "title": "Ustawienia",
       "profile": "Ustawienia profilu",
       "site": "Ustawienia strony",
       "username": "Nazwa użytkownika",
@@ -11,6 +12,46 @@
         "instruction": "Język ćwiczeń",
         "pl": "Polski",
         "en": "Angielski"
+      },
+      "deckSettings": {
+        "title": "Ustawienia fiszek",
+        "field": {
+          "newCardsPerDay": "Liczba nowych kart dziennie",
+          "easyRate": "Współczynnik łatwości",
+          "hardRate": "Współczynnik trudności",
+          "maxInterval": "Maksymalny interwał",
+          "minIntervalIncrease": "Minimalny wzrost interwału",
+          "globalEaseModifier": "Mnożnik globalny",
+          "intervalRateAfterFail": "Mnożnik po niepowodzeniu",
+          "leechThreshold": "Próg utraty",
+          "newCardSteps": "Kroki nowej karty"
+        },
+        "tooltip": {
+          "newCardsPerDay": "Liczba nowych kart, które powinny pojawić się podczas powtórki",
+          "easyRate": "Mnożnik dla odpowiedzi 'łatwo', używany podczas obliczania daty kolejnej powtórki",
+          "hardRate": "Mnożnik dla odpowiedzi 'trudno', używany podczas obliczania daty kolejnej powtórki",
+          "maxInterval": "Maksymalny interwał (w dniach), który można użyć do określenia daty kolejnej powtórki",
+          "minIntervalIncrease": "Minimalny wzrost interwału (w dniach), używany do określenia daty kolejnej powtórki (dotyczy tylko nie-nowych kart i poprawnych odpowiedzi)",
+          "globalEaseModifier": "Mnożnik używany podczas obliczania daty kolejnej powtórki dla poprawnych odpowiedzi",
+          "intervalRateAfterFail": "Mnożnik używany do obliczania daty kolejnej powtórki, jeśli przekroczony jest próg nieprawidłowych odpowiedzi",
+          "leechThreshold": "Próg nieudanych odpowiedzi, po którym karta jest oznaczana jako trudna",
+          "newCardSteps": "Dla każdej nowej karty musisz udzielić tylu poprawnych odpowiedzi z rzędu, ile wynosi liczba zdefiniowanych kroków"
+        }
+      },
+      "grammarSettings": {
+        "title": "Ustawienia gramatyki",
+        "field": {
+          "maxInterval": "Maksymalny interwał",
+          "intervalRateAfterFail": "Mnożnik po niepowodzeniu",
+          "failThreshold": "Próg niepowodzenia",
+          "exercisesPerDay": "Liczba ćwiczeń dziennie"
+        },
+        "tooltip": {
+          "maxInterval": "Maksymalny interwał (w dniach), który można użyć do określenia daty kolejnej powtórki",
+          "intervalRateAfterFail": "Mnożnik używany do obliczania daty kolejnej powtórki, jeśli przekroczony jest próg nieprawidłowych odpowiedzi",
+          "failThreshold": "Próg nieprawidłowych odpowiedzi, po którym przypadek uznawany jest za nieudany",
+          "exercisesPerDay": "Liczba ćwiczeń, które powinny być wykonane w ramach przeglądu danego przypadku użycia; data kolejnej powtórki jest obliczana po przekroczeniu tego progu"
+        }
       },
       "updateAccount": {
         "title": "Aktualizacja konta",

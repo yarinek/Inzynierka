@@ -1,6 +1,7 @@
 
 {
     "settings": {
+      "title": "Settings",
       "profile": "Profile Settings",
       "site": "Site Settings",
       "username": "Username",
@@ -13,6 +14,46 @@
         "title": "Language",
         "pl": "Polish",
         "en": "English"
+      },
+      "deckSettings": {
+        "title": "Deck Settings",
+        "field": {
+          "newCardsPerDay": "New Cards Per Day",
+          "easyRate": "Easy Rate",
+          "hardRate": "Hard Rate",
+          "maxInterval": "Max Interval",
+          "minIntervalIncrease": "Min Interval Increase",
+          "globalEaseModifier": "Global Ease Modifier",
+          "intervalRateAfterFail": "Interval Rate After Fail",
+          "leechThreshold": "Leech Threshold",
+          "newCardSteps": "New Card Steps"
+        },
+        "tooltip": {
+          "newCardsPerDay": "The number of new cards that should appear during review",
+          "easyRate": "The multiplier for the 'easy' answer, used during calculation of the next review date",
+          "hardRate": "The multiplier for the 'hard' answer, used during calculation of the next review date",
+          "maxInterval": "The maximum interval (in days) that can be used in determining the date of the next review",
+          "minIntervalIncrease": "The minimum interval increase (in days) used in determining the date of the next review (applies only to non-new cards and correct answers)",
+          "globalEaseModifier": "The multiplier used during calculation of the next review date for correct answers",
+          "intervalRateAfterFail": "Multiplier used in calculating the date of the next review if the threshold of incorrect answers is exceeded",
+          "leechThreshold": "Threshold of failed answers after which card is marked as leech",
+          "newCardSteps": "For each new card, you must give as many correct answers in a row as the number of steps defined"
+        }
+      },
+      "grammarSettings": {
+        "title": "Grammar Settings",
+        "field": {
+          "maxInterval": "Max Interval",
+          "intervalRateAfterFail": "Interval Rate After Fail",
+          "failThreshold": "Fail Threshold",
+          "exercisesPerDay": "Exercises Per Day"
+        },
+        "tooltip": {
+          "maxInterval": "The maximum interval (in days) that can be used in determining the date of the next review",
+          "intervalRateAfterFail": "Multiplier used in calculating the date of the next review if the threshold of incorrect answers is exceeded",
+          "failThreshold": "Threshold of incorrect answers after which use case review is considered as failed",
+          "exercisesPerDay": "The number of exercises that should be performed as part of the review of a given use case; the date of the next review is calculated after passing this threshold"
+        }
       },
       "updateAccount": {
         "title": "Update Account",
