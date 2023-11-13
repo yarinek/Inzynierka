@@ -83,6 +83,7 @@
         "page": "Page",
         "table": {
             "front": "Front",
+            "cardType": "Card type",
             "back": "Back",
             "status": "Status",
             "reviews": "Reviews",
@@ -114,6 +115,9 @@
             "confirm": "Confirm",
             "save": "Save"
         }
+      },
+      "errors": {
+        "fileNotSupported": "File type not supported"
       }
 }
   

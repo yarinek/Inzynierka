@@ -2,16 +2,28 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { InputComponent } from '@app/shared/components/input/input.component';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { CardContentElementType, CardCreateRequest } from 'src/http-client';
+import { SelectOptionInterface } from '@app/shared/components/select/select.types';
+import { SelectComponent } from '@app/shared/components/select/select.component';
+import { FileUploadComponent } from '@app/shared/components/file-upload/file-upload.component';
+import { FileUploadTypes } from '@app/shared/components/file-upload/file-upload.types';
 
 @Component({
   selector: 'app-create-cards',
   standalone: true,
-  imports: [CommonModule, InputComponent, ReactiveFormsModule, MatButtonModule, TranslateModule],
+  imports: [
+    CommonModule,
+    InputComponent,
+    ReactiveFormsModule,
+    MatButtonModule,
+    TranslateModule,
+    SelectComponent,
+    FileUploadComponent,
+  ],
   templateUrl: './create-cards.component.html',
   styleUrls: ['./create-cards.component.scss'],
 })
@@ -20,10 +32,18 @@ export class CreateCardsComponent implements OnInit {
   store = inject(Store);
   fb = inject(FormBuilder);
   dialogData = inject(MAT_DIALOG_DATA) as CardCreateRequest | undefined;
+  fileTypes = FileUploadTypes;
+  cardTypeOption: SelectOptionInterface[] = [
+    { value: CardContentElementType.Text, label: 'Text' },
+    { value: CardContentElementType.Audio, label: 'Audio' },
+    { value: CardContentElementType.Image, label: 'Image' },
+  ];
 
   formArray = this.fb.array([
     this.fb.group({
+      frontType: [CardContentElementType.Text, Validators.required],
       front: ['', Validators.required],
+      backType: [CardContentElementType.Text, Validators.required],
       back: ['', Validators.required],
     }),
   ]);
@@ -51,7 +71,16 @@ export class CreateCardsComponent implements OnInit {
   }
 
   onConfirm(): void {
-    this.dialogRef.close(this.convertToCreateCardRequest(this.formArray.value as { front: string; back: string }[]));
+    this.dialogRef.close(
+      this.convertToCreateCardRequest(
+        this.formArray.value as {
+          frontType: CardContentElementType;
+          front: string;
+          backType: CardContentElementType;
+          back: string;
+        }[],
+      ),
+    );
   }
 
   onDismiss(): void {
@@ -61,7 +90,9 @@ export class CreateCardsComponent implements OnInit {
   addForm(): void {
     this.formArray.push(
       this.fb.group({
+        frontType: [CardContentElementType.Text, Validators.required],
         front: ['', Validators.required],
+        backType: [CardContentElementType.Text, Validators.required],
         back: ['', Validators.required],
       }),
     );
@@ -71,7 +102,9 @@ export class CreateCardsComponent implements OnInit {
     this.formArray.removeAt(this.formArray.length - 1);
   }
 
-  convertToCreateCardRequest(data: { front: string; back: string }[]): CardCreateRequest {
+  convertToCreateCardRequest(
+    data: { frontType: CardContentElementType; front: string; backType: CardContentElementType; back: string }[],
+  ): CardCreateRequest {
     const result: CardCreateRequest = {
       front: [],
       back: [],
@@ -79,12 +112,12 @@ export class CreateCardsComponent implements OnInit {
 
     data.forEach((card) => {
       result.front.push({
-        type: CardContentElementType.Text,
+        type: card.frontType,
         content: card.front,
       });
 
       result.back.push({
-        type: CardContentElementType.Text,
+        type: card.backType,
         content: card.back,
       });
     });
@@ -92,7 +125,9 @@ export class CreateCardsComponent implements OnInit {
     return result;
   }
 
-  convertToFormArray(data: CardCreateRequest): { front: string; back: string }[] {
+  convertToFormArray(
+    data: CardCreateRequest,
+  ): { frontType: CardContentElementType; front: string; backType: CardContentElementType; back: string }[] {
     const result = [];
 
     for (let i = 0; i < data.front.length; i++) {
@@ -100,11 +135,17 @@ export class CreateCardsComponent implements OnInit {
       const backContent = data.back[i].content;
 
       result.push({
+        frontType: data.front[i].type,
         front: frontContent,
+        backType: data.back[i].type,
         back: backContent,
       });
     }
 
     return result;
+  }
+
+  protected onFileSelected(file: File, control: AbstractControl): void {
+    control.patchValue(file);
   }
 }

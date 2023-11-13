@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Card, CardContentElement } from 'src/http-client';
+import { Card, CardContentElement, CardContentElementType } from 'src/http-client';
 
 @Component({
   selector: 'app-carousel',
@@ -37,6 +37,8 @@ export class CarouselComponent {
   @Input() flip: 'inactive' | 'active' = 'inactive';
 
   currentSlide = 0;
+
+  contentType = CardContentElementType;
 
   get slidesFront(): CardContentElement[] {
     return this.card?.front as CardContentElement[];

@@ -4,11 +4,11 @@
       <div class="tp-box" (click)="toggleFlip()" [@flipState]="flip">
         <div
           [@flipState]="flip"
-          class="tp-box__side tp-box__front d-flex justify-content-center align-items-center"
+          class="tp-box__side d-flex justify-content-center align-items-center"
           [class]="flip === 'inactive' ? 'tp-box__front' : 'tp-box__back'"
           (click)="toggleFlip()"
         >
-          {{ slide.content }}
+          <ng-container *ngTemplateOutlet="displayContent; context: { content: slide.content, type: slide.type }" />
         </div>
       </div>
     </div>
@@ -21,3 +21,22 @@
     <span class="arrow right"></span>
   </button>
 </div>
+
+<ng-template #displayContent let-content="content" let-type="type">
+  <ng-container [ngSwitch]="type">
+    <ng-container *ngSwitchCase="contentType.Text">
+      {{ content }}
+    </ng-container>
+    <ng-container *ngSwitchCase="contentType.Image">
+      <div class="cardImage">
+        <img [src]="content" />
+      </div>
+    </ng-container>
+    <ng-container *ngSwitchCase="contentType.Audio">
+      <audio controls>
+        <source [src]="content" type="audio/mpeg" />
+        Your browser does not support the audio element.
+      </audio>
+    </ng-container>
+  </ng-container>
+</ng-template>

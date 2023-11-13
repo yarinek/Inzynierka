@@ -81,6 +81,7 @@
         "page": "Strona",
         "table": {
             "front": "Przód",
+            "cardType": "Typ fiszki",
             "back": "Tył",
             "status": "Status",
             "reviews": "Recenzje",
@@ -112,5 +113,8 @@
             "confirm": "Potwierdź",
             "save": "Zapisz"
         }
+      },
+      "errors": {
+        "fileNotSupported": "Typ pliku nie jest obsługiwany"
       }
   }

@@ -4,8 +4,31 @@ import { selectActiveDeck } from '@app/content/decks/store/reducers';
 import { LoaderService } from '@app/shared/components/loader/loader.service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { catchError, combineLatest, filter, finalize, map, of, switchMap, tap, withLatestFrom } from 'rxjs';
-import { Card, CardsPage, CardsService, ScheduleService } from 'src/http-client';
+import {
+  catchError,
+  combineLatest,
+  concatMap,
+  filter,
+  finalize,
+  forkJoin,
+  from,
+  map,
+  Observable,
+  of,
+  switchMap,
+  tap,
+  toArray,
+  withLatestFrom,
+} from 'rxjs';
+import {
+  Card,
+  CardContentElement,
+  CardContentElementType,
+  CardsPage,
+  CardsService,
+  ResourcesService,
+  ScheduleService,
+} from 'src/http-client';
 
 import { cardsActions } from './actions';
 import { selectPreviewCard } from './reducers';
@@ -172,20 +195,48 @@ export const redirectIfNoActiveCardEffect = createEffect(
 );
 
 export const createCardEffect = createEffect(
-  (actions$ = inject(Actions), cardsService = inject(CardsService), store = inject(Store)) => {
+  (
+    actions$ = inject(Actions),
+    cardsService = inject(CardsService),
+    resourcesService = inject(ResourcesService),
+    store = inject(Store),
+  ) => {
     return actions$.pipe(
       ofType(cardsActions.createcard),
       withLatestFrom(store.select(selectActiveDeck)),
       tap(() => LoaderService.showLoader()),
-      switchMap(([{ cardCreateRequest }, deck]) =>
-        cardsService.createCard(deck?.id as string, cardCreateRequest).pipe(
-          map((card) => cardsActions.createcardSuccess({ card })),
-          catchError(() => {
-            return of(cardsActions.createcardFailure());
-          }),
-          finalize(() => LoaderService.hideLoader()),
-        ),
-      ),
+      switchMap(([{ cardCreateRequest }, deck]) => {
+        // Define a function to handle file upload for an array of content elements
+        const uploadFiles = (contentElements: Array<CardContentElement>): Observable<CardContentElement[]> =>
+          from(contentElements).pipe(
+            concatMap((contentElement) => {
+              if (contentElement.type !== CardContentElementType.Text) {
+                // Assuming uploadFile returns an Observable<string>
+
+                return resourcesService.uploadResource(contentElement.content as unknown as File).pipe(
+                  map((res) => ({ ...contentElement, content: res.url as string })),
+                  catchError(() => of(contentElement)), // Handle error if needed
+                );
+              } else {
+                return of(contentElement);
+              }
+            }),
+            toArray(), // Collect all results back into an array
+          );
+
+        return forkJoin({
+          front: uploadFiles(cardCreateRequest.front),
+          back: uploadFiles(cardCreateRequest.back),
+        }).pipe(
+          switchMap((updatedCardCreateRequest) =>
+            cardsService.createCard(deck?.id as string, updatedCardCreateRequest).pipe(
+              map((card) => cardsActions.createcardSuccess({ card })),
+              catchError(() => of(cardsActions.createcardFailure())),
+              finalize(() => LoaderService.hideLoader()),
+            ),
+          ),
+        );
+      }),
     );
   },
   { functional: true },
@@ -202,20 +253,50 @@ export const redirectAfterCreateCard = createEffect(
 );
 
 export const editCardEffect = createEffect(
-  (actions$ = inject(Actions), cardsService = inject(CardsService), store = inject(Store)) => {
+  (
+    actions$ = inject(Actions),
+    cardsService = inject(CardsService),
+    resourcesService = inject(ResourcesService),
+    store = inject(Store),
+  ) => {
     return actions$.pipe(
       ofType(cardsActions.editcard),
       withLatestFrom(store.select(selectActiveDeck)),
       tap(() => LoaderService.showLoader()),
-      switchMap(([{ cardId, cardUpdateRequest }, deck]) =>
-        cardsService.patchCard(deck?.id as string, cardId, cardUpdateRequest).pipe(
-          map(() => cardsActions.editcardSuccess()),
-          catchError(() => {
-            return of(cardsActions.editcardFailure());
-          }),
-          finalize(() => LoaderService.hideLoader()),
-        ),
-      ),
+      switchMap(([{ cardId, cardUpdateRequest }, deck]) => {
+        // Define a function to handle file upload for an array of content elements
+        const uploadFiles = (contentElements: Array<CardContentElement>): Observable<CardContentElement[]> =>
+          from(contentElements).pipe(
+            concatMap((contentElement) => {
+              if (contentElement.type !== CardContentElementType.Text && typeof contentElement.content !== 'string') {
+                // Assuming uploadFile returns an Observable<string>
+
+                return resourcesService.uploadResource(contentElement.content as unknown as File).pipe(
+                  map((res) => ({ ...contentElement, content: res.url as string })),
+                  catchError(() => of(contentElement)), // Handle error if needed
+                );
+              } else {
+                return of(contentElement);
+              }
+            }),
+            toArray(), // Collect all results back into an array
+          );
+
+        return forkJoin({
+          front: uploadFiles(cardUpdateRequest.front),
+          back: uploadFiles(cardUpdateRequest.back),
+        }).pipe(
+          switchMap((updatedCardCreateRequest) =>
+            cardsService.patchCard(deck?.id as string, cardId, updatedCardCreateRequest).pipe(
+              map(() => cardsActions.editcardSuccess()),
+              catchError(() => {
+                return of(cardsActions.editcardFailure());
+              }),
+              finalize(() => LoaderService.hideLoader()),
+            ),
+          ),
+        );
+      }),
     );
   },
   { functional: true },

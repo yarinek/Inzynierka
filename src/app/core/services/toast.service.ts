@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { TranslateService } from '@ngx-translate/core';
 
 /**
  * Available toastr type
@@ -11,7 +12,8 @@ export type ToastrType = 'info' | 'success' | 'error' | 'warn';
  */
 @Injectable()
 export class ToastrService {
-  constructor(private toastService: MatSnackBar) {}
+  toastService = inject(MatSnackBar);
+  translate = inject(TranslateService);
 
   /**
    * Show info toastr
@@ -49,7 +51,7 @@ export class ToastrService {
    * @param override configuration of the toastr display
    */
   private show(type: ToastrType, message: string, title = 'Close'): void {
-    this.toastService.open(message, title, {
+    this.toastService.open(this.translate.instant(message) as string, title, {
       panelClass: [`toast-${type}`],
       horizontalPosition: 'right',
       verticalPosition: 'top',

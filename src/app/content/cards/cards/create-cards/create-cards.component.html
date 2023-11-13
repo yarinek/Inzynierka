@@ -6,10 +6,32 @@
       <h5>{{ "cards.page" | translate }}: {{ i + 1 }}</h5>
       <form class="container d-flex flex-column justify-content-center" [formGroup]="form">
         <div class="row">
-          <app-input formControlName="front" placeholder="{{ 'cards.table.front' | translate }}"></app-input>
+          <app-select
+            formControlName="frontType"
+            placeholder="{{ 'cards.table.cardType' | translate }}"
+            [options]="cardTypeOption"
+            #frontType
+          ></app-select>
+          <ng-container
+            *ngTemplateOutlet="
+              displayCardByType;
+              context: { controlName: 'front', form, type: form.get('frontType')?.value }
+            "
+          />
         </div>
         <div class="row">
-          <app-input formControlName="back" placeholder="{{ 'cards.table.back' | translate }}"></app-input>
+          <app-select
+            formControlName="backType"
+            placeholder="{{ 'cards.table.cardType' | translate }}"
+            [options]="cardTypeOption"
+            #backType
+          ></app-select>
+          <ng-container
+            *ngTemplateOutlet="
+              displayCardByType;
+              context: { controlName: 'back', form, type: form.get('backType')?.value }
+            "
+          />
         </div>
       </form>
     </ng-container>
@@ -38,3 +60,27 @@
     </div>
   </div>
 </div>
+
+<ng-template #displayCardByType let-controlName="controlName" let-form="form" let-type="type">
+  <div [formGroup]="form">
+    <ng-container [ngSwitch]="type">
+      <app-input
+        *ngSwitchCase="'TEXT'"
+        [formControlName]="controlName"
+        [placeholder]="'cards.table.' + controlName | translate"
+      ></app-input>
+      <app-file-upload
+        *ngSwitchCase="'IMAGE'"
+        [type]="fileTypes.IMAGE"
+        (emitFile)="onFileSelected($event!, form.get(controlName))"
+      >
+      </app-file-upload>
+      <app-file-upload
+        *ngSwitchCase="'AUDIO'"
+        [type]="fileTypes.AUDIO"
+        (emitFile)="onFileSelected($event!, form.get(controlName))"
+      >
+      </app-file-upload>
+    </ng-container>
+  </div>
+</ng-template>
