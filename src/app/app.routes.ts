@@ -33,4 +33,9 @@ export const appRoutes: Route[] = [
     canActivate: [canActivateLoggedRoutesFn],
     loadChildren: () => import('./content/cards/cards.routes').then((m) => m.cardRoutes),
   },
+  {
+    path: 'exercises',
+    canActivate: [canActivateLoggedRoutesFn],
+    loadChildren: () => import('./content/exercises/exercises.routes').then((m) => m.exercisesRoutes),
+  },
 ];

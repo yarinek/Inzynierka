@@ -101,6 +101,21 @@
           "removeForm": "Remove page"
         }
       },
+      "exercises": {
+        "createExercise": "Create exercise",
+        "editExercise": "Edit exercise",
+        "instruction": "Instruction",
+        "body": "Body",
+        "answer": "Answers",
+        "useCase": "Use case",
+        "grammar": "Grammar",
+        "addAnswer": "Add next answer",
+        "table": {
+          "instruction": "Instruction",
+          "useCase": "Use case",
+          "grammar":"Grammar"
+        }
+      },
       "common": {
         "table": {
             "itemsPerPage": "Items per page:",

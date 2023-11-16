@@ -1,0 +1,55 @@
+<div class="container" *ngIf="data$ | async as data">
+  <!-- <h2 mat-dialog-title>{{ (isEdit ? "decks.editDeck" : "decks.createDeck") | translate }}</h2> -->
+  <h2 mat-dialog-title>{{ "exercises.createExercise" | translate }}</h2>
+
+  <div mat-dialog-content>
+    <form class="container d-flex flex-column justify-content-center" [formGroup]="form">
+      <div class="row">
+        <app-input formControlName="instruction" placeholder="{{ 'exercises.instruction' | translate }}"></app-input>
+      </div>
+      <div class="row">
+        <app-input formControlName="body" placeholder="{{ 'exercises.body' | translate }}"></app-input>
+      </div>
+      <h5>{{ "exercises.answer" | translate }}</h5>
+      <div class="row" *ngFor="let answer of correctValues.controls; let i = index" [formGroupName]="'correctValues'">
+        <div class="col-10">
+          <app-input formControlName="{{ i }}"></app-input>
+        </div>
+        <div class="col-2">
+          <mat-icon class="icon" *ngIf="i !== 0" (click)="removeAnswer(i)">close</mat-icon>
+        </div>
+      </div>
+      <button mat-raised-button color="primary" class="m-1" (click)="addAnswer()">
+        {{ "exercises.addAnswer" | translate }}
+      </button>
+      <div class="row">
+        <app-select
+          [options]="data.grammarList"
+          formControlName="grammar"
+          placeholder="{{ 'exercises.grammar' | translate }}"
+        ></app-select>
+      </div>
+      <div class="row" *ngIf="form.get('grammar')?.value">
+        <app-select
+          [options]="getUseCases(data.grammarList)"
+          formControlName="useCase"
+          placeholder="{{ 'exercises.useCase' | translate }}"
+        ></app-select>
+      </div>
+    </form>
+  </div>
+
+  <div mat-dialog-actions>
+    <div class="d-flex-center">
+      <button mat-raised-button color="primary" class="m-1" (click)="onDismiss()">
+        {{ "common.buttons.close" | translate }}
+      </button>
+      <!-- <button [disabled]="form.invalid" mat-raised-button color="primary" class="m-1" (click)="onConfirm()">
+        {{ (isEdit ? "decks.editDeck" : "decks.createDeck") | translate }}
+      </button> -->
+      <button [disabled]="form.invalid" mat-raised-button color="primary" class="m-1" (click)="onConfirm()">
+        {{ "exercises.createExercise" | translate }}
+      </button>
+    </div>
+  </div>
+</div>

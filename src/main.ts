@@ -19,6 +19,7 @@ import { settingsFeatureKey, settingsReducer } from '@app/content/settings/store
 import * as settingsEffects from '@app/content/settings/store/effects';
 import * as decksEffects from '@app/content/decks/store/effects';
 import * as cardsEffects from '@app/content/cards/store/effects';
+import * as exercisesEffects from '@app/content/exercises/store/effects';
 import { MatSnackBarModule, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { ToastrService } from '@app/core/services/toast.service';
 import { decksFeatureKey, decksReducer } from '@app/content/decks/store/reducers';
@@ -27,6 +28,7 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateService } from '@ngx-translate/core';
 import { MatPaginatorIntl } from '@angular/material/paginator';
+import { exerciseReducer, exercisesFeatureKey } from '@app/content/exercises/store/reducers';
 
 import { AppComponent } from './app/app.component';
 
@@ -62,12 +64,13 @@ bootstrapApplication(AppComponent, {
     provideHttpClient(withInterceptors([authorizationInterceptor])),
     provideRouter(appRoutes),
     provideStore({ router: routerReducer }),
-    provideEffects(settingsEffects, authEffects, exampleEffects, decksEffects, cardsEffects),
+    provideEffects(settingsEffects, authEffects, exampleEffects, decksEffects, cardsEffects, exercisesEffects),
     provideState(authFeatureKey, authReducer),
     provideState(exampleFeatureKey, exampleReducer),
     provideState(settingsFeatureKey, settingsReducer),
     provideState(decksFeatureKey, decksReducer),
     provideState(cardsFeatureKey, cardsReducer),
+    provideState(exercisesFeatureKey, exerciseReducer),
     provideRouterStore(),
     // Devtools configuration
     provideStoreDevtools({

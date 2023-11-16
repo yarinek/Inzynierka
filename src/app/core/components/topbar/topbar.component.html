@@ -2,9 +2,12 @@
   <mat-toolbar color="primary" class="toolbar">
     <mat-toolbar-row>
       <div class="row w-100">
-        <div class="col-7">
+        <div class="col-5">
           <span>Logo/Title</span>
           <span class="example-spacer"></span>
+        </div>
+        <div class="col-2 d-flex align-items-center justify-content-end">
+          <button class="w-25" [routerLink]="'/exercises'" mat-icon-button>Gramatyka</button>
         </div>
         <div class="col-2 d-flex align-items-center justify-content-end">
           <button class="w-25" [routerLink]="'/decks'" mat-icon-button>Fiszki</button>

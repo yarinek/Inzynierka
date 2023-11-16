@@ -99,6 +99,21 @@
           "removeForm": "Usuń stronę"
         }
       },
+      "exercises": {
+        "createExercise": "Utwórz ćwiczenie",
+        "editExercise": "Edytuj ćwiczenie",
+        "instruction": "Polecenie",
+        "body": "Treść",
+        "answer": "Odpowiedzi",
+        "useCase": "Przypadek użycia",
+        "grammar": "Gramatyka",
+        "addAnswer": "Dodaj kolejną odpowiedź",
+        "table": {
+          "instruction": "Polecenie",
+          "useCase": "Przypadek użycia",
+          "grammar":"Gramatyka"
+        }
+      },
       "common": {
         "table": {
             "itemsPerPage": "Elementy na stronie:",
