@@ -1,6 +1,6 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { routerNavigationAction } from '@ngrx/router-store';
-import { GrammarExerciseSummary, GrammarListEntry } from 'src/http-client';
+import { GrammarExercise, GrammarExerciseSummary, GrammarListEntry } from 'src/http-client';
 
 import { exercisesActions } from './actions';
 
@@ -8,10 +8,14 @@ const initialState: {
   dataSource: GrammarExerciseSummary[];
   totalElements: number;
   grammarList: GrammarListEntry[];
+  currentExercise: GrammarExercise | null;
+  currentExerciseId: string | null;
 } = {
   totalElements: 0,
   dataSource: [],
   grammarList: [],
+  currentExerciseId: null,
+  currentExercise: null,
 };
 
 const exercisesFeature = createFeature({
@@ -28,6 +32,9 @@ const exercisesFeature = createFeature({
       ...state,
     })),
     on(exercisesActions.getgrammarlistSuccess, (state, action) => ({ ...state, grammarList: action.grammarList })),
+    on(exercisesActions.getexerciseSuccess, (state, action) => ({ ...state, currentExercise: action.exercise })),
+    on(exercisesActions.editexerciseSuccess, (state) => ({ ...state, currentExercise: null })),
+    on(exercisesActions.previewexercise, (state, action) => ({ ...state, currentExerciseId: action.exerciseId })),
     on(routerNavigationAction, (state) => ({ ...state })),
   ),
 });
@@ -38,4 +45,6 @@ export const {
   selectDataSource,
   selectTotalElements,
   selectGrammarList,
+  selectCurrentExercise,
+  selectCurrentExerciseId,
 } = exercisesFeature;

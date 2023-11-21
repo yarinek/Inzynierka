@@ -114,6 +114,10 @@
           "instruction": "Instruction",
           "useCase": "Use case",
           "grammar":"Grammar"
+        },
+        "exercise": {
+          "answer": "Answer",
+          "suspend": "Suspend"
         }
       },
       "common": {

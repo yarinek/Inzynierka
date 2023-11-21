@@ -1,5 +1,11 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { GrammarExerciseSummary, GrammarExerciseUpsert, GrammarListEntry } from 'src/http-client';
+import {
+  GrammarExercise,
+  GrammarExerciseSummary,
+  GrammarExerciseUpsert,
+  GrammarListEntry,
+  SubmittedExerciseReviewAnswer,
+} from 'src/http-client';
 
 export const exercisesActions = createActionGroup({
   source: 'exercises',
@@ -10,11 +16,21 @@ export const exercisesActions = createActionGroup({
     createExercise: props<{ grammarExerciseUpsert: GrammarExerciseUpsert }>(),
     'createExercise Success': emptyProps(),
     'createExercise Failure': emptyProps(),
+    editExercise: props<{ exerciseId: string; grammarExerciseUpsert: GrammarExerciseUpsert }>(),
+    'editExercise Success': emptyProps(),
+    'editExercise Failure': emptyProps(),
     deleteExercise: props<{ exerciseId: string }>(),
     'deleteExercise Success': emptyProps(),
     'deleteExercise Failure': emptyProps(),
     getGrammarList: emptyProps(),
     'getGrammarList Success': props<{ grammarList: GrammarListEntry[] }>(),
     'getGrammarList Failure': emptyProps(),
+    getExercise: emptyProps(),
+    'getExercise Success': props<{ exercise: GrammarExercise }>(),
+    'getExercise Failure': emptyProps(),
+    submitAnswer: props<{ answers: SubmittedExerciseReviewAnswer }>(),
+    'submitAnswer Success': emptyProps(),
+    'submitAnswer Failure': emptyProps(),
+    previewExercise: props<{ exerciseId: string }>(),
   },
 });

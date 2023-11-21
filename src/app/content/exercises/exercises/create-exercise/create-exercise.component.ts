@@ -1,15 +1,15 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { InputComponent } from '@app/shared/components/input/input.component';
 import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { SelectComponent } from '@app/shared/components/select/select.component';
 import { TranslateModule } from '@ngx-translate/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { MatIconModule } from '@angular/material/icon';
 import { combineLatest, map } from 'rxjs';
-import { GrammarListEntry } from 'src/http-client';
+import { GrammarExercise, GrammarListEntry } from 'src/http-client';
 import { SelectOptionInterface } from '@app/shared/components/select/select.types';
 
 import { selectGrammarList } from '../../store/reducers';
@@ -30,12 +30,12 @@ import { selectGrammarList } from '../../store/reducers';
   templateUrl: './create-exercise.component.html',
   styleUrls: ['./create-exercise.component.scss'],
 })
-export class CreateExerciseComponent {
+export class CreateExerciseComponent implements OnInit {
   dialogRef = inject(MatDialogRef);
   store = inject(Store);
   fb = inject(FormBuilder);
 
-  //dialogData: { name: string; language: string } = inject(MAT_DIALOG_DATA);
+  dialogData: GrammarExercise = inject(MAT_DIALOG_DATA) as GrammarExercise;
 
   data$ = combineLatest({
     grammarList: this.store.select(selectGrammarList).pipe(
@@ -61,13 +61,19 @@ export class CreateExerciseComponent {
     return this.form.get('correctValues') as FormArray;
   }
 
-  /* get isEdit(): boolean {
+  get isEdit(): boolean {
     return !!this.dialogData;
-  } */
+  }
 
-  /* ngOnInit(): void {
-    this.form.patchValue({ ...this.dialogData });
-  } */
+  ngOnInit(): void {
+    const { answers, ...rest } = this.dialogData;
+    const { correctValues } = answers[0];
+    correctValues.forEach((_, i) => {
+      if (i == 0) return;
+      this.addAnswer();
+    });
+    this.form.patchValue({ ...rest, correctValues });
+  }
 
   addAnswer(): void {
     this.correctValues.push(this.fb.control('', Validators.required));

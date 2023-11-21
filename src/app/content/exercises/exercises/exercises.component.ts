@@ -7,9 +7,9 @@ import { ExercisesService, GrammarExercise, GrammarExerciseUpsert } from 'src/ht
 import { Store } from '@ngrx/store';
 import { MatDialog } from '@angular/material/dialog';
 import { TableColumnType, TableConfig } from '@app/shared/types/tableConfig.interface';
-import { combineLatest, filter } from 'rxjs';
+import { combineLatest, filter, firstValueFrom } from 'rxjs';
 
-import { selectDataSource, selectTotalElements } from '../store/reducers';
+import { selectCurrentExercise, selectDataSource, selectTotalElements } from '../store/reducers';
 import { exercisesActions } from '../store/actions';
 import { CreateExerciseComponent } from './create-exercise/create-exercise.component';
 
@@ -34,14 +34,15 @@ export class ExercisesComponent implements OnInit {
       value: 'actions',
       type: TableColumnType.ACTIONS,
       actions: [
-        /* {
+        {
           name: 'common.buttons.preview',
-          action: (row: Deck): void => this.setActiveDeck(row),
+          action: (row: GrammarExercise): void =>
+            this.store.dispatch(exercisesActions.previewexercise({ exerciseId: row.id as string })),
         },
         {
           name: 'common.buttons.edit',
-          action: (row: Deck): void => this.editDeck(row.id as string, row.name as string, row.language as string),
-        }, */
+          action: (row: GrammarExercise): void => void this.editExercise(row.id as string),
+        },
         {
           name: 'common.buttons.delete',
           action: (row: GrammarExercise): void =>
@@ -76,6 +77,26 @@ export class ExercisesComponent implements OnInit {
       .pipe(filter((r) => !!r))
       .subscribe((grammarExerciseUpsert: GrammarExerciseUpsert) => {
         this.store.dispatch(exercisesActions.createexercise({ grammarExerciseUpsert }));
+      });
+  }
+
+  async editExercise(exerciseId: string): Promise<void> {
+    this.store.dispatch(exercisesActions.previewexercise({ exerciseId }));
+    this.store.dispatch(exercisesActions.getexercise());
+    const exercise = await firstValueFrom(this.store.select(selectCurrentExercise).pipe(filter((r) => !!r)));
+    const dialogRef = this.dialog.open(CreateExerciseComponent, {
+      width: '500px',
+      height: '300px',
+      data: {
+        ...exercise,
+      },
+    });
+
+    dialogRef
+      .afterClosed()
+      .pipe(filter((r) => !!r))
+      .subscribe((grammarExerciseUpsert: GrammarExerciseUpsert) => {
+        this.store.dispatch(exercisesActions.editexercise({ exerciseId, grammarExerciseUpsert }));
       });
   }
 }

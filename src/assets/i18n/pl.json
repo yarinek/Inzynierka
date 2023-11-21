@@ -112,6 +112,10 @@
           "instruction": "Polecenie",
           "useCase": "Przypadek użycia",
           "grammar":"Gramatyka"
+        },
+        "exercise": {
+          "answer": "Odpowiedź",
+          "suspend": "Wstrzymaj"
         }
       },
       "common": {
