@@ -139,7 +139,8 @@
         }
       },
       "errors": {
-        "fileNotSupported": "File type not supported"
+        "fileNotSupported": "File type not supported",
+        "noScheduledExercises": "You have finished repeating scheduled exercises or you have not activated grammar use cases in the settings"
       }
 }
   

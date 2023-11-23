@@ -1,5 +1,6 @@
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { ToastrService } from '@app/core/services/toast.service';
 import { LoaderService } from '@app/shared/components/loader/loader.service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
@@ -314,13 +315,14 @@ export const startActivityEffect = createEffect(
 );
 
 export const startExerciseAfterStartActivityEffect = createEffect(
-  (actions$ = inject(Actions), store = inject(Store)) => {
+  (actions$ = inject(Actions), store = inject(Store), toast = inject(ToastrService)) => {
     return actions$.pipe(
       ofType(exercisesActions.startactivitySuccess),
       withLatestFrom(store.select(selectScheduledExercises)),
       tap(() => LoaderService.showLoader()),
       map(([, exercises]) => {
         if (exercises.length === 0) {
+          toast.info('errors.noScheduledExercises');
           return exercisesActions.startexerciseFailure();
         }
         return exercisesActions.startexercise({ exerciseId: exercises.shift() as string });

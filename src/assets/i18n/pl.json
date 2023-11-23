@@ -137,6 +137,7 @@
         }
       },
       "errors": {
-        "fileNotSupported": "Typ pliku nie jest obsługiwany"
+        "fileNotSupported": "Typ pliku nie jest obsługiwany",
+        "noScheduledExercises": "Skonczyles powtarzać zaplanowane ćwiczenia lub nie aktywowałeś zagadnień gramatycznych w ustawieniach"
       }
   }
