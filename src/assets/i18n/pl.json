@@ -102,6 +102,9 @@
       "exercises": {
         "createExercise": "Utwórz ćwiczenie",
         "editExercise": "Edytuj ćwiczenie",
+        "startActivity":"Rozpocznij ćwiczenia",
+        "imgUrl": "Obraz",
+        "audioUrl": "Audio",
         "instruction": "Polecenie",
         "body": "Treść",
         "answer": "Odpowiedzi",

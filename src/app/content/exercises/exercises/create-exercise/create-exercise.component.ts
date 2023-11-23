@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { InputComponent } from '@app/shared/components/input/input.component';
-import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { SelectComponent } from '@app/shared/components/select/select.component';
 import { TranslateModule } from '@ngx-translate/core';
@@ -11,6 +11,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { combineLatest, map } from 'rxjs';
 import { GrammarExercise, GrammarListEntry } from 'src/http-client';
 import { SelectOptionInterface } from '@app/shared/components/select/select.types';
+import { FileUploadComponent } from '@app/shared/components/file-upload/file-upload.component';
+import { FileUploadTypes } from '@app/shared/components/file-upload/file-upload.types';
 
 import { selectGrammarList } from '../../store/reducers';
 
@@ -26,6 +28,7 @@ import { selectGrammarList } from '../../store/reducers';
     TranslateModule,
     MatIconModule,
     SelectComponent,
+    FileUploadComponent,
   ],
   templateUrl: './create-exercise.component.html',
   styleUrls: ['./create-exercise.component.scss'],
@@ -35,6 +38,7 @@ export class CreateExerciseComponent implements OnInit {
   store = inject(Store);
   fb = inject(FormBuilder);
 
+  fileTypes = FileUploadTypes;
   dialogData: GrammarExercise = inject(MAT_DIALOG_DATA) as GrammarExercise;
 
   data$ = combineLatest({
@@ -55,6 +59,8 @@ export class CreateExerciseComponent implements OnInit {
     correctValues: this.fb.array([this.fb.control('', Validators.required)]),
     useCase: ['', Validators.required],
     grammar: ['', Validators.required],
+    audioUrl: [''],
+    imgUrl: [''],
   });
 
   get correctValues(): FormArray {
@@ -66,6 +72,12 @@ export class CreateExerciseComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.dialogData) {
+      this.initializeForm();
+    }
+  }
+
+  initializeForm(): void {
     const { answers, ...rest } = this.dialogData;
     const { correctValues } = answers[0];
     correctValues.forEach((_, i) => {
@@ -105,5 +117,9 @@ export class CreateExerciseComponent implements OnInit {
     }[],
   ): SelectOptionInterface[] {
     return data.find((el) => el.value === this.form.get('grammar')?.value)?.useCases || [];
+  }
+
+  protected onFileSelected(file: File, control: AbstractControl): void {
+    control.patchValue(file);
   }
 }

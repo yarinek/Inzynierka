@@ -4,6 +4,7 @@ import {
   GrammarExerciseSummary,
   GrammarExerciseUpsert,
   GrammarListEntry,
+  ScheduledGrammarExercise,
   SubmittedExerciseReviewAnswer,
 } from 'src/http-client';
 
@@ -31,6 +32,15 @@ export const exercisesActions = createActionGroup({
     submitAnswer: props<{ answers: SubmittedExerciseReviewAnswer }>(),
     'submitAnswer Success': emptyProps(),
     'submitAnswer Failure': emptyProps(),
+    startActivity: emptyProps(),
+    'startActivity Success': props<{ exercises: string[] }>(),
+    'startActivity Failure': emptyProps(),
+    startExercise: props<{ exerciseId: string }>(),
+    'startExercise Success': props<{ exercise: ScheduledGrammarExercise }>(),
+    'startExercise Failure': emptyProps(),
     previewExercise: props<{ exerciseId: string }>(),
+
+    //utils
+    setActiveExerciseId: props<{ exerciseId: string }>(),
   },
 });

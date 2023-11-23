@@ -10,19 +10,30 @@
       </div>
     </div>
   </div>
-  <div class="row">
-    <div class="col-12">
-      <app-input [formControl]="answer" placeholder="{{ 'exercises.exercise.answer' | translate }}"></app-input>
-    </div>
+  <div *ngIf="data.exercise?.imgUrl" class="row d-flex justify-content-center">
+    <img [src]="data.exercise?.imgUrl" class="img-fluid img-border" />
   </div>
-  <div class="row" *ngIf="!isPreview">
-    <div class="col-12">
-      <button mat-raised-button color="primary" class="m-1" (click)="saveAnswer(true)">
-        {{ "common.buttons.confirm" | translate }}
-      </button>
-      <button [disabled]="answer.invalid" mat-raised-button color="primary" class="m-1" (click)="saveAnswer()">
-        {{ "common.buttons.confirm" | translate }}
-      </button>
-    </div>
+  <div *ngIf="data.exercise?.audioUrl" class="row d-flex justify-content-center">
+    <audio controls>
+      <source [src]="data.exercise?.audioUrl" type="audio/mpeg" />
+      Your browser does not support the audio element.
+    </audio>
   </div>
+  <ng-container *ngIf="!isPreview">
+    <div class="row">
+      <div class="col-12">
+        <app-input [formControl]="answer" placeholder="{{ 'exercises.exercise.answer' | translate }}"></app-input>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <button mat-raised-button color="primary" class="m-1" (click)="saveAnswer(true)">
+          {{ "common.buttons.confirm" | translate }}
+        </button>
+        <button [disabled]="answer.invalid" mat-raised-button color="primary" class="m-1" (click)="saveAnswer()">
+          {{ "common.buttons.confirm" | translate }}
+        </button>
+      </div>
+    </div>
+  </ng-container>
 </div>

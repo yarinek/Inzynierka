@@ -81,7 +81,7 @@ export class ExercisesComponent implements OnInit {
   }
 
   async editExercise(exerciseId: string): Promise<void> {
-    this.store.dispatch(exercisesActions.previewexercise({ exerciseId }));
+    this.store.dispatch(exercisesActions.setactiveexerciseid({ exerciseId }));
     this.store.dispatch(exercisesActions.getexercise());
     const exercise = await firstValueFrom(this.store.select(selectCurrentExercise).pipe(filter((r) => !!r)));
     const dialogRef = this.dialog.open(CreateExerciseComponent, {
@@ -98,5 +98,9 @@ export class ExercisesComponent implements OnInit {
       .subscribe((grammarExerciseUpsert: GrammarExerciseUpsert) => {
         this.store.dispatch(exercisesActions.editexercise({ exerciseId, grammarExerciseUpsert }));
       });
+  }
+
+  startActivity(): void {
+    this.store.dispatch(exercisesActions.startactivity());
   }
 }

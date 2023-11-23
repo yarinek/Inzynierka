@@ -104,8 +104,11 @@
       "exercises": {
         "createExercise": "Create exercise",
         "editExercise": "Edit exercise",
+        "startActivity":"Start activity",
         "instruction": "Instruction",
         "body": "Body",
+        "imgUrl": "Image",
+        "audioUrl": "Audio",
         "answer": "Answers",
         "useCase": "Use case",
         "grammar": "Grammar",

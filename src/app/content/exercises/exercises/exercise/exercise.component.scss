@@ -1,0 +1,9 @@
+.img-fluid {
+  width: 50%;
+  height: 50%;
+  aspect-ratio: attr(width) / attr(height);
+}
+
+.img-border {
+  border: 1px solid black;
+}

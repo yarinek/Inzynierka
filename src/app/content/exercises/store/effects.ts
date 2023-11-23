@@ -3,13 +3,19 @@ import { Router } from '@angular/router';
 import { LoaderService } from '@app/shared/components/loader/loader.service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { catchError, finalize, map, of, switchMap, tap, withLatestFrom } from 'rxjs';
-import { ExercisesService, GrammarExercisesPage, GrammarService } from 'src/http-client';
+import { catchError, finalize, forkJoin, map, Observable, of, switchMap, tap, withLatestFrom } from 'rxjs';
+import {
+  ExercisesService,
+  GrammarExercisesPage,
+  GrammarService,
+  ResourcesService,
+  ScheduleService,
+} from 'src/http-client';
 
 import { exercisesActions } from './actions';
-import { selectCurrentExerciseId } from './reducers';
+import { selectCurrentExerciseId, selectScheduledExercises } from './reducers';
 
-export const getDecksEffect = createEffect(
+export const getExercisesEffect = createEffect(
   (actions$ = inject(Actions), exercisesService = inject(ExercisesService)) => {
     return actions$.pipe(
       ofType(exercisesActions.getexercises),
@@ -40,39 +46,104 @@ export const getGramarAfterLoadEffect = createEffect(
   { functional: true },
 );
 
-export const createDeckEffect = createEffect(
-  (actions$ = inject(Actions), exercisesService = inject(ExercisesService)) => {
+export const createExerciseEffect = createEffect(
+  (
+    actions$ = inject(Actions),
+    exercisesService = inject(ExercisesService),
+    resourcesService = inject(ResourcesService),
+  ) => {
     return actions$.pipe(
       ofType(exercisesActions.createexercise),
       tap(() => LoaderService.showLoader()),
-      switchMap(({ grammarExerciseUpsert }) =>
-        exercisesService.createNewExercise(grammarExerciseUpsert).pipe(
-          map(() => exercisesActions.createexerciseSuccess()),
-          catchError(() => {
-            return of(exercisesActions.createexerciseFailure());
+      switchMap(({ grammarExerciseUpsert }) => {
+        const uploadFiles = (file: File): Observable<string | File | undefined> => {
+          return resourcesService.uploadResource(file).pipe(
+            map((res) => res.url),
+            catchError(() => of(file)), // Handle error if needed
+          );
+        };
+
+        return forkJoin({
+          audioUrl: grammarExerciseUpsert.audioUrl
+            ? uploadFiles(grammarExerciseUpsert.audioUrl as unknown as File)
+            : of(undefined),
+          imgUrl: grammarExerciseUpsert.imgUrl
+            ? uploadFiles(grammarExerciseUpsert.imgUrl as unknown as File)
+            : of(undefined),
+        }).pipe(
+          switchMap(({ audioUrl, imgUrl }) => {
+            return exercisesService
+              .createNewExercise({
+                ...grammarExerciseUpsert,
+                audioUrl: audioUrl as string,
+                imgUrl: imgUrl as string,
+              })
+              .pipe(
+                map(() => exercisesActions.createexerciseSuccess()),
+                catchError(() => {
+                  return of(exercisesActions.createexerciseFailure());
+                }),
+                finalize(() => LoaderService.hideLoader()),
+              );
           }),
-          finalize(() => LoaderService.hideLoader()),
-        ),
-      ),
+        );
+      }),
     );
   },
   { functional: true },
 );
 
-export const updateDeckEffect = createEffect(
-  (actions$ = inject(Actions), exercisesService = inject(ExercisesService)) => {
+export const refreshViewAfterCreateExercise = createEffect(
+  (actions$ = inject(Actions)) => {
+    return actions$.pipe(
+      ofType(exercisesActions.createexerciseSuccess),
+      map(() => exercisesActions.getexercises({ pageIndex: 0, pageSize: 5 })),
+    );
+  },
+  { functional: true, dispatch: true },
+);
+
+export const updateExerciseEffect = createEffect(
+  (
+    actions$ = inject(Actions),
+    exercisesService = inject(ExercisesService),
+    resourcesService = inject(ResourcesService),
+  ) => {
     return actions$.pipe(
       ofType(exercisesActions.editexercise),
       tap(() => LoaderService.showLoader()),
-      switchMap(({ exerciseId, grammarExerciseUpsert }) =>
-        exercisesService.updateExercise(exerciseId, grammarExerciseUpsert).pipe(
-          map(() => exercisesActions.editexerciseSuccess()),
-          catchError(() => {
-            return of(exercisesActions.editexerciseFailure());
-          }),
-          finalize(() => LoaderService.hideLoader()),
-        ),
-      ),
+      switchMap(({ exerciseId, grammarExerciseUpsert }) => {
+        const uploadFiles = (file: File | string): Observable<string | File | undefined> => {
+          if (typeof file === 'string') {
+            return of(file);
+          }
+          return resourcesService.uploadResource(file).pipe(
+            map((res) => res.url),
+            catchError(() => of(file)), // Handle error if needed
+          );
+        };
+
+        return forkJoin({
+          audioUrl: grammarExerciseUpsert.audioUrl ? uploadFiles(grammarExerciseUpsert.audioUrl) : of(undefined),
+          imgUrl: grammarExerciseUpsert.imgUrl ? uploadFiles(grammarExerciseUpsert.imgUrl) : of(undefined),
+        }).pipe(
+          switchMap(({ audioUrl, imgUrl }) =>
+            exercisesService
+              .updateExercise(exerciseId, {
+                ...grammarExerciseUpsert,
+                audioUrl: audioUrl as string,
+                imgUrl: imgUrl as string,
+              })
+              .pipe(
+                map(() => exercisesActions.editexerciseSuccess()),
+                catchError(() => {
+                  return of(exercisesActions.editexerciseFailure());
+                }),
+                finalize(() => LoaderService.hideLoader()),
+              ),
+          ),
+        );
+      }),
     );
   },
   { functional: true },
@@ -204,4 +275,106 @@ export const submitAnswerEffect = createEffect(
     );
   },
   { functional: true },
+);
+
+export const startNextExerciseAfterSubmitAnswerEffect = createEffect(
+  (actions$ = inject(Actions), store = inject(Store)) => {
+    return actions$.pipe(
+      ofType(exercisesActions.submitanswerSuccess),
+      withLatestFrom(store.select(selectScheduledExercises)),
+      tap(() => LoaderService.showLoader()),
+      map(([, exercises]) => {
+        if (exercises.length === 0) {
+          return exercisesActions.startexerciseFailure();
+        }
+        return exercisesActions.startexercise({ exerciseId: exercises.shift() as string });
+      }),
+    );
+  },
+  { functional: true },
+);
+
+export const startActivityEffect = createEffect(
+  (actions$ = inject(Actions), scheduleService = inject(ScheduleService)) => {
+    return actions$.pipe(
+      ofType(exercisesActions.startactivity),
+      tap(() => LoaderService.showLoader()),
+      switchMap(() =>
+        scheduleService.getScheduledExercises().pipe(
+          map((exercises) => exercisesActions.startactivitySuccess({ exercises: exercises.exercises ?? [] })),
+          catchError(() => {
+            return of(exercisesActions.startactivityFailure());
+          }),
+          finalize(() => LoaderService.hideLoader()),
+        ),
+      ),
+    );
+  },
+  { functional: true },
+);
+
+export const startExerciseAfterStartActivityEffect = createEffect(
+  (actions$ = inject(Actions), store = inject(Store)) => {
+    return actions$.pipe(
+      ofType(exercisesActions.startactivitySuccess),
+      withLatestFrom(store.select(selectScheduledExercises)),
+      tap(() => LoaderService.showLoader()),
+      map(([, exercises]) => {
+        if (exercises.length === 0) {
+          return exercisesActions.startexerciseFailure();
+        }
+        return exercisesActions.startexercise({ exerciseId: exercises.shift() as string });
+      }),
+    );
+  },
+  { functional: true },
+);
+
+export const redirectIfNoExercisesEffect = createEffect(
+  (actions$ = inject(Actions), router = inject(Router)) => {
+    return actions$.pipe(
+      ofType(exercisesActions.startactivityFailure),
+      tap((): void => {
+        void router.navigateByUrl('/exercises');
+      }),
+    );
+  },
+  {
+    functional: true,
+    dispatch: false,
+  },
+);
+
+export const startExerciseEffect = createEffect(
+  (actions$ = inject(Actions), scheduleService = inject(ScheduleService)) => {
+    return actions$.pipe(
+      ofType(exercisesActions.startexercise),
+      tap(() => LoaderService.showLoader()),
+      switchMap(({ exerciseId }) => {
+        return scheduleService.getScheduledExercise(exerciseId).pipe(
+          map((exercise) => exercisesActions.startexerciseSuccess({ exercise })),
+          catchError(() => {
+            return of(exercisesActions.startexerciseFailure());
+          }),
+          finalize(() => LoaderService.hideLoader()),
+        );
+      }),
+    );
+  },
+  { functional: true },
+);
+
+export const redirectAfterStartExerciseEffect = createEffect(
+  (actions$ = inject(Actions), router = inject(Router)) => {
+    return actions$.pipe(
+      ofType(exercisesActions.startexerciseSuccess),
+      tap((): void => {
+        void router.navigateByUrl('/exercises/exercise');
+      }),
+    );
+  },
+  {
+    functional: true,
+    dispatch: false,
+  },
 );

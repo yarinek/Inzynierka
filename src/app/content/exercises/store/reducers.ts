@@ -1,6 +1,6 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { routerNavigationAction } from '@ngrx/router-store';
-import { GrammarExercise, GrammarExerciseSummary, GrammarListEntry } from 'src/http-client';
+import { GrammarExercise, GrammarExerciseSummary, GrammarListEntry, ScheduledGrammarExercise } from 'src/http-client';
 
 import { exercisesActions } from './actions';
 
@@ -8,14 +8,16 @@ const initialState: {
   dataSource: GrammarExerciseSummary[];
   totalElements: number;
   grammarList: GrammarListEntry[];
-  currentExercise: GrammarExercise | null;
+  currentExercise: GrammarExercise | ScheduledGrammarExercise | null;
   currentExerciseId: string | null;
+  scheduledExercises: string[];
 } = {
   totalElements: 0,
   dataSource: [],
   grammarList: [],
   currentExerciseId: null,
   currentExercise: null,
+  scheduledExercises: [],
 };
 
 const exercisesFeature = createFeature({
@@ -35,6 +37,14 @@ const exercisesFeature = createFeature({
     on(exercisesActions.getexerciseSuccess, (state, action) => ({ ...state, currentExercise: action.exercise })),
     on(exercisesActions.editexerciseSuccess, (state) => ({ ...state, currentExercise: null })),
     on(exercisesActions.previewexercise, (state, action) => ({ ...state, currentExerciseId: action.exerciseId })),
+    on(exercisesActions.startactivitySuccess, (state, action) => ({ ...state, scheduledExercises: action.exercises })),
+    on(exercisesActions.startexercise, (state, action) => ({
+      ...state,
+      scheduledExercises: state.scheduledExercises.filter((r) => r !== action.exerciseId),
+    })),
+    on(exercisesActions.startexerciseSuccess, (state, action) => ({ ...state, currentExercise: action.exercise })),
+    //utils
+    on(exercisesActions.setactiveexerciseid, (state, action) => ({ ...state, currentExerciseId: action.exerciseId })),
     on(routerNavigationAction, (state) => ({ ...state })),
   ),
 });
@@ -47,4 +57,5 @@ export const {
   selectGrammarList,
   selectCurrentExercise,
   selectCurrentExerciseId,
+  selectScheduledExercises,
 } = exercisesFeature;
