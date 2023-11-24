@@ -38,11 +38,11 @@ const exercisesFeature = createFeature({
     on(exercisesActions.editexerciseSuccess, (state) => ({ ...state, currentExercise: null })),
     on(exercisesActions.previewexercise, (state, action) => ({ ...state, currentExerciseId: action.exerciseId })),
     on(exercisesActions.startactivitySuccess, (state, action) => ({ ...state, scheduledExercises: action.exercises })),
-    on(exercisesActions.startexercise, (state, action) => ({
-      ...state,
-      scheduledExercises: state.scheduledExercises.filter((r) => r !== action.exerciseId),
-    })),
-    on(exercisesActions.startexerciseSuccess, (state, action) => ({ ...state, currentExercise: action.exercise })),
+    on(exercisesActions.startexerciseSuccess, (state, action) => {
+      const scheduledExercises = [...state.scheduledExercises];
+      scheduledExercises.shift();
+      return { ...state, currentExercise: action.exercise, scheduledExercises };
+    }),
     //utils
     on(exercisesActions.setactiveexerciseid, (state, action) => ({ ...state, currentExerciseId: action.exerciseId })),
     on(routerNavigationAction, (state) => ({ ...state })),
