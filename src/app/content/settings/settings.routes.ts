@@ -15,6 +15,10 @@ export const settingsRoutes: Route[] = [
         path: 'site',
         loadComponent: () => import('./settings/site/site.component').then((m) => m.SiteComponent),
       },
+      {
+        path: 'grammar',
+        loadComponent: () => import('./settings/grammar/grammar.component').then((m) => m.GrammarComponent),
+      },
     ],
   },
 ];

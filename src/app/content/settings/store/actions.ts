@@ -4,6 +4,8 @@ import {
   DefaultUserDeckSettings,
   DefaultUserGrammarSettings,
   Language,
+  UserGrammarSettingsSearchResults,
+  UserGrammarSettingsUpsert,
   UserSettings,
 } from 'src/http-client';
 
@@ -30,9 +32,17 @@ export const settingsActions = createActionGroup({
     'SaveUserSettings Success': emptyProps(),
     'SaveUserSettings Failure': emptyProps(),
 
+    GetGrammarSettings: emptyProps(),
+    'GetGrammarSettings Success': props<{ grammarSettings: UserGrammarSettingsSearchResults }>(),
+    'GetGrammarSettings Failure': emptyProps(),
+
+    SaveGrammarSettings: props<{ userGrammarSettingsUpsert: UserGrammarSettingsUpsert[] }>(),
+    'SaveGrammarSettings Success': emptyProps(),
+    'SaveGrammarSettings Failure': emptyProps(),
+
     ChangeDisplayLanguage: props<{ language: Language }>(),
     ChangeInstructionLanguage: props<{ language: Language }>(),
     ChangeDeckSettings: props<{ deckSettings: DefaultUserDeckSettings }>(),
-    ChangeGrammarSettings: props<{ grammarSettings: DefaultUserGrammarSettings }>(),
+    ChangeExercisesSettings: props<{ exercisesSettings: DefaultUserGrammarSettings }>(),
   },
 });

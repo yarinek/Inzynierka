@@ -4,6 +4,7 @@
       "title": "Settings",
       "profile": "Profile Settings",
       "site": "Site Settings",
+      "grammar": "Grammar",
       "username": "Username",
       "email": "Email",
       "changeEmail": "Change email",
@@ -41,18 +42,24 @@
         }
       },
       "grammarSettings": {
-        "title": "Grammar Settings",
+        "title": "Exercises Settings",
         "field": {
           "maxInterval": "Max Interval",
           "intervalRateAfterFail": "Interval Rate After Fail",
           "failThreshold": "Fail Threshold",
-          "exercisesPerDay": "Exercises Per Day"
+          "exercisesPerDay": "Exercises Per Day",
+          "grammar": "Grammar",
+          "useCase": "Use case"
         },
         "tooltip": {
           "maxInterval": "The maximum interval (in days) that can be used in determining the date of the next review",
           "intervalRateAfterFail": "Multiplier used in calculating the date of the next review if the threshold of incorrect answers is exceeded",
           "failThreshold": "Threshold of incorrect answers after which use case review is considered as failed",
           "exercisesPerDay": "The number of exercises that should be performed as part of the review of a given use case; the date of the next review is calculated after passing this threshold"
+        },
+        "buttons": {
+          "addGrammar": "Add grammar",
+          "removeGrammar": "Delete grammar"
         }
       },
       "updateAccount": {

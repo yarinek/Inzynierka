@@ -87,8 +87,8 @@ export class SiteComponent implements OnInit {
       settingsActions.changedecksettings({ deckSettings: this.deckForm.getRawValue() as DefaultUserDeckSettings }),
     );
     this.store.dispatch(
-      settingsActions.changegrammarsettings({
-        grammarSettings: this.grammarForm.getRawValue() as DefaultUserGrammarSettings,
+      settingsActions.changeexercisessettings({
+        exercisesSettings: this.grammarForm.getRawValue() as DefaultUserGrammarSettings,
       }),
     );
     this.store.dispatch(settingsActions.saveusersettings());

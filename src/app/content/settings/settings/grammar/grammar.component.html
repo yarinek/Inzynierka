@@ -1,0 +1,35 @@
+<ng-container *ngIf="data$ | async as data">
+  <div>
+    <h2>{{ "settings.grammar" | translate }}</h2>
+  </div>
+  <ng-container *ngFor="let formGroup of formArray.controls; let i = index">
+    <div class="d-flex align-items-center">
+      <div>{{ "settings.grammarSettings.field.grammar" | translate }}:</div>
+      <div class="mx-2 p-1" [formGroup]="formGroup">
+        <app-select formControlName="grammar" [options]="data.grammarList"></app-select>
+      </div>
+    </div>
+    <div *ngIf="formGroup.get('grammar')?.value" class="d-flex align-items-center">
+      <div>{{ "settings.grammarSettings.field.useCase" | translate }}:</div>
+      <div class="mx-2 p-1" [formGroup]="formGroup">
+        <app-select
+          [multi]="true"
+          formControlName="enabledUseCases"
+          [options]="getUseCases(data.grammarList, formGroup)"
+        ></app-select>
+      </div>
+    </div>
+    <button class="w-25" mat-raised-button color="warn" (click)="removeGrammar(i)">
+      {{ "settings.grammarSettings.buttons.removeGrammar" | translate }}
+    </button>
+    <hr class="solid" />
+  </ng-container>
+  <div class="row mb-5">
+    <button class="w-25" mat-raised-button color="primary" (click)="addGrammar()">
+      {{ "settings.grammarSettings.buttons.addGrammar" | translate }}
+    </button>
+    <button [disabled]="formArray.invalid" class="w-25 mx-3" mat-raised-button color="primary" (click)="save()">
+      {{ "common.buttons.save" | translate }}
+    </button>
+  </div>
+</ng-container>

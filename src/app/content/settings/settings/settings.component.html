@@ -7,6 +7,9 @@
     <p [class.active]="isActive('site')" [routerLink]="'site'" class="text-center clickable">
       {{ "settings.site" | translate }}
     </p>
+    <p [class.active]="isActive('grammar')" [routerLink]="'grammar'" class="text-center clickable">
+      {{ "settings.grammar" | translate }}
+    </p>
   </div>
   <div class="col-9">
     <router-outlet></router-outlet>

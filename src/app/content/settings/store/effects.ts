@@ -4,9 +4,10 @@ import { selectDecodedToken } from '@app/content/auth/store/reducers';
 import { ToastrService } from '@app/core/services/toast.service';
 import { createEffect, Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { catchError, map, of, switchMap, tap, withLatestFrom } from 'rxjs';
+import { catchError, forkJoin, map, of, switchMap, tap, withLatestFrom } from 'rxjs';
 import { AccountsService, SettingsService, UserSettings } from 'src/http-client';
 import { SiteLanguage } from '@app/shared/types/language.type';
+import { exercisesActions } from '@app/content/exercises/store/actions';
 
 import { settingsActions } from './actions';
 import { selectUserSettings } from './reducers';
@@ -111,6 +112,49 @@ export const saveUserSettingsEffect = createEffect(
         return settingsService.updateUserSettings(userSettings as UserSettings).pipe(
           map(() => settingsActions.saveusersettingsSuccess()),
           catchError(() => of(settingsActions.saveusersettingsFailure())),
+        );
+      }),
+    );
+  },
+  { functional: true },
+);
+
+export const getGrammarSettingsEffect = createEffect(
+  (actions$ = inject(Actions), settingsService = inject(SettingsService)) => {
+    return actions$.pipe(
+      ofType(settingsActions.getgrammarsettings),
+      switchMap(() => {
+        return settingsService.getUserGrammarSettings('ENGLISH').pipe(
+          map((grammarSettings) => settingsActions.getgrammarsettingsSuccess({ grammarSettings })),
+          catchError(() => of(settingsActions.getgrammarsettingsFailure())),
+        );
+      }),
+    );
+  },
+  { functional: true },
+);
+
+export const getGramarAfterLoadEffect = createEffect(
+  (actions$ = inject(Actions)) => {
+    return actions$.pipe(
+      ofType(settingsActions.getgrammarsettings),
+      map(() => exercisesActions.getgrammarlist()),
+    );
+  },
+  { functional: true },
+);
+
+export const saveGrammarSettingsEffect = createEffect(
+  (actions$ = inject(Actions), settingsService = inject(SettingsService)) => {
+    return actions$.pipe(
+      ofType(settingsActions.savegrammarsettings),
+      switchMap(({ userGrammarSettingsUpsert }) => {
+        const requests = userGrammarSettingsUpsert.map((val) => {
+          return settingsService.upsertUserGrammarSettings(val).pipe(catchError(() => of(null)));
+        });
+        return forkJoin(requests).pipe(
+          map(() => settingsActions.savegrammarsettingsSuccess()),
+          catchError(() => of(settingsActions.savegrammarsettingsFailure())),
         );
       }),
     );

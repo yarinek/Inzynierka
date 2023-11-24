@@ -3,6 +3,7 @@
       "title": "Ustawienia",
       "profile": "Ustawienia profilu",
       "site": "Ustawienia strony",
+      "grammar": "Gramatyka",
       "username": "Nazwa użytkownika",
       "email": "E-mail",
       "changeEmail": "Zmień e-mail",
@@ -39,18 +40,24 @@
         }
       },
       "grammarSettings": {
-        "title": "Ustawienia gramatyki",
+        "title": "Ustawienia ćwiczeń",
         "field": {
           "maxInterval": "Maksymalny interwał",
           "intervalRateAfterFail": "Mnożnik po niepowodzeniu",
           "failThreshold": "Próg niepowodzenia",
-          "exercisesPerDay": "Liczba ćwiczeń dziennie"
+          "exercisesPerDay": "Liczba ćwiczeń dziennie",
+          "grammar": "Gramatyka",
+          "useCase": "Przypadek użycia"
         },
         "tooltip": {
           "maxInterval": "Maksymalny interwał (w dniach), który można użyć do określenia daty kolejnej powtórki",
           "intervalRateAfterFail": "Mnożnik używany do obliczania daty kolejnej powtórki, jeśli przekroczony jest próg nieprawidłowych odpowiedzi",
           "failThreshold": "Próg nieprawidłowych odpowiedzi, po którym przypadek uznawany jest za nieudany",
           "exercisesPerDay": "Liczba ćwiczeń, które powinny być wykonane w ramach przeglądu danego przypadku użycia; data kolejnej powtórki jest obliczana po przekroczeniu tego progu"
+        },
+        "buttons": {
+          "addGrammar": "Dodaj gramatykę",
+          "removeGrammar": "Usuń gramatykę"
         }
       },
       "updateAccount": {
