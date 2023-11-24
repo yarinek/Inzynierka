@@ -288,7 +288,8 @@ export const startNextExerciseAfterSubmitAnswerEffect = createEffect(
         if (exercises.length === 0) {
           return exercisesActions.startexerciseFailure();
         }
-        return exercisesActions.startexercise({ exerciseId: exercises.shift() as string });
+        const exerciseId = exercises[0];
+        return exercisesActions.startexercise({ exerciseId });
       }),
     );
   },
@@ -325,7 +326,9 @@ export const startExerciseAfterStartActivityEffect = createEffect(
           toast.info('errors.noScheduledExercises');
           return exercisesActions.startexerciseFailure();
         }
-        return exercisesActions.startexercise({ exerciseId: exercises.shift() as string });
+
+        const exerciseId = exercises[0];
+        return exercisesActions.startexercise({ exerciseId });
       }),
     );
   },
