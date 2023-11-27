@@ -11,6 +11,7 @@ const initialState: {
   currentExercise: GrammarExercise | ScheduledGrammarExercise | null;
   currentExerciseId: string | null;
   scheduledExercises: string[];
+  scheduledExerciseId: string | null;
 } = {
   totalElements: 0,
   dataSource: [],
@@ -18,6 +19,7 @@ const initialState: {
   currentExerciseId: null,
   currentExercise: null,
   scheduledExercises: [],
+  scheduledExerciseId: null,
 };
 
 const exercisesFeature = createFeature({
@@ -43,6 +45,8 @@ const exercisesFeature = createFeature({
       scheduledExercises.shift();
       return { ...state, currentExercise: action.exercise, scheduledExercises };
     }),
+    on(exercisesActions.startexercise, (state, action) => ({ ...state, scheduledExerciseId: action.exerciseId })),
+    on(exercisesActions.startexerciseFailure, (state) => ({ ...state, scheduledExerciseId: null })),
     //utils
     on(exercisesActions.setactiveexerciseid, (state, action) => ({ ...state, currentExerciseId: action.exerciseId })),
     on(routerNavigationAction, (state) => ({ ...state })),
@@ -58,4 +62,5 @@ export const {
   selectCurrentExercise,
   selectCurrentExerciseId,
   selectScheduledExercises,
+  selectScheduledExerciseId,
 } = exercisesFeature;

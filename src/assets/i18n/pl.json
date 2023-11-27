@@ -126,7 +126,8 @@
         "exercise": {
           "answer": "Odpowiedź",
           "suspend": "Wstrzymaj"
-        }
+        },
+        "exercisesFinished": "Wszystkie ćwiczenia zostały wykonane"
       },
       "common": {
         "table": {

@@ -128,7 +128,8 @@
         "exercise": {
           "answer": "Answer",
           "suspend": "Suspend"
-        }
+        },
+        "exercisesFinished": "You have finished all exercises"
       },
       "common": {
         "table": {

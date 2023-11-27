@@ -14,7 +14,7 @@ import {
 } from 'src/http-client';
 
 import { exercisesActions } from './actions';
-import { selectCurrentExerciseId, selectScheduledExercises } from './reducers';
+import { selectCurrentExerciseId, selectScheduledExerciseId, selectScheduledExercises } from './reducers';
 
 export const getExercisesEffect = createEffect(
   (actions$ = inject(Actions), exercisesService = inject(ExercisesService)) => {
@@ -262,7 +262,7 @@ export const submitAnswerEffect = createEffect(
   (actions$ = inject(Actions), exercisesService = inject(ExercisesService), store = inject(Store)) => {
     return actions$.pipe(
       ofType(exercisesActions.submitanswer),
-      withLatestFrom(store.select(selectCurrentExerciseId)),
+      withLatestFrom(store.select(selectScheduledExerciseId)),
       tap(() => LoaderService.showLoader()),
       switchMap(([{ answers }, exerciseId]) =>
         exercisesService.submitAnswerForExercise(exerciseId as string, answers).pipe(
@@ -279,13 +279,15 @@ export const submitAnswerEffect = createEffect(
 );
 
 export const startNextExerciseAfterSubmitAnswerEffect = createEffect(
-  (actions$ = inject(Actions), store = inject(Store)) => {
+  (actions$ = inject(Actions), store = inject(Store), router = inject(Router), toast = inject(ToastrService)) => {
     return actions$.pipe(
       ofType(exercisesActions.submitanswerSuccess),
       withLatestFrom(store.select(selectScheduledExercises)),
       tap(() => LoaderService.showLoader()),
       map(([, exercises]) => {
         if (exercises.length === 0) {
+          void router.navigate(['/exercises']);
+          toast.success('exercises.exercisesFinished');
           return exercisesActions.startexerciseFailure();
         }
         const exerciseId = exercises[0];

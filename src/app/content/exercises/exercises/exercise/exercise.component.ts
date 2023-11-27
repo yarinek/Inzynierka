@@ -1,4 +1,4 @@
-import { combineLatest } from 'rxjs';
+import { combineLatest, tap } from 'rxjs';
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
@@ -25,7 +25,11 @@ export class ExerciseComponent implements OnInit {
   answer = new FormControl('', [Validators.required]);
 
   data$ = combineLatest({
-    exercise: this.store.select(selectCurrentExercise),
+    exercise: this.store.select(selectCurrentExercise).pipe(
+      tap((exercise) => {
+        if (!exercise) this.backToExercises();
+      }),
+    ),
   });
 
   get isPreview(): boolean {
@@ -33,7 +37,9 @@ export class ExerciseComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.store.dispatch(exercisesActions.getexercise());
+    if (this.isPreview) {
+      this.store.dispatch(exercisesActions.getexercise());
+    }
   }
 
   saveAnswer(suspend = false): void {
@@ -41,6 +47,7 @@ export class ExerciseComponent implements OnInit {
       answers: [this.answer.value],
       suspend,
     } as SubmittedExerciseReviewAnswer;
+    this.answer.reset();
     this.store.dispatch(exercisesActions.submitanswer({ answers }));
   }
 
