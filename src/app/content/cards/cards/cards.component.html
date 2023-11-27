@@ -5,19 +5,27 @@
     <app-table
       [dataSource]="data.dataSource"
       [totalElements]="data.totalElements"
-      [displayedColumns]="displayedColumns"
-      [tableConfig]="tableConfig"
+      [displayedColumns]="isSharedCardsMode ? displayedColumnsShared : displayedColumns"
+      [tableConfig]="isSharedCardsMode ? tableConfigShared : tableConfig"
       (changePagination)="getCards($event)"
     >
       <div table-nav class="row m-1">
         <div class="d-flex justify-content-end">
-          <button mat-raised-button color="primary" class="m-1" (click)="createCard()">
-            {{ "cards.createCard" | translate }}
-          </button>
-          <button mat-raised-button color="primary" class="m-1" (click)="startActivity()">
-            {{ "cards.startActivity" | translate }}
-          </button>
-          <button mat-raised-button color="warn" class="m-1" routerLink="/decks">
+          <ng-container *ngIf="!isSharedCardsMode">
+            <button mat-raised-button color="primary" class="m-1" (click)="createCard()">
+              {{ "cards.createCard" | translate }}
+            </button>
+            <button mat-raised-button color="primary" class="m-1" (click)="startActivity()">
+              {{ "cards.startActivity" | translate }}
+            </button>
+          </ng-container>
+
+          <button
+            mat-raised-button
+            color="warn"
+            class="m-1"
+            [routerLink]="isSharedCardsMode ? '/decks/shared' : '/decks'"
+          >
             {{ "common.buttons.back" | translate }}
           </button>
         </div>

@@ -1,5 +1,5 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { Card, CardCreateRequest, CardReviewAnswer } from 'src/http-client';
+import { Card, CardCreateRequest, CardReviewAnswer, SharedCard } from 'src/http-client';
 
 export const cardsActions = createActionGroup({
   source: 'cards',
@@ -26,6 +26,10 @@ export const cardsActions = createActionGroup({
     'startActivity Success': props<{ card: Card }>(),
     'startActivity Failure': emptyProps(),
 
+    // shared cards
+    getSharedCards: props<{ pageIndex: number; pageSize: number }>(),
+    'getSharedCards Success': props<{ dataSource: SharedCard[]; totalElements: number }>(),
+    'getSharedCards Failure': emptyProps(),
     // utils
     redirectIfNull: emptyProps(),
   },

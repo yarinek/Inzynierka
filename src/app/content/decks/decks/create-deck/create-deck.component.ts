@@ -8,6 +8,9 @@ import { InputComponent } from '@app/shared/components/input/input.component';
 import { MatButtonModule } from '@angular/material/button';
 import { SelectComponent } from '@app/shared/components/select/select.component';
 import { SelectOptionInterface } from '@app/shared/components/select/select.types';
+import { combineLatest, map } from 'rxjs';
+
+import { selectAllSharedDecks } from '../../store/reducers';
 
 @Component({
   selector: 'app-create-deck',
@@ -21,7 +24,7 @@ export class CreateDeckComponent implements OnInit {
   store = inject(Store);
   fb = inject(FormBuilder);
 
-  dialogData: { name: string; language: string } = inject(MAT_DIALOG_DATA);
+  dialogData: { name: string; language: string; shared?: boolean } = inject(MAT_DIALOG_DATA);
 
   languageOptions: SelectOptionInterface[] = [{ value: 'en', label: 'English' }];
 
@@ -31,8 +34,18 @@ export class CreateDeckComponent implements OnInit {
     sharedDeckId: [''],
   });
 
+  data$ = combineLatest({
+    allSharedDecks: this.store
+      .select(selectAllSharedDecks)
+      .pipe(map((decks) => decks.map((deck) => ({ ...deck, label: deck.name as string, value: deck.id as string })))),
+  });
+
   get isEdit(): boolean {
-    return !!this.dialogData;
+    return !!this.dialogData.name;
+  }
+
+  get isSharedDeckMode(): boolean {
+    return !!this.dialogData.shared;
   }
 
   ngOnInit(): void {

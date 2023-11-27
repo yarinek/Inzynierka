@@ -13,6 +13,15 @@
           [options]="languageOptions"
         ></app-select>
       </div>
+      <ng-container *ngIf="data$ | async as data">
+        <div *ngIf="!isSharedDeckMode" class="row">
+          <app-select
+            formControlName="sharedDeckId"
+            placeholder="{{ 'decks.sharedDeck' | translate }}"
+            [options]="data.allSharedDecks"
+          ></app-select>
+        </div>
+      </ng-container>
     </form>
   </div>
 

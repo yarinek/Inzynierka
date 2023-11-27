@@ -28,6 +28,7 @@ import {
   CardsService,
   ResourcesService,
   ScheduleService,
+  SharedDecksService,
 } from 'src/http-client';
 
 import { cardsActions } from './actions';
@@ -340,4 +341,43 @@ export const refreshViewAfterDeleteDeck = createEffect(
     );
   },
   { functional: true },
+);
+
+// shared cards
+
+export const getSharedCardsEffect = createEffect(
+  (actions$ = inject(Actions), sharedDecksService = inject(SharedDecksService), store = inject(Store)) => {
+    return actions$.pipe(
+      ofType(cardsActions.getsharedcards),
+      withLatestFrom(store.select(selectActiveDeck)),
+      tap(() => LoaderService.showLoader()),
+      switchMap(([{ pageIndex, pageSize }, deck]) =>
+        sharedDecksService.listSharedCards(String(deck?.id), pageSize, pageIndex).pipe(
+          map(({ cards, total }: CardsPage) =>
+            cardsActions.getsharedcardsSuccess({ dataSource: cards ?? [], totalElements: total ?? 0 }),
+          ),
+          catchError(() => {
+            return of(cardsActions.getsharedcardsFailure());
+          }),
+          finalize(() => LoaderService.hideLoader()),
+        ),
+      ),
+    );
+  },
+  { functional: true },
+);
+
+export const redirectIfNoActiveSharedDeckEffect = createEffect(
+  (actions$ = inject(Actions), router = inject(Router)) => {
+    return actions$.pipe(
+      ofType(cardsActions.getsharedcardsFailure),
+      tap((): void => {
+        void router.navigateByUrl('/decks/shared');
+      }),
+    );
+  },
+  {
+    functional: true,
+    dispatch: false,
+  },
 );

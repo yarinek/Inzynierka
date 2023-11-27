@@ -74,13 +74,18 @@
     },
     "decks": {
         "createDeck": "Create deck",
+        "createSharedDeck": "Create shared deck",
         "editDeck": "Edit deck",
+        "editSharedDeck": "Edit shared deck",
         "deckName": "Deck name",
         "language": "Language",
+        "navigateToSharedDecks": "Navigate to shared decks",
+        "sharedDeck": "Shared deck",
         "table": {
             "name": "Name",
             "language": "Language",
-            "waitingReviews": "Waiting reviews"
+            "waitingReviews": "Waiting reviews",
+            "popularity": "Popularity"
         }   
       },
       "cards": {
@@ -143,7 +148,8 @@
             "close": "Close",
             "back": "Back",
             "confirm": "Confirm",
-            "save": "Save"
+            "save": "Save",
+            "createSharedDeck": "Create shared deck"
         }
       },
       "errors": {

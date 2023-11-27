@@ -54,7 +54,17 @@ const decksFeature = createFeature({
       ...state,
       previewCard: null,
     })),
-    on(routerNavigationAction, (state) => ({ ...state })),
+    // Shared cards
+    on(cardsActions.getsharedcards, (state) => ({ ...state })),
+    on(cardsActions.getsharedcardsSuccess, (state, action) => ({
+      ...state,
+      dataSource: action.dataSource,
+      totalElements: action.totalElements,
+    })),
+    on(cardsActions.getsharedcardsFailure, (state) => ({
+      ...state,
+    })),
+    on(routerNavigationAction, (state) => ({ ...state, dataSource: [], totalElements: 0 })),
   ),
 });
 

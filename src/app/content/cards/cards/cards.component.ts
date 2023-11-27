@@ -36,6 +36,8 @@ export class CardsComponent implements OnInit {
     'actions',
   ];
 
+  displayedColumnsShared: string[] = ['front.content', 'back.content'];
+
   tableConfig: TableConfig[] = [
     {
       name: 'cards.table.front',
@@ -80,18 +82,45 @@ export class CardsComponent implements OnInit {
     },
   ];
 
+  tableConfigShared: TableConfig[] = [
+    {
+      name: 'cards.table.front',
+      value: 'front.content',
+      type: TableColumnType.CUSTOM_DISPLAY,
+      customDisplay: (row: Card): string => {
+        const item = row.front?.find((element: CardContentElement) => element.type === CardContentElementType.Text);
+        return item?.content as string;
+      },
+    },
+    {
+      name: 'cards.table.back',
+      value: 'back.content',
+      type: TableColumnType.CUSTOM_DISPLAY,
+      customDisplay: (row: Card): string => {
+        const item = row.back?.find((element: CardContentElement) => element.type === CardContentElementType.Text);
+        return item?.content as string;
+      },
+    },
+  ];
+
   data$ = combineLatest({
     dataSource: this.store.select(selectDataSource),
     totalElements: this.store.select(selectTotalElements),
     activeDeck: this.store.select(selectActiveDeck),
   });
 
+  get isSharedCardsMode(): boolean {
+    return this.router.url.includes('shared');
+  }
+
   ngOnInit(): void {
     this.getCards({ pageIndex: 0, pageSize: 5 });
   }
 
   getCards({ pageIndex, pageSize }: { pageIndex: number; pageSize: number }): void {
-    this.store.dispatch(cardsActions.getcards({ pageIndex, pageSize }));
+    this.isSharedCardsMode
+      ? this.store.dispatch(cardsActions.getsharedcards({ pageIndex, pageSize }))
+      : this.store.dispatch(cardsActions.getcards({ pageIndex, pageSize }));
   }
 
   createCard(): void {

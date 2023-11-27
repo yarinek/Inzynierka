@@ -72,13 +72,18 @@
     },
     "decks": {
         "createDeck": "Utwórz zestaw",
+        "createSharedDeck":"Utwórz wspólną talię",
         "editDeck": "Edytuj talię",
+        "editSharedDeck": "Edytuj wspólną talię",
         "deckName": "Nazwa talii",
         "language": "Język",
+        "navigateToSharedDecks": "Przejdź do wspólnych talii",
+        "sharedDeck": "Wspólna talia",
         "table": {
             "name": "Nazwa",
             "language": "Język",
-            "waitingReviews": "Oczekujące recenzje"
+            "waitingReviews": "Oczekujące recenzje",
+            "popularity": "Popularność"
         }
       },
       "cards": {
@@ -141,7 +146,8 @@
             "close": "Zamknij",
             "back": "Wstecz",
             "confirm": "Potwierdź",
-            "save": "Zapisz"
+            "save": "Zapisz",
+            "createSharedDeck": "Utwórz wspólną talię"
         }
       },
       "errors": {

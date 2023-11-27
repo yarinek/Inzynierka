@@ -7,4 +7,8 @@ export const decksRoutes: Route[] = [
     path: '',
     component: DecksComponent,
   },
+  {
+    path: 'shared',
+    component: DecksComponent,
+  },
 ];

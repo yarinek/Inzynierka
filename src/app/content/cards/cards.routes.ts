@@ -9,6 +9,10 @@ export const cardRoutes: Route[] = [
     component: CardsComponent,
   },
   {
+    path: 'shared',
+    component: CardsComponent,
+  },
+  {
     path: 'preview',
     component: CardComponent,
   },
