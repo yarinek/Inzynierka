@@ -1,3 +1,16 @@
 .mat-mdc-form-field {
   width: 100%;
 }
+
+// Dialog
+
+.dialog-content {
+  margin-top: 20px !important;
+}
+
+.dialog-title {
+  text-align: center;
+  font-size: large;
+  background-color: $primary_green-2;
+  color: black !important;
+}

@@ -1,7 +1,9 @@
-<div class="container" *ngIf="data$ | async as data">
-  <h2 mat-dialog-title>{{ (isEdit ? "exercises.editExercise" : "exercises.createExercise") | translate }}</h2>
+<ng-container *ngIf="data$ | async as data">
+  <div mat-dialog-title class="dialog-title">
+    {{ (isEdit ? "exercises.editExercise" : "exercises.createExercise") | translate }}
+  </div>
 
-  <div mat-dialog-content>
+  <div mat-dialog-content class="dialog-content" class="dialog-content">
     <form class="container d-flex flex-column justify-content-center" [formGroup]="form">
       <div class="row">
         <app-input formControlName="instruction" placeholder="{{ 'exercises.instruction' | translate }}"></app-input>
@@ -58,4 +60,4 @@
       </button>
     </div>
   </div>
-</div>
+</ng-container>

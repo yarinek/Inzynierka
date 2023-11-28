@@ -5,7 +5,7 @@ import { AbstractControl, FormArray, FormBuilder, ReactiveFormsModule, Validator
 import { MatButtonModule } from '@angular/material/button';
 import { SelectComponent } from '@app/shared/components/select/select.component';
 import { TranslateModule } from '@ngx-translate/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { MatIconModule } from '@angular/material/icon';
 import { combineLatest, map } from 'rxjs';
@@ -29,6 +29,7 @@ import { selectGrammarList } from '../../store/reducers';
     MatIconModule,
     SelectComponent,
     FileUploadComponent,
+    MatDialogModule,
   ],
   templateUrl: './create-exercise.component.html',
   styleUrls: ['./create-exercise.component.scss'],

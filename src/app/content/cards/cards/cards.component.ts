@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Card, CardContentElement, CardContentElementType, CardCreateRequest, CardsService } from 'src/http-client';
 import { Store } from '@ngrx/store';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { TableColumnType, TableConfig } from '@app/shared/types/tableConfig.interface';
 import { combineLatest, filter } from 'rxjs';
 import { selectActiveDeck } from '@app/content/decks/store/reducers';
@@ -18,7 +18,7 @@ import { CreateCardsComponent } from './create-cards/create-cards.component';
 @Component({
   selector: 'app-cards',
   standalone: true,
-  imports: [CommonModule, TableComponent, MatButtonModule, RouterLink, TranslateModule],
+  imports: [CommonModule, TableComponent, MatButtonModule, RouterLink, TranslateModule, MatDialogModule],
   templateUrl: './cards.component.html',
   styleUrls: ['./cards.component.scss'],
 })
@@ -125,8 +125,8 @@ export class CardsComponent implements OnInit {
 
   createCard(): void {
     const dialogRef = this.dialog.open(CreateCardsComponent, {
-      width: '700px',
-      height: '500px',
+      width: '100vw',
+      height: '80vh',
     });
 
     dialogRef
@@ -139,8 +139,8 @@ export class CardsComponent implements OnInit {
 
   editCard(cardId: string, front?: CardContentElement[], back?: CardContentElement[]): void {
     const dialogRef = this.dialog.open(CreateCardsComponent, {
-      width: '700px',
-      height: '300px',
+      width: '100vw',
+      height: '80vh',
       data: {
         front,
         back,

@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { combineLatest, filter, take } from 'rxjs';
 import { Store } from '@ngrx/store';
@@ -15,7 +15,7 @@ import { ResetPasswordComponent } from '../../dialogs/reset-password/reset-passw
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, TranslateModule],
+  imports: [CommonModule, MatButtonModule, TranslateModule, MatDialogModule],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
 })
@@ -29,7 +29,8 @@ export class ProfileComponent {
 
   changeEmailModal(): void {
     const dialogRef = this.dialog.open(UpdateAccountComponent, {
-      width: '500px',
+      width: '100vw',
+      minHeight: '20vh',
     });
 
     dialogRef
@@ -42,7 +43,8 @@ export class ProfileComponent {
 
   resetPassword(): void {
     const dialogRef = this.dialog.open(ResetPasswordComponent, {
-      width: '500px',
+      width: '100vw',
+      minHeight: '30vh',
     });
 
     dialogRef

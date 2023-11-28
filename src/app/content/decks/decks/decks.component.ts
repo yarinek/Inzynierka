@@ -4,7 +4,7 @@ import { Deck, DeckCreateRequest, DecksService, SharedDeckCreateRequest } from '
 import { Store } from '@ngrx/store';
 import { combineLatest, filter } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { TableColumnType, TableConfig } from '@app/shared/types/tableConfig.interface';
 import { TableComponent } from '@app/shared/components/table/table.component';
 import { TranslateModule } from '@ngx-translate/core';
@@ -17,7 +17,7 @@ import { CreateDeckComponent } from './create-deck/create-deck.component';
 @Component({
   selector: 'app-decks',
   standalone: true,
-  imports: [CommonModule, TableComponent, MatButtonModule, TranslateModule, RouterLink],
+  imports: [CommonModule, TableComponent, MatButtonModule, TranslateModule, RouterLink, MatDialogModule],
   templateUrl: './decks.component.html',
   styleUrls: ['./decks.component.scss'],
 })
@@ -114,8 +114,8 @@ export class DecksComponent implements OnInit {
 
   createDeck(shared = false, deckId?: string): void {
     const dialogRef = this.dialog.open(CreateDeckComponent, {
-      width: '500px',
-      height: '300px',
+      width: '100vw',
+      minHeight: '40vh',
       data: {
         shared,
       },
@@ -138,8 +138,8 @@ export class DecksComponent implements OnInit {
   editDeck(deckId: string, name: string, language: string): void {
     const shared = this.router.url.includes('shared');
     const dialogRef = this.dialog.open(CreateDeckComponent, {
-      width: '500px',
-      height: '300px',
+      width: '100vw',
+      height: '80vh',
       data: {
         name,
         language,

@@ -1,38 +1,36 @@
-<div class="container">
-  <h2 mat-dialog-title>{{ (isEdit ? "decks.editDeck" : "decks.createDeck") | translate }}</h2>
+<div mat-dialog-title class="dialog-title">{{ (isEdit ? "decks.editDeck" : "decks.createDeck") | translate }}</div>
 
-  <div mat-dialog-content>
-    <form class="container d-flex flex-column justify-content-center" [formGroup]="form">
-      <div class="row">
-        <app-input formControlName="name" placeholder="{{ 'decks.deckName' | translate }}"></app-input>
-      </div>
-      <div class="row">
+<div mat-dialog-content class="dialog-content">
+  <form class="container d-flex flex-column justify-content-center" [formGroup]="form">
+    <div class="row">
+      <app-input formControlName="name" placeholder="{{ 'decks.deckName' | translate }}"></app-input>
+    </div>
+    <div class="row">
+      <app-select
+        formControlName="language"
+        placeholder="{{ 'decks.language' | translate }}"
+        [options]="languageOptions"
+      ></app-select>
+    </div>
+    <ng-container *ngIf="data$ | async as data">
+      <div *ngIf="!isSharedDeckMode" class="row">
         <app-select
-          formControlName="language"
-          placeholder="{{ 'decks.language' | translate }}"
-          [options]="languageOptions"
+          formControlName="sharedDeckId"
+          placeholder="{{ 'decks.sharedDeck' | translate }}"
+          [options]="data.allSharedDecks"
         ></app-select>
       </div>
-      <ng-container *ngIf="data$ | async as data">
-        <div *ngIf="!isSharedDeckMode" class="row">
-          <app-select
-            formControlName="sharedDeckId"
-            placeholder="{{ 'decks.sharedDeck' | translate }}"
-            [options]="data.allSharedDecks"
-          ></app-select>
-        </div>
-      </ng-container>
-    </form>
-  </div>
+    </ng-container>
+  </form>
+</div>
 
-  <div mat-dialog-actions>
-    <div class="d-flex-center">
-      <button mat-raised-button color="primary" class="m-1" (click)="onDismiss()">
-        {{ "common.buttons.close" | translate }}
-      </button>
-      <button [disabled]="form.invalid" mat-raised-button color="primary" class="m-1" (click)="onConfirm()">
-        {{ (isEdit ? "decks.editDeck" : "decks.createDeck") | translate }}
-      </button>
-    </div>
+<div mat-dialog-actions>
+  <div class="d-flex-center">
+    <button mat-raised-button color="primary" class="m-1" (click)="onDismiss()">
+      {{ "common.buttons.close" | translate }}
+    </button>
+    <button [disabled]="form.invalid" mat-raised-button color="primary" class="m-1" (click)="onConfirm()">
+      {{ (isEdit ? "decks.editDeck" : "decks.createDeck") | translate }}
+    </button>
   </div>
 </div>

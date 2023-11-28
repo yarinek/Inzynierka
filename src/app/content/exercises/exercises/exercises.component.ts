@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { TranslateModule } from '@ngx-translate/core';
 import { ExercisesService, GrammarExercise, GrammarExerciseUpsert } from 'src/http-client';
 import { Store } from '@ngrx/store';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { TableColumnType, TableConfig } from '@app/shared/types/tableConfig.interface';
 import { combineLatest, filter, firstValueFrom } from 'rxjs';
 
@@ -16,7 +16,7 @@ import { CreateExerciseComponent } from './create-exercise/create-exercise.compo
 @Component({
   selector: 'app-exercises',
   standalone: true,
-  imports: [CommonModule, TableComponent, MatButtonModule, TranslateModule],
+  imports: [CommonModule, TableComponent, MatButtonModule, TranslateModule, MatDialogModule],
   templateUrl: './exercises.component.html',
   styleUrls: ['./exercises.component.scss'],
 })
@@ -68,8 +68,8 @@ export class ExercisesComponent implements OnInit {
 
   createExercise(): void {
     const dialogRef = this.dialog.open(CreateExerciseComponent, {
-      width: '500px',
-      height: '300px',
+      width: '100vw',
+      height: '80vh',
     });
 
     dialogRef
@@ -85,8 +85,8 @@ export class ExercisesComponent implements OnInit {
     this.store.dispatch(exercisesActions.getexercise());
     const exercise = await firstValueFrom(this.store.select(selectCurrentExercise).pipe(filter((r) => !!r)));
     const dialogRef = this.dialog.open(CreateExerciseComponent, {
-      width: '500px',
-      height: '300px',
+      width: '100vw',
+      height: '80vh',
       data: {
         ...exercise,
       },
