@@ -1,9 +1,9 @@
 @import "src/assets/styles/variables.scss";
 
 .active {
-  background-color: darken($color: $primary_green-4, $amount: 10);
+  background-color: darken($color: $primary-4, $amount: 10);
 }
 .scrollable {
   height: 100%;
-  overflow: scroll;
+  overflow-y: auto;
 }

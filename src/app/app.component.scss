@@ -1,19 +1,13 @@
 @import "src/assets/styles/variables.scss";
 
 .content {
-  background-color: $primary_green-4;
+  //background-color: $primary-4;
   box-sizing: border-box;
-  width: 90%;
-  height: 90%;
-  padding: 15px;
-  border-radius: 5px;
-  border-collapse: separate;
-  box-shadow:
-    rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset,
-    rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+  margin-top: 50px;
+  margin-left: 30px;
 }
 
 .container {
   height: 90%;
-  overflow: hidden;
+  overflow-x: hidden;
 }

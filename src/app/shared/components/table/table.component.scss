@@ -1,0 +1,23 @@
+@import "../../../../assets/styles/variables";
+.mat-mdc-header-row {
+  background-color: $contrast-color;
+
+  & .mat-mdc-header-cell {
+    color: black;
+    text-align: center;
+  }
+}
+
+.mat-mdc-row {
+  & .mat-mdc-cell {
+    text-align: center;
+  }
+
+  &:nth-child(2n) {
+    background-color: $neutral_grey_blue;
+  }
+
+  &:hover {
+    background-color: $primary-4 !important;
+  }
+}

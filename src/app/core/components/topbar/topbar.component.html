@@ -1,5 +1,5 @@
 <ng-container *ngIf="data$ | async as data">
-  <mat-toolbar color="primary" class="toolbar">
+  <mat-toolbar class="toolbar">
     <mat-toolbar-row>
       <div class="row w-100">
         <div class="col-5">
@@ -8,10 +8,10 @@
         </div>
         <ng-container *ngIf="data.token$">
           <div class="col-2 d-flex align-items-center justify-content-end">
-            <button class="w-25" [routerLink]="'/exercises'" mat-icon-button>Gramatyka</button>
+            <span class="w-25 clickable" [routerLink]="'/exercises'">Gramatyka</span>
           </div>
           <div class="col-2 d-flex align-items-center justify-content-end">
-            <button class="w-25" [routerLink]="'/decks'" mat-icon-button>Fiszki</button>
+            <span class="w-25 clickable" [routerLink]="'/decks'">Fiszki</span>
           </div>
 
           <div class="col-3 d-flex justify-content-end">

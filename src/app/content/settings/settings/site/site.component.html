@@ -139,13 +139,12 @@
             <app-input type="number" [integerOnly]="true" formControlName="exercisesPerDay"></app-input>
           </div>
         </div>
+        <div class="mb-5">
+          <button class="w-25" mat-raised-button color="primary" (click)="save()">
+            {{ "common.buttons.save" | translate }}
+          </button>
+        </div>
       </div>
-    </div>
-
-    <div class="row mb-5">
-      <button class="w-25" mat-raised-button color="primary" (click)="save()">
-        {{ "common.buttons.save" | translate }}
-      </button>
     </div>
   </div>
 </ng-container>
