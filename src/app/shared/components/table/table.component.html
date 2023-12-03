@@ -14,10 +14,15 @@
               </ng-container>
             </ng-container>
             <ng-container *ngSwitchCase="'CUSTOM_DISPLAY'">
-              {{ tableColumn?.customDisplay(row) }}
+              <ng-container *ngIf="tableColumn?.customDisplay">
+                {{ tableColumn.customDisplay!(row) | translate }}
+              </ng-container>
+            </ng-container>
+            <ng-container *ngSwitchCase="'DATETIME'">
+              {{ row[tableColumn.value] | date: "dd.MM.yyyy HH:mm" }}
             </ng-container>
             <ng-container *ngSwitchDefault>
-              {{ displayNestedObject(row, tableColumn.value) }}
+              {{ displayNestedObject(row, tableColumn.value) | translate }}
             </ng-container>
           </ng-container>
         </td>

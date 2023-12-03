@@ -10,6 +10,7 @@ export interface TableConfig {
 export enum TableColumnType {
   ACTIONS = 'ACTIONS',
   CUSTOM_DISPLAY = 'CUSTOM_DISPLAY',
+  DATETIME = 'DATETIME',
 }
 
 export interface TableColumnActions {

@@ -97,7 +97,10 @@
             "back": "Tył",
             "status": "Status",
             "reviews": "Recenzje",
-            "fails": "Niepowodzenia"
+            "fails": "Niepowodzenia",
+            "nextReview": "Następna powtórka",
+            "leech": "Problematyczna",
+            "suspended": "Wstrzymana"
         },
         "card": {
           "wrong": "Źle",
@@ -135,6 +138,8 @@
         "exercisesFinished": "Wszystkie ćwiczenia zostały wykonane"
       },
       "common": {
+        "YES": "Tak",
+        "NO": "Nie",
         "table": {
             "itemsPerPage": "Elementy na stronie:",
             "actions": "Akcje"

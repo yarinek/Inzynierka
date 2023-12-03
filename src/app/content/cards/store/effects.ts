@@ -284,17 +284,19 @@ export const editCardEffect = createEffect(
           );
 
         return forkJoin({
-          front: uploadFiles(cardUpdateRequest.front),
-          back: uploadFiles(cardUpdateRequest.back),
+          front: uploadFiles(cardUpdateRequest.front!),
+          back: uploadFiles(cardUpdateRequest.back!),
         }).pipe(
           switchMap((updatedCardCreateRequest) =>
-            cardsService.patchCard(deck?.id as string, cardId, updatedCardCreateRequest).pipe(
-              map(() => cardsActions.editcardSuccess()),
-              catchError(() => {
-                return of(cardsActions.editcardFailure());
-              }),
-              finalize(() => LoaderService.hideLoader()),
-            ),
+            cardsService
+              .patchCard(deck?.id as string, cardId, { ...cardUpdateRequest, ...updatedCardCreateRequest })
+              .pipe(
+                map(() => cardsActions.editcardSuccess()),
+                catchError(() => {
+                  return of(cardsActions.editcardFailure());
+                }),
+                finalize(() => LoaderService.hideLoader()),
+              ),
           ),
         );
       }),

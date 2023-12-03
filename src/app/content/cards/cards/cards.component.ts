@@ -1,6 +1,13 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Card, CardContentElement, CardContentElementType, CardCreateRequest, CardsService } from 'src/http-client';
+import {
+  Card,
+  CardContentElement,
+  CardContentElementType,
+  CardCreateRequest,
+  CardsService,
+  CardUpdateRequest,
+} from 'src/http-client';
 import { Store } from '@ngrx/store';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { TableColumnType, TableConfig } from '@app/shared/types/tableConfig.interface';
@@ -33,6 +40,9 @@ export class CardsComponent implements OnInit {
     'status',
     'statistics.reviews',
     'statistics.fails',
+    'nextReview',
+    'leech',
+    'suspended',
     'actions',
   ];
 
@@ -60,6 +70,19 @@ export class CardsComponent implements OnInit {
     { name: 'cards.table.status', value: 'status' },
     { name: 'cards.table.reviews', value: 'statistics.reviews' },
     { name: 'cards.table.fails', value: 'statistics.fails' },
+    { name: 'cards.table.nextReview', value: 'nextReview', type: TableColumnType.DATETIME },
+    {
+      name: 'cards.table.leech',
+      value: 'leech',
+      type: TableColumnType.CUSTOM_DISPLAY,
+      customDisplay: (row: Card): string => (row.leech ? 'common.YES' : 'common.NO'),
+    },
+    {
+      name: 'cards.table.suspended',
+      value: 'suspended',
+      type: TableColumnType.CUSTOM_DISPLAY,
+      customDisplay: (row: Card): string => (row.suspended ? 'common.YES' : 'common.NO'),
+    },
     {
       name: 'common.table.actions',
       value: 'actions',
@@ -71,7 +94,8 @@ export class CardsComponent implements OnInit {
         },
         {
           name: 'common.buttons.edit',
-          action: (row: Card): void => this.editCard(row.id as string, row.front, row.back),
+          action: (row: Card): void =>
+            this.editCard(row.id as string, !!row.leech, !!row.suspended, row.front, row.back),
         },
         {
           name: 'common.buttons.delete',
@@ -137,20 +161,28 @@ export class CardsComponent implements OnInit {
       });
   }
 
-  editCard(cardId: string, front?: CardContentElement[], back?: CardContentElement[]): void {
+  editCard(
+    cardId: string,
+    leech: boolean,
+    suspended: boolean,
+    front?: CardContentElement[],
+    back?: CardContentElement[],
+  ): void {
     const dialogRef = this.dialog.open(CreateCardsComponent, {
       width: '100vw',
       height: '80vh',
       data: {
         front,
         back,
+        leech,
+        suspended,
       },
     });
 
     dialogRef
       .afterClosed()
       .pipe(filter((r) => !!r))
-      .subscribe((cardUpdateRequest: CardCreateRequest) => {
+      .subscribe((cardUpdateRequest: CardUpdateRequest) => {
         this.store.dispatch(cardsActions.editcard({ cardId, cardUpdateRequest }));
       });
   }

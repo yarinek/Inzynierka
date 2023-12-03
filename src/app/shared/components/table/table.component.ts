@@ -41,7 +41,7 @@ export class TableComponent<T> implements OnInit, AfterViewInit {
     this.changePagination.emit(event);
   }
 
-  protected displayNestedObject(element: T, path: string): T {
+  protected displayNestedObject(element: T, path: string): string {
     const pathArray = path.split('.');
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let value: any = element;
@@ -49,6 +49,6 @@ export class TableComponent<T> implements OnInit, AfterViewInit {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
       value = value[pathItem];
     }
-    return value as T;
+    return value as string;
   }
 }

@@ -99,7 +99,10 @@
             "back": "Back",
             "status": "Status",
             "reviews": "Reviews",
-            "fails": "Fails"
+            "fails": "Fails",
+            "nextReview": "Next review",
+            "leech": "Leech",
+            "suspended": "Suspended"
         },
         "card": {
           "wrong": "Wrong",
@@ -137,6 +140,8 @@
         "exercisesFinished": "You have finished all exercises"
       },
       "common": {
+        "YES": "Yes",
+        "NO": "No",
         "table": {
             "itemsPerPage": "Items per page:",
             "actions": "Actions"

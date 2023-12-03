@@ -11,6 +11,7 @@ import { SelectOptionInterface } from '@app/shared/components/select/select.type
 import { SelectComponent } from '@app/shared/components/select/select.component';
 import { FileUploadComponent } from '@app/shared/components/file-upload/file-upload.component';
 import { FileUploadTypes } from '@app/shared/components/file-upload/file-upload.types';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-create-cards',
@@ -23,6 +24,7 @@ import { FileUploadTypes } from '@app/shared/components/file-upload/file-upload.
     TranslateModule,
     SelectComponent,
     FileUploadComponent,
+    MatCheckboxModule,
   ],
   templateUrl: './create-cards.component.html',
   styleUrls: ['./create-cards.component.scss'],
@@ -48,6 +50,11 @@ export class CreateCardsComponent implements OnInit {
     }),
   ]);
 
+  form = this.fb.group({
+    leech: [false],
+    suspended: [false],
+  });
+
   get isEdit(): boolean {
     return !!this.dialogData;
   }
@@ -68,6 +75,7 @@ export class CreateCardsComponent implements OnInit {
       this.addForm();
     });
     this.formArray.setValue(this.convertToFormArray(this.dialogData as CardCreateRequest));
+    this.form.patchValue(this.dialogData as unknown as { leech: boolean; suspended: boolean });
   }
 
   onConfirm(): void {
@@ -108,6 +116,7 @@ export class CreateCardsComponent implements OnInit {
     const result: CardCreateRequest = {
       front: [],
       back: [],
+      ...(this.isEdit ? this.form.value : {}),
     };
 
     data.forEach((card) => {
