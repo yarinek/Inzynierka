@@ -38,7 +38,7 @@ export class DecksComponent implements OnInit {
       type: TableColumnType.ACTIONS,
       actions: [
         {
-          name: 'common.buttons.preview',
+          name: 'common.buttons.view',
           action: (row: Deck): void => this.setActiveDeck(row),
         },
         {
@@ -72,7 +72,7 @@ export class DecksComponent implements OnInit {
       type: TableColumnType.ACTIONS,
       actions: [
         {
-          name: 'common.buttons.preview',
+          name: 'common.buttons.view',
           action: (row: Deck): void => this.setActiveDeck(row),
         },
         {

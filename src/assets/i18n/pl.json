@@ -141,6 +141,7 @@
         },
         "buttons": {
             "preview": "Podgląd",
+            "view": "Podgląd",
             "edit": "Edytuj",
             "delete": "Usuń",
             "close": "Zamknij",
