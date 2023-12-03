@@ -76,7 +76,7 @@
         "editDeck": "Edytuj talię",
         "editSharedDeck": "Edytuj wspólną talię",
         "deckName": "Nazwa talii",
-        "language": "Język",
+        "language": "Język (ISO639-1)",
         "navigateToSharedDecks": "Przejdź do wspólnych talii",
         "sharedDeck": "Wspólna talia",
         "table": {

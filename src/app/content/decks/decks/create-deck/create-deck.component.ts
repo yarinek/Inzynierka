@@ -7,7 +7,6 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputComponent } from '@app/shared/components/input/input.component';
 import { MatButtonModule } from '@angular/material/button';
 import { SelectComponent } from '@app/shared/components/select/select.component';
-import { SelectOptionInterface } from '@app/shared/components/select/select.types';
 import { combineLatest, map } from 'rxjs';
 
 import { selectAllSharedDecks } from '../../store/reducers';
@@ -24,9 +23,11 @@ export class CreateDeckComponent implements OnInit {
   store = inject(Store);
   fb = inject(FormBuilder);
 
-  dialogData: { name: string; language: string; shared?: boolean } = inject(MAT_DIALOG_DATA);
-
-  languageOptions: SelectOptionInterface[] = [{ value: 'en', label: 'English' }];
+  dialogData: { name: string; language: string; shared?: boolean } = inject(MAT_DIALOG_DATA) as {
+    name: string;
+    language: string;
+    shared?: boolean;
+  };
 
   form = this.fb.group({
     name: ['', Validators.required],

@@ -6,11 +6,7 @@
       <app-input formControlName="name" placeholder="{{ 'decks.deckName' | translate }}"></app-input>
     </div>
     <div class="row">
-      <app-select
-        formControlName="language"
-        placeholder="{{ 'decks.language' | translate }}"
-        [options]="languageOptions"
-      ></app-select>
+      <app-input formControlName="language" placeholder="{{ 'decks.language' | translate }}"></app-input>
     </div>
     <ng-container *ngIf="data$ | async as data">
       <div *ngIf="!isSharedDeckMode" class="row">

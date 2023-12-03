@@ -78,7 +78,7 @@
         "editDeck": "Edit deck",
         "editSharedDeck": "Edit shared deck",
         "deckName": "Deck name",
-        "language": "Language",
+        "language": "Language (ISO639-1)",
         "navigateToSharedDecks": "Navigate to shared decks",
         "sharedDeck": "Shared deck",
         "table": {
