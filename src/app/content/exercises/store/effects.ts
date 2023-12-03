@@ -259,14 +259,35 @@ export const redirectIfNoActiveExerciseEffect = createEffect(
 );
 
 export const submitAnswerEffect = createEffect(
-  (actions$ = inject(Actions), exercisesService = inject(ExercisesService), store = inject(Store)) => {
+  (
+    actions$ = inject(Actions),
+    exercisesService = inject(ExercisesService),
+    store = inject(Store),
+    toast = inject(ToastrService),
+  ) => {
     return actions$.pipe(
       ofType(exercisesActions.submitanswer),
       withLatestFrom(store.select(selectScheduledExerciseId)),
       tap(() => LoaderService.showLoader()),
       switchMap(([{ answers }, exerciseId]) =>
         exercisesService.submitAnswerForExercise(exerciseId as string, answers).pipe(
-          map(() => exercisesActions.submitanswerSuccess()),
+          map((res) => {
+            switch (res.status) {
+              case 'SUCCESSFUL':
+                toast.success('exercises.exercise.answerStatuses.SUCCESSFUL');
+                break;
+              case 'FAILURE':
+                toast.error('exercises.exercise.answerStatuses.FAILURE');
+                break;
+              case 'SUSPENDED':
+                toast.warning('exercises.exercise.answerStatuses.SUSPENDED');
+                break;
+              default:
+                toast.error('errors.unknownError');
+                break;
+            }
+            return exercisesActions.submitanswerSuccess({ exerciseAnswers: res.answers ?? [] });
+          }),
           catchError(() => {
             return of(exercisesActions.submitanswerFailure());
           }),
@@ -278,10 +299,10 @@ export const submitAnswerEffect = createEffect(
   { functional: true },
 );
 
-export const startNextExerciseAfterSubmitAnswerEffect = createEffect(
+export const startNextExerciseEffect = createEffect(
   (actions$ = inject(Actions), store = inject(Store), router = inject(Router), toast = inject(ToastrService)) => {
     return actions$.pipe(
-      ofType(exercisesActions.submitanswerSuccess),
+      ofType(exercisesActions.startnextexercise),
       withLatestFrom(store.select(selectScheduledExercises)),
       tap(() => LoaderService.showLoader()),
       map(([, exercises]) => {

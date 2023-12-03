@@ -1,4 +1,8 @@
 {
+    "topbar": {
+      "grammar": "Gramatyka",
+      "decks": "Fiszki"
+    },
     "settings": {
       "title": "Ustawienia",
       "profile": "Ustawienia profilu",
@@ -133,7 +137,13 @@
         },
         "exercise": {
           "answer": "Odpowiedź",
-          "suspend": "Wstrzymaj"
+          "suspend": "Wstrzymaj",
+          "correctAnswers": "Poprawna odpowiedź",
+          "answerStatuses": {
+            "SUCCESSFUL": "Poprawna odpowiedź",
+            "FAILURE": "Niepoprawna odpowiedź",
+            "SUSPENDED": "Ćwiczenie zawieszone"
+          }
         },
         "exercisesFinished": "Wszystkie ćwiczenia zostały wykonane"
       },
@@ -153,7 +163,8 @@
             "back": "Wstecz",
             "confirm": "Potwierdź",
             "save": "Zapisz",
-            "createSharedDeck": "Utwórz wspólną talię"
+            "createSharedDeck": "Utwórz wspólną talię",
+            "nextExercise": "Następne ćwiczenie"
         }
       },
       "errors": {

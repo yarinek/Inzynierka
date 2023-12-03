@@ -8,10 +8,10 @@
         </div>
         <ng-container *ngIf="data.token$">
           <div class="col-2 d-flex align-items-center justify-content-end">
-            <span class="w-25 clickable" [routerLink]="'/exercises'">Gramatyka</span>
+            <span class="w-25 clickable" [routerLink]="'/exercises'">{{ "topbar.grammar" | translate }}</span>
           </div>
           <div class="col-2 d-flex align-items-center justify-content-end">
-            <span class="w-25 clickable" [routerLink]="'/decks'">Fiszki</span>
+            <span class="w-25 clickable" [routerLink]="'/decks'">{{ "topbar.decks" | translate }}</span>
           </div>
 
           <div class="col-3 d-flex justify-content-end">

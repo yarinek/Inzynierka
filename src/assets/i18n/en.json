@@ -1,5 +1,9 @@
 
 {
+    "topbar": {
+      "grammar": "Grammar",
+      "decks": "Decks"
+    },
     "settings": {
       "title": "Settings",
       "profile": "Profile Settings",
@@ -135,7 +139,13 @@
         },
         "exercise": {
           "answer": "Answer",
-          "suspend": "Suspend"
+          "suspend": "Suspend",
+          "correctAnswers": "Correct answer",
+          "answerStatuses": {
+            "SUCCESSFUL": "Correct answer",
+            "FAILURE": "Incorrect answer",
+            "SUSPENDED": "Suspended"
+          }
         },
         "exercisesFinished": "You have finished all exercises"
       },
@@ -155,7 +165,8 @@
             "back": "Back",
             "confirm": "Confirm",
             "save": "Save",
-            "createSharedDeck": "Create shared deck"
+            "createSharedDeck": "Create shared deck",
+            "nextExercise": "Next exercise"
         }
       },
       "errors": {

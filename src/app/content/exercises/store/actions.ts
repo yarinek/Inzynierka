@@ -1,5 +1,6 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 import {
+  AnswerResult,
   GrammarExercise,
   GrammarExerciseSummary,
   GrammarExerciseUpsert,
@@ -30,8 +31,9 @@ export const exercisesActions = createActionGroup({
     'getExercise Success': props<{ exercise: GrammarExercise }>(),
     'getExercise Failure': emptyProps(),
     submitAnswer: props<{ answers: SubmittedExerciseReviewAnswer }>(),
-    'submitAnswer Success': emptyProps(),
+    'submitAnswer Success': props<{ exerciseAnswers: AnswerResult[] }>(),
     'submitAnswer Failure': emptyProps(),
+    startNextExercise: emptyProps(),
     startActivity: emptyProps(),
     'startActivity Success': props<{ exercises: string[] }>(),
     'startActivity Failure': emptyProps(),

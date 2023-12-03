@@ -55,6 +55,7 @@ export class ToastrService {
       panelClass: [`toast-${type}`],
       horizontalPosition: 'right',
       verticalPosition: 'top',
+      duration: 5000,
     });
   }
 }

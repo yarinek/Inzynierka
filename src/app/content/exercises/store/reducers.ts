@@ -1,6 +1,12 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { routerNavigationAction } from '@ngrx/router-store';
-import { GrammarExercise, GrammarExerciseSummary, GrammarListEntry, ScheduledGrammarExercise } from 'src/http-client';
+import {
+  AnswerResult,
+  GrammarExercise,
+  GrammarExerciseSummary,
+  GrammarListEntry,
+  ScheduledGrammarExercise,
+} from 'src/http-client';
 
 import { exercisesActions } from './actions';
 
@@ -9,6 +15,7 @@ const initialState: {
   totalElements: number;
   grammarList: GrammarListEntry[];
   currentExercise: GrammarExercise | ScheduledGrammarExercise | null;
+  currentExerciseAnswers: AnswerResult[];
   currentExerciseId: string | null;
   scheduledExercises: string[];
   scheduledExerciseId: string | null;
@@ -18,6 +25,7 @@ const initialState: {
   grammarList: [],
   currentExerciseId: null,
   currentExercise: null,
+  currentExerciseAnswers: [],
   scheduledExercises: [],
   scheduledExerciseId: null,
 };
@@ -47,6 +55,11 @@ const exercisesFeature = createFeature({
     }),
     on(exercisesActions.startexercise, (state, action) => ({ ...state, scheduledExerciseId: action.exerciseId })),
     on(exercisesActions.startexerciseFailure, (state) => ({ ...state, scheduledExerciseId: null })),
+    on(exercisesActions.submitanswerSuccess, (state, action) => ({
+      ...state,
+      currentExerciseAnswers: action.exerciseAnswers,
+    })),
+    on(exercisesActions.startnextexercise, (state) => ({ ...state, currentExerciseAnswers: [] })),
     //utils
     on(exercisesActions.setactiveexerciseid, (state, action) => ({ ...state, currentExerciseId: action.exerciseId })),
     on(routerNavigationAction, (state) => ({ ...state })),
@@ -63,4 +76,5 @@ export const {
   selectCurrentExerciseId,
   selectScheduledExercises,
   selectScheduledExerciseId,
+  selectCurrentExerciseAnswers,
 } = exercisesFeature;

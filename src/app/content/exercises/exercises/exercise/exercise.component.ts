@@ -3,13 +3,13 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { InputComponent } from '@app/shared/components/input/input.component';
-import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatButtonModule } from '@angular/material/button';
 import { SubmittedExerciseReviewAnswer } from 'src/http-client';
 import { Router } from '@angular/router';
 
-import { selectCurrentExercise } from '../../store/reducers';
+import { selectCurrentExercise, selectCurrentExerciseAnswers } from '../../store/reducers';
 import { exercisesActions } from '../../store/actions';
 
 @Component({
@@ -22,7 +22,9 @@ import { exercisesActions } from '../../store/actions';
 export class ExerciseComponent implements OnInit {
   store = inject(Store);
   router = inject(Router);
-  answer = new FormControl('', [Validators.required]);
+  fb = inject(FormBuilder);
+
+  formArray = this.fb.array([this.fb.control('', [Validators.required])]);
 
   data$ = combineLatest({
     exercise: this.store.select(selectCurrentExercise).pipe(
@@ -30,6 +32,7 @@ export class ExerciseComponent implements OnInit {
         if (!exercise) this.backToExercises();
       }),
     ),
+    exerciseAnswers: this.store.select(selectCurrentExerciseAnswers),
   });
 
   get isPreview(): boolean {
@@ -44,11 +47,16 @@ export class ExerciseComponent implements OnInit {
 
   saveAnswer(suspend = false): void {
     const answers = {
-      answers: [this.answer.value],
+      answers: this.formArray.value,
       suspend,
     } as SubmittedExerciseReviewAnswer;
-    this.answer.reset();
+
     this.store.dispatch(exercisesActions.submitanswer({ answers }));
+  }
+
+  nextExercise(): void {
+    this.formArray.reset();
+    this.store.dispatch(exercisesActions.startnextexercise());
   }
 
   backToExercises(): void {
