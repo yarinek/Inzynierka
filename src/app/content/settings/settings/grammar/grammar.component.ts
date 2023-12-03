@@ -77,6 +77,30 @@ export class GrammarComponent implements OnInit {
     this.formArray.removeAt(index);
   }
 
+  protected getGrammarList(
+    data: {
+      useCases:
+        | {
+            value: string;
+            label: string;
+          }[]
+        | undefined;
+      value: string;
+      label: string;
+    }[],
+    index: number,
+  ): SelectOptionInterface[] {
+    const currentGrammar = this.formArray.at(index).value.grammar as string;
+    const choosenGrammars = this.formArray.value.map((val: { grammar: string }) => val.grammar);
+    const grammarList = data.filter((val) => {
+      if (val.value === currentGrammar) {
+        return true;
+      }
+      return !choosenGrammars.includes(val.value);
+    });
+    return grammarList;
+  }
+
   protected getUseCases(
     data: {
       useCases:

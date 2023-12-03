@@ -6,7 +6,7 @@
     <div class="d-flex align-items-center">
       <div>{{ "settings.grammarSettings.field.grammar" | translate }}:</div>
       <div class="mx-2 p-1" [formGroup]="formGroup">
-        <app-select formControlName="grammar" [options]="data.grammarList"></app-select>
+        <app-select formControlName="grammar" [options]="getGrammarList(data.grammarList, i)"></app-select>
       </div>
     </div>
     <div *ngIf="formGroup.get('grammar')?.value" class="d-flex align-items-center">
