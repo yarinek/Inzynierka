@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Card, CardContentElement, CardContentElementType } from 'src/http-client';
@@ -32,7 +32,7 @@ import { Card, CardContentElement, CardContentElementType } from 'src/http-clien
     ]),
   ],
 })
-export class CarouselComponent {
+export class CarouselComponent implements OnChanges {
   @Input() card: Card | undefined;
   @Input() flip: 'inactive' | 'active' = 'inactive';
 
@@ -50,6 +50,11 @@ export class CarouselComponent {
 
   get slides(): CardContentElement[] {
     return this.flip == 'inactive' ? this.slidesFront : this.slidesBack;
+  }
+
+  ngOnChanges(): void {
+    this.currentSlide = 0;
+    this.flip = 'inactive';
   }
 
   toggleFlip(): void {
