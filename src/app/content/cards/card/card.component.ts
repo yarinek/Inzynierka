@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { CardReviewAnswer } from 'src/http-client';
 
-import { selectPreviewCard } from '../store/reducers';
+import { selectAnswerPrediction, selectPreviewCard } from '../store/reducers';
 import { cardsActions } from '../store/actions';
 import { CarouselComponent } from './carousel/carousel.component';
 
@@ -24,6 +24,7 @@ export class CardComponent implements OnInit {
 
   data$ = combineLatest({
     card: this.store.select(selectPreviewCard),
+    answerPrediction: this.store.select(selectAnswerPrediction),
   });
 
   get isPreview(): boolean {

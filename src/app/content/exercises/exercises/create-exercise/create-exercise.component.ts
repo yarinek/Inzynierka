@@ -98,7 +98,8 @@ export class CreateExerciseComponent implements OnInit {
 
   onConfirm(): void {
     const { correctValues, ...rest } = this.form.getRawValue();
-    this.dialogRef.close({ ...rest, answers: [{ correctValues }] });
+    const answers = correctValues.map((value) => ({ correctValues: [value] }));
+    this.dialogRef.close({ ...rest, answers });
   }
 
   onDismiss(): void {

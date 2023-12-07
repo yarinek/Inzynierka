@@ -6,7 +6,7 @@ import { InputComponent } from '@app/shared/components/input/input.component';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatButtonModule } from '@angular/material/button';
-import { SubmittedExerciseReviewAnswer } from 'src/http-client';
+import { ScheduledGrammarExercise, SubmittedExerciseReviewAnswer } from 'src/http-client';
 import { Router } from '@angular/router';
 
 import { selectCurrentExercise, selectCurrentExerciseAnswers } from '../../store/reducers';
@@ -29,7 +29,16 @@ export class ExerciseComponent implements OnInit {
   data$ = combineLatest({
     exercise: this.store.select(selectCurrentExercise).pipe(
       tap((exercise) => {
-        if (!exercise) this.backToExercises();
+        if (!exercise) {
+          this.backToExercises();
+          return;
+        }
+
+        if (!this.isPreview) {
+          for (let i = 1; i < ((exercise as ScheduledGrammarExercise).expectedAnswers ?? 1); i++) {
+            this.formArray.push(this.fb.control('', [Validators.required]));
+          }
+        }
       }),
     ),
     exerciseAnswers: this.store.select(selectCurrentExerciseAnswers),

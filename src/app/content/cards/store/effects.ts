@@ -21,7 +21,6 @@ import {
   withLatestFrom,
 } from 'rxjs';
 import {
-  Card,
   CardContentElement,
   CardContentElementType,
   CardsPage,
@@ -102,11 +101,11 @@ export const submitAnswerEffect = createEffect(
       tap(() => LoaderService.showLoader()),
       switchMap(([{ answer }, [deck, card]]) =>
         cardsService.submitAnswerForCard(deck?.id as string, card?.id as string, { answer }).pipe(
-          map(({ cardToReview, total }) => {
-            if (!total) {
+          map((scheduledCardReviews) => {
+            if (!scheduledCardReviews.total) {
               return cardsActions.submitanswerFailure();
             }
-            return cardsActions.submitanswerSuccess({ card: cardToReview as Card });
+            return cardsActions.submitanswerSuccess({ scheduledCardReviews });
           }),
           catchError(() => {
             return of(cardsActions.getcardFailure());
@@ -129,11 +128,11 @@ export const startActivityEffect = createEffect(
       tap(() => LoaderService.showLoader()),
       switchMap(([, deck]) =>
         scheduleService.getScheduledCards(deck?.id as string).pipe(
-          map(({ cardToReview, total }) => {
-            if (!total) {
+          map((scheduledCardReviews) => {
+            if (!scheduledCardReviews.total) {
               return cardsActions.startactivityFailure();
             }
-            return cardsActions.startactivitySuccess({ card: cardToReview as Card });
+            return cardsActions.startactivitySuccess({ scheduledCardReviews });
           }),
           catchError(() => {
             return of(cardsActions.startactivityFailure());

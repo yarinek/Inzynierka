@@ -7,18 +7,42 @@
       <app-carousel [card]="data.card"></app-carousel>
     </div>
     <div *ngIf="!isPreview" class="tp-box__answer">
-      <button mat-raised-button color="primary" class="m-1" (click)="answer('WRONG')">
-        {{ "cards.card.wrong" | translate }}
-      </button>
-      <button mat-raised-button color="primary" class="m-1" (click)="answer('HARD')">
-        {{ "cards.card.hard" | translate }}
-      </button>
-      <button mat-raised-button color="primary" class="m-1" (click)="answer('GOOD')">
-        {{ "cards.card.good" | translate }}
-      </button>
-      <button mat-raised-button color="primary" class="m-1" (click)="answer('EASY')">
-        {{ "cards.card.easy" | translate }}
-      </button>
+      <div class="d-flex-column">
+        <button mat-raised-button color="primary" class="m-1" (click)="answer('WRONG')">
+          {{ "cards.card.wrong" | translate }}
+        </button>
+        <span
+          >{{ data.answerPrediction.wrongAnswerIntervalPrediction?.value }}
+          {{ data.answerPrediction.wrongAnswerIntervalPrediction?.unit }}</span
+        >
+      </div>
+      <div class="d-flex-column">
+        <button mat-raised-button color="primary" class="m-1" (click)="answer('HARD')">
+          {{ "cards.card.hard" | translate }}
+        </button>
+        <span
+          >{{ data.answerPrediction.hardAnswerIntervalPrediction?.value }}
+          {{ data.answerPrediction.hardAnswerIntervalPrediction?.unit }}</span
+        >
+      </div>
+      <div class="d-flex-column">
+        <button mat-raised-button color="primary" class="m-1" (click)="answer('GOOD')">
+          {{ "cards.card.good" | translate }}
+        </button>
+        <span
+          >{{ data.answerPrediction.goodAnswerIntervalPrediction?.value }}
+          {{ data.answerPrediction.goodAnswerIntervalPrediction?.unit }}</span
+        >
+      </div>
+      <div class="d-flex-column">
+        <button mat-raised-button color="primary" class="m-1" (click)="answer('EASY')">
+          {{ "cards.card.easy" | translate }}
+        </button>
+        <span
+          >{{ data.answerPrediction.easyAnswerIntervalPrediction?.value }}
+          {{ data.answerPrediction.easyAnswerIntervalPrediction?.unit }}</span
+        >
+      </div>
       <button mat-raised-button color="primary" class="m-1" (click)="answer('SUSPEND')">
         {{ "cards.card.suspend" | translate }}
       </button>

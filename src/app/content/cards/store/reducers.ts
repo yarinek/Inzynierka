@@ -1,17 +1,26 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { routerNavigationAction } from '@ngrx/router-store';
-import { Card } from 'src/http-client';
+import { AnswerIntervalPrediction, Card } from 'src/http-client';
 
 import { cardsActions } from './actions';
+
+interface AnswerIntervalPredictions {
+  wrongAnswerIntervalPrediction?: AnswerIntervalPrediction;
+  hardAnswerIntervalPrediction?: AnswerIntervalPrediction;
+  goodAnswerIntervalPrediction?: AnswerIntervalPrediction;
+  easyAnswerIntervalPrediction?: AnswerIntervalPrediction;
+}
 
 const initialState: {
   dataSource: Card[];
   totalElements: number;
   previewCard: Card | null;
+  answerPrediction: AnswerIntervalPredictions;
 } = {
   dataSource: [],
   totalElements: 0,
   previewCard: null,
+  answerPrediction: {},
 };
 
 const decksFeature = createFeature({
@@ -39,16 +48,29 @@ const decksFeature = createFeature({
     on(cardsActions.submitanswer, (state) => ({ ...state })),
     on(cardsActions.submitanswerSuccess, (state, action) => ({
       ...state,
-      previewCard: action.card,
+      previewCard: action.scheduledCardReviews.cardToReview as Card,
+      answerPrediction: {
+        wrongAnswerIntervalPrediction: action.scheduledCardReviews.wrongAnswerIntervalPrediction,
+        hardAnswerIntervalPrediction: action.scheduledCardReviews.hardAnswerIntervalPrediction,
+        goodAnswerIntervalPrediction: action.scheduledCardReviews.goodAnswerIntervalPrediction,
+        easyAnswerIntervalPrediction: action.scheduledCardReviews.easyAnswerIntervalPrediction,
+      },
     })),
     on(cardsActions.submitanswerFailure, (state) => ({
       ...state,
       previewCard: null,
+      answerPrediction: {},
     })),
     on(cardsActions.startactivity, (state) => ({ ...state })),
     on(cardsActions.startactivitySuccess, (state, action) => ({
       ...state,
-      previewCard: action.card,
+      previewCard: action.scheduledCardReviews.cardToReview as Card,
+      answerPrediction: {
+        wrongAnswerIntervalPrediction: action.scheduledCardReviews.wrongAnswerIntervalPrediction,
+        hardAnswerIntervalPrediction: action.scheduledCardReviews.hardAnswerIntervalPrediction,
+        goodAnswerIntervalPrediction: action.scheduledCardReviews.goodAnswerIntervalPrediction,
+        easyAnswerIntervalPrediction: action.scheduledCardReviews.easyAnswerIntervalPrediction,
+      },
     })),
     on(cardsActions.startactivityFailure, (state) => ({
       ...state,
@@ -74,4 +96,5 @@ export const {
   selectDataSource,
   selectPreviewCard,
   selectTotalElements,
+  selectAnswerPrediction,
 } = decksFeature;
